@@ -1,0 +1,352 @@
+# Предварительный анализ
+## Введение
+Электронная версия книги по адресу http://r4ds.had.co.nz.
+
+Для начала работы подключаем библиотеку
+```{r, message=FALSE}
+library("tidyverse")
+```
+Не было упражнений.
+
+## Первые шаги
+### Упражнение 3.2.1 {.unnumbered}
+<div class="question">
+Run `ggplot(data = mpg)` what do you see?
+</div>
+
+```{r}
+ggplot(data = mpg)
+```
+
+Пустое окно построения.  Функция `ggplot()` из пакета `ggplot2` только содаёт область построения, функциями мы производим наполнение области построения. Больше инфы смотри в подсказке https://github.com/rstudio/cheatsheets/blob/master/data-visualization-2.1.pdf .
+
+### Упражнение 3.2.2 {.unnumbered}
+<div class="question">
+How many rows are in `mpg`? How many columns?
+</div>
+
+Чтобы проверить "строение" фрейма данных `mpg`,можно воспользоваться двумя способами.
+Var1:
+```{r}
+ggplot2::mpg
+```
+
+где видно что `mpg` это матрица 234 строки на 11 столбцов.
+
+Var2:
+```{r}
+glimpse(mpg)
+```
+
+Сразу тут покажу, что каждый параметр означает:
+
+| Название      | Описание       |
+| ------------- |:-------------:|
+| manufacturer | изготовитель    |
+| model   | модель |
+| displ    | объём двигателя в литрах    |
+| year | год изготовления    |
+| cyl| количество цилиндров   |
+| trans | тип трансмиссии     |
+| drv | тип привода   |
+| cty | количество пройденных миль по городу на один галлон топлива   |
+| hwy | количество пройденных миль за городом на один галлон топлива   |
+| fl | тип топлива    |
+| class | класс автомобиля     |
+
+
+### Упражнение 3.2.3 {.unnumbered}
+<div class="question">
+What does the `drv` variable describe? Read the help for `?mpg` to find out.
+`drv` — это имя одного из параметров, оно обозначает тип привода автомобиля.
+</div>
+
+| Краткое название        | Тип привода          |
+| ------------- |:-------------:|
+| f   | передний |
+| r    | задний    |
+| 4 | полный     |
+
+### Упражнение 3.2.4 {.unnumbered}
+<div class="question"> 
+Make a scatter plot of `hwy` vs `cyl`.
+</div>
+
+можно прописывать на одной координатной плоскости разные геометрические функции с индивидуальными параметрами, тогда правильнее будет писать вот так
+
+
+Var 1
+```{r 41}
+ggplot(data = mpg)+
+  geom_point(mapping = aes(x = hwy, y = cyl))
+```
+
+Но если параметры одни и те же, а требуется построить разные геометрии, то лучше прописать общие параметры вынося их "за скобки"
+Var 2
+```{r}
+ggplot(data = mpg, aes(x = hwy, y = cyl))+
+ geom_point()
+```
+
+### Упражнение 3.2.5 {.unnumbered}
+<div class="question">
+What happens if you make a scatterplot of `class` vs `drv`? Why is the plot not useful?
+<di/v>
+
+Оба параметра являются категориальными, или описательными. Можно построить `<chr>` от `<chr>`. 
+```{r}
+ggplot(data = mpg) + geom_point(mapping = aes(x = class, y = drv))
+```
+
+Но с точки зрения аналитики, такая информация не несёт большой пользы. В конкретном примере можно только сказать что, все автомобили класса `2seater` имеют задний привод. А в классе `subcompact` есть все типы привода.
+
+## Эстетика визуализации
+### Упражнения 3.3.1 {.unnumbered} 
+<div class="question">
+What’s gone wrong with this code? Why are the points not blue? {.unnumbered}
+</div>
+
+```{r}
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy, colour = "blue"))
+```
+
+Всё потому что `colour` не вынес за скобки, потому что `colour` это параметр функции `geom_point()`, not `aes()` 
+правильно вот так
+
+```{r}
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy), colour = "blue")
+```
+
+
+### Упражнения 3.3.2 {.unnumbered} 
+<div class="question">
+Which variables in `mpg` are categorical? Which variables are continuous? (Hint: type `?mpg` to read the documentation for the dataset). How can you see this information when you run `mpg`? {.unnumbered} 
+</div>
+
+Это те факторы, которые позволяют разделить на показатели. Чтобы понять какие факторы являются категориальными можно воспользоваться функцией `glimpse()`, которая показывает тип каждого столбца. Соответственно, те что `<chr>` и есть категориальные:
+
+```{r}
+glimpse(mpg)
+```
+
+
+### Упражнения 3.3.3 {.unnumbered} 
+<div class="question">
+Map a continuous variable to `color`, `size`, and `shape`. How do these aesthetics behave differently for categorical vs. continuous variables? {.unnumbered} 
+</div>
+
+Непрерывные переменные, это такие переменные которые принимают значения в некотором диапазоне. Непрерывной переменной является например `cty`, city miles per gallon, и показывает сколько проедет автомобиль в черте горда на один галлон топлива.
+Если сопоставить этой переменной **цвет** то получится
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy, colour = cty)) +
+   geom_point()
+```
+
+
+Цвет распределяется в диапазоне переменной `cty`, то есть в пределах от примерно 10 до 35.
+Попробуем теперь соспоставить **размер**
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy, size = cty)) +
+   geom_point()
+```
+
+
+В принципе получается такая же картина, только точки выделены не цветом, а размером.
+И наконец, сопоставим **форму** непрерывной переменной
+```{r}
+#ggplot(mpg, aes(x = displ, y = hwy, shape = cty)) + geom_point()
+```
+А вот хуюшки. Программа выдаст `Ошибка: A continuous variable can not be mapped to shape`.
+Непрерывные переменные не соотносятся с атрибутом `shape`, так сделано специально. Потому что фигур всего 24, а наборов значений у непрерывной переменной может быть сколь угодно много
+
+### Упражнения 3.3.4 {.unnumbered} 
+<div class="question">
+What happens if you map the same variable to multiple aesthetics? {.unnumbered}
+</div>
+Связать можно, вот например, переменная `drv` для цвета и для формы
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy, color = drv, shape = drv)) + geom_point()
+```
+
+но это будет избыточное выделение.
+
+### Упражнения 3.3.5 {.unnumbered}
+<div class="question">
+What does the `stroke` aesthetic do? What shapes does it work with? (Hint: use `?geom_point`)
+</div>
+
+`stroke` это размер границы фигуры. Он работает с фигурами, у которых помимо полной заливки есть цвет границы т.е. фигуры 21-24
+![alt text](img/shapes.png)
+
+
+Иллюстрирующий пример. Вот построение обычными точками
+```{r}
+ggplot(mpg, aes(hwy, cyl))+
+ geom_point()
+```
+
+Теперь зададим красную заливку, и размер границы фигуры $2$
+
+```{r}
+ggplot(mpg, aes(hwy, cyl)) +
+ geom_point(shape=21,colour="black",fill="red",size=3,stroke=2)
+```
+
+Ну а теперь $5$
+```{r}
+ggplot(mpg, aes(hwy, cyl)) +
+ geom_point(shape=21,colour="black",fill="red",size=3,stroke=5)
+```
+
+### Упражнения 3.3.6 {.unnumbered}
+<div class="question">
+What happens if you map an aesthetic to something other than a variable name, like `aes(colour = displ < 5)`?
+</div>
+
+Визуальные атрибуты можно задавать и логическими выражениями, как допустим в таком выражении:
+
+```{r}
+ ggplot(mpg, aes(displ,hwy, color = displ < 2)) +
+   geom_point()
+```
+
+```{r}
+ ggplot(mpg, aes(displ,hwy, color = displ < 4)) +
+   geom_point()
+```
+
+```{r}
+ ggplot(mpg, aes(displ,hwy, size = displ > 3)) +
+   geom_point()
+```
+
+К тому же `R` ругается, что лучше бы такое не делать
+## Распространённые ошибки
+Проблемы случаются и это норм. Если что-то не получается,  чекни код.
+
+Часто бывает что поставил `+` не туда. Он должен быть в конце строки, а не в начале.
+
+## Панели
+### Упражнение 3.5.1 {.unnumbered}
+<div class="question">
+What happens if you facet on a continuous variable?
+</div>
+
+Как это работает. 
+
+Построим график `highway miles per gallon` от `engine displacement, in litres`. 
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy)) +
+   geom_point()
+```
+
+Теперь разделим на "окошки" т.е. возьмём срез графиков с теми же дискретными переменными, но в разрезе типа привода автомобиля `drv` от количества цилиндров `cyl`.
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point() +
+  facet_grid(drv~ cyl)
+```
+Получилось $12$ панелей, потому что `drv` дискретная, ограниченная переменная, у неё всего три набора значения ($4, f, d$). Количество цилиндров `cyl` тоже ограниченная $4,5,6,8$. Поэтому получилось $3*4=12$ значений. Так как панелей получилось немного, такое представление осязаемо, с ним можно работать, оно информативно.
+
+Если мы попробуем построить в одном измерении непрерывную переменную. То количество панелей возрастёт на количество значений этой переменной. Получится не очень информативно. Заменим в этом же построении количество цилиндров `cyl` на расстояние, пройденное за один галлон топлива в городской черте `cty`. Это непрерывная переменная, у которой много значений. 
+
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy)) +
+ geom_point() +
+ facet_grid(drv~cty)
+```
+Вот что произойдет, если параметром для панели задать непрерывную переменную. Будет много окошек, информативность представленной информации падает.
+
+### Упражнение 3.5.2 {.unnumbered}
+<div class="question">
+What do the empty cells in plot with `facet_grid(drv ~ cyl)` mean? How do they relate to this plot?
+</div>
+
+Построим панели по заданному условию
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy)) +
+    geom_point() +
+    facet_grid(drv~cyl)
+```
+
+Пустые ячейки 
+
+* $cyl(5):drv(4)$;
+* $cyl(4):drv(r)$;
+* $cyl(5):drv(r)$;  
+
+говорят о том, что нет точек удовлетворяющих этим разрезам данных. Иначе говоря, в наборе данных `mpg`
+
+* нет полноприводных авто с 5 цилиндрами
+* заднеприводных авто с 4 цилиндрами
+* заднеприводных авто с 5 цилиндрами
+
+Построим заданную функцию 
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = drv, y = cyl))
+```  
+
+Она соотносится с построенными выше панелями в том, что показывает отсутствие данных в комбинациях переменных `drv:cyl`
+
+### Упражнение 3.5.3 {.unnumbered}
+<div class="question"> 
+What plots does the following code make? What does `«.»` do?
+
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_grid(drv ~ .)
+```
+
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_grid(. ~ cyl)
+```
+</div>
+
+Сравним с оригиналом:
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_grid(drv ~ cyl)
+```
+
+Как видно на самих построениях, точка убирает одно из измерений панели следующим образом:
+
+*Если точка стоит в первой координате, `(. ~ param)`, то убираются строки
+*Если точка стоит во второй координате, `(param ~ .)`, то убираются столбцы
+
+### Упражнение 3.5.4 {.unnumbered}
+
+<div class="question"> 
+Take the first faceted plot in this section:
+
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) + 
+  facet_wrap(~ class, nrow = 2)
+```
+
+What are the advantages to using faceting instead of the colour aesthetic? What are the disadvantages? How might the balance change if you had a larger dataset?
+</div>
+
+Для того чтобы сравнить это цветное выделение с выделением плитками. Посмотрим как выглядит выделение того же построения данных цветом:
+
+```{r}
+ggplot(data = mpg) + 
+   geom_point(mapping = aes(x = displ, y = hwy, color = class))
+```
+
+* **Преимущество** построения плитками заключается в том, что каждая группы "очищена" от мусора других групп. Плитками проще оценить распределение точек в отдельно взятой группе. Кроме этого если выделять цветом построения с большим количеством групп, то необходимо более ответственно подходить к подбору цветов `-- нужно делать их более контрастными. Потому что при увеличении количества групп, цвета начинают сливаться, и уже трудно различать к какой категории относится точка.
+
+* **Недостаток** построяния плитками заключается в том, что каждая группа строится в отдельной системе координат. Трудно сравнивать распределение точек между группами.
+
+### Упражнение 3.5.5 {.unnumbered}
+
+<div class="question"> 
+Read `?facet_wrap`. What does `nrow` do? What does `ncol` do? What other options control the layout of the individual panels? Why doesn’t `facet_grid()` have `nrow` and `ncol` arguments?
+</div>

@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Решение упражнений из книги R Science</title>
+  <meta name="description" content="Здесь будут публиковаться решения заданий из книги">
+  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+
+  <meta property="og:title" content="Решение упражнений из книги R Science" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Здесь будут публиковаться решения заданий из книги" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Решение упражнений из книги R Science" />
+  
+  <meta name="twitter:description" content="Здесь будут публиковаться решения заданий из книги" />
+  
+
+<meta name="author" content="Stas Masuta">
+
+
+<meta name="date" content="2018-09-04">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="introduction.html">
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="http://r4ds.had.co.nz/index.html">Оригинал книги</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Введение</a></li>
+<li class="chapter" data-level="2" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>2</b> Introduction</a><ul>
+<li class="chapter" data-level="" data-path="introduction.html"><a href="introduction.html#acknowledgments"><i class="fa fa-check"></i>Acknowledgments</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="-.html"><a href="-.html"><i class="fa fa-check"></i><b>3</b> Предварительный анализ</a><ul>
+<li class="chapter" data-level="3.1" data-path="-.html"><a href="-.html#-1"><i class="fa fa-check"></i><b>3.1</b> Введение</a></li>
+<li class="chapter" data-level="3.2" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>3.2</b> Первые шаги</a><ul>
+<li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.2.1"><i class="fa fa-check"></i>Упражнение 3.2.1</a></li>
+<li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.2.2"><i class="fa fa-check"></i>Упражнение 3.2.2</a></li>
+<li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.2.3"><i class="fa fa-check"></i>Упражнение 3.2.3</a></li>
+<li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.2.4"><i class="fa fa-check"></i>Упражнение 3.2.4</a></li>
+<li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.2.5"><i class="fa fa-check"></i>Упражнение 3.2.5</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>3.3</b> Эстетика визуализации</a><ul>
+<li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.3.1"><i class="fa fa-check"></i>Упражнения 3.3.1</a></li>
+<li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.3.2"><i class="fa fa-check"></i>Упражнения 3.3.2</a></li>
+<li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.3.3"><i class="fa fa-check"></i>Упражнения 3.3.3</a></li>
+<li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.3.4"><i class="fa fa-check"></i>Упражнения 3.3.4</a></li>
+<li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.3.5"><i class="fa fa-check"></i>Упражнения 3.3.5</a></li>
+<li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.3.6"><i class="fa fa-check"></i>Упражнения 3.3.6</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="-.html"><a href="-.html#section-3.4"><i class="fa fa-check"></i><b>3.4</b> Панели</a><ul>
+<li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.5.1"><i class="fa fa-check"></i>Упражнение 3.5.1</a></li>
+<li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.5.2"><i class="fa fa-check"></i>Упражнение 3.5.2</a></li>
+<li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.5.3"><i class="fa fa-check"></i>Упражнение 3.5.3</a></li>
+<li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.5.4"><i class="fa fa-check"></i>Упражнение 3.5.4</a></li>
+<li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.5.5"><i class="fa fa-check"></i>Упражнение 3.5.5</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Сделано с помощью bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Решение упражнений из книги R Science</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="-" class="section level1">
+<h1><span class="header-section-number">Глава 3</span> Предварительный анализ</h1>
+<div id="-1" class="section level2">
+<h2><span class="header-section-number">3.1</span> Введение</h2>
+<p>Электронная версия книги по адресу <a href="http://r4ds.had.co.nz" class="uri">http://r4ds.had.co.nz</a>.</p>
+<p>Для начала работы подключаем библиотеку</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;tidyverse&quot;</span>)</code></pre></div>
+<p>Не было упражнений.</p>
+</div>
+<div id="-" class="section level2">
+<h2><span class="header-section-number">3.2</span> Первые шаги</h2>
+<div id="-3.2.1" class="section level3 unnumbered">
+<h3>Упражнение 3.2.1</h3>
+<div class="question">
+<p>Run <code>ggplot(data = mpg)</code> what do you see?</p>
+</div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> mpg)</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>Пустое окно построения. Функция <code>ggplot()</code> из пакета <code>ggplot2</code> только содаёт область построения, функциями мы производим наполнение области построения. Больше инфы смотри в подсказке <a href="https://github.com/rstudio/cheatsheets/blob/master/data-visualization-2.1.pdf" class="uri">https://github.com/rstudio/cheatsheets/blob/master/data-visualization-2.1.pdf</a> .</p>
+</div>
+<div id="-3.2.2" class="section level3 unnumbered">
+<h3>Упражнение 3.2.2</h3>
+<div class="question">
+<p>How many rows are in <code>mpg</code>? How many columns?</p>
+</div>
+<p>Чтобы проверить “строение” фрейма данных <code>mpg</code>,можно воспользоваться двумя способами. Var1:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ggplot2<span class="op">::</span>mpg</code></pre></div>
+<pre><code>## # A tibble: 234 x 11
+##    manufacturer model displ  year   cyl trans drv     cty   hwy fl    cla…
+##    &lt;chr&gt;        &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;ch&gt;
+##  1 audi         a4      1.8  1999     4 auto… f        18    29 p     com…
+##  2 audi         a4      1.8  1999     4 manu… f        21    29 p     com…
+##  3 audi         a4      2    2008     4 manu… f        20    31 p     com…
+##  4 audi         a4      2    2008     4 auto… f        21    30 p     com…
+##  5 audi         a4      2.8  1999     6 auto… f        16    26 p     com…
+##  6 audi         a4      2.8  1999     6 manu… f        18    26 p     com…
+##  7 audi         a4      3.1  2008     6 auto… f        18    27 p     com…
+##  8 audi         a4 q…   1.8  1999     4 manu… 4        18    26 p     com…
+##  9 audi         a4 q…   1.8  1999     4 auto… 4        16    25 p     com…
+## 10 audi         a4 q…   2    2008     4 manu… 4        20    28 p     com…
+## # ... with 224 more rows</code></pre>
+<p>где видно что <code>mpg</code> это матрица 234 строки на 11 столбцов.</p>
+<p>Var2:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">glimpse</span>(mpg)</code></pre></div>
+<pre><code>## Observations: 234
+## Variables: 11
+## $ manufacturer &lt;chr&gt; &quot;audi&quot;, &quot;audi&quot;, &quot;audi&quot;, &quot;audi&quot;, &quot;audi&quot;, &quot;audi&quot;, &quot;...
+## $ model        &lt;chr&gt; &quot;a4&quot;, &quot;a4&quot;, &quot;a4&quot;, &quot;a4&quot;, &quot;a4&quot;, &quot;a4&quot;, &quot;a4&quot;, &quot;a4 qua...
+## $ displ        &lt;dbl&gt; 1.8, 1.8, 2.0, 2.0, 2.8, 2.8, 3.1, 1.8, 1.8, 2.0,...
+## $ year         &lt;int&gt; 1999, 1999, 2008, 2008, 1999, 1999, 2008, 1999, 1...
+## $ cyl          &lt;int&gt; 4, 4, 4, 4, 6, 6, 6, 4, 4, 4, 4, 6, 6, 6, 6, 6, 6...
+## $ trans        &lt;chr&gt; &quot;auto(l5)&quot;, &quot;manual(m5)&quot;, &quot;manual(m6)&quot;, &quot;auto(av)...
+## $ drv          &lt;chr&gt; &quot;f&quot;, &quot;f&quot;, &quot;f&quot;, &quot;f&quot;, &quot;f&quot;, &quot;f&quot;, &quot;f&quot;, &quot;4&quot;, &quot;4&quot;, &quot;4&quot;,...
+## $ cty          &lt;int&gt; 18, 21, 20, 21, 16, 18, 18, 18, 16, 20, 19, 15, 1...
+## $ hwy          &lt;int&gt; 29, 29, 31, 30, 26, 26, 27, 26, 25, 28, 27, 25, 2...
+## $ fl           &lt;chr&gt; &quot;p&quot;, &quot;p&quot;, &quot;p&quot;, &quot;p&quot;, &quot;p&quot;, &quot;p&quot;, &quot;p&quot;, &quot;p&quot;, &quot;p&quot;, &quot;p&quot;,...
+## $ class        &lt;chr&gt; &quot;compact&quot;, &quot;compact&quot;, &quot;compact&quot;, &quot;compact&quot;, &quot;comp...</code></pre>
+<p>Сразу тут покажу, что каждый параметр означает:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Название</th>
+<th align="center">Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>manufacturer</td>
+<td align="center">изготовитель</td>
+</tr>
+<tr class="even">
+<td>model</td>
+<td align="center">модель</td>
+</tr>
+<tr class="odd">
+<td>displ</td>
+<td align="center">объём двигателя в литрах</td>
+</tr>
+<tr class="even">
+<td>year</td>
+<td align="center">год изготовления</td>
+</tr>
+<tr class="odd">
+<td>cyl</td>
+<td align="center">количество цилиндров</td>
+</tr>
+<tr class="even">
+<td>trans</td>
+<td align="center">тип трансмиссии</td>
+</tr>
+<tr class="odd">
+<td>drv</td>
+<td align="center">тип привода</td>
+</tr>
+<tr class="even">
+<td>cty</td>
+<td align="center">количество пройденных миль по городу на один галлон топлива</td>
+</tr>
+<tr class="odd">
+<td>hwy</td>
+<td align="center">количество пройденных миль за городом на один галлон топлива</td>
+</tr>
+<tr class="even">
+<td>fl</td>
+<td align="center">тип топлива</td>
+</tr>
+<tr class="odd">
+<td>class</td>
+<td align="center">класс автомобиля</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="-3.2.3" class="section level3 unnumbered">
+<h3>Упражнение 3.2.3</h3>
+<div class="question">
+<p>What does the <code>drv</code> variable describe? Read the help for <code>?mpg</code> to find out. <code>drv</code> — это имя одного из параметров, оно обозначает тип привода автомобиля.</p>
+</div>
+<table>
+<thead>
+<tr class="header">
+<th>Краткое название</th>
+<th align="center">Тип привода</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>f</td>
+<td align="center">передний</td>
+</tr>
+<tr class="even">
+<td>r</td>
+<td align="center">задний</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td align="center">полный</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="-3.2.4" class="section level3 unnumbered">
+<h3>Упражнение 3.2.4</h3>
+<div class="question">
+<p>Make a scatter plot of <code>hwy</code> vs <code>cyl</code>.</p>
+</div>
+<p>можно прописывать на одной координатной плоскости разные геометрические функции с индивидуальными параметрами, тогда правильнее будет писать вот так</p>
+<p>Var 1</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> mpg)<span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> hwy, <span class="dt">y =</span> cyl))</code></pre></div>
+<p><img src="homework_files/figure-html/41-1.png" width="672" /></p>
+<p>Но если параметры одни и те же, а требуется построить разные геометрии, то лучше прописать общие параметры вынося их “за скобки” Var 2</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> mpg, <span class="kw">aes</span>(<span class="dt">x =</span> hwy, <span class="dt">y =</span> cyl))<span class="op">+</span>
+<span class="st"> </span><span class="kw">geom_point</span>()</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+<div id="-3.2.5" class="section level3 unnumbered">
+<h3>Упражнение 3.2.5</h3>
+<div class="question">
+<p>What happens if you make a scatterplot of <code>class</code> vs <code>drv</code>? Why is the plot not useful? <di/v></p>
+<p>Оба параметра являются категориальными, или описательными. Можно построить <code>&lt;chr&gt;</code> от <code>&lt;chr&gt;</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> mpg) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> class, <span class="dt">y =</span> drv))</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>Но с точки зрения аналитики, такая информация не несёт большой пользы. В конкретном примере можно только сказать что, все автомобили класса <code>2seater</code> имеют задний привод. А в классе <code>subcompact</code> есть все типы привода.</p>
+</div>
+</div>
+<div id="-" class="section level2">
+<h2><span class="header-section-number">3.3</span> Эстетика визуализации</h2>
+<div id="-3.3.1" class="section level3 unnumbered">
+<h3>Упражнения 3.3.1</h3>
+<div class="question">
+<p>What’s gone wrong with this code? Why are the points not blue? {.unnumbered}</p>
+</div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> mpg) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> displ, <span class="dt">y =</span> hwy, <span class="dt">colour =</span> <span class="st">&quot;blue&quot;</span>))</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>Всё потому что <code>colour</code> не вынес за скобки, потому что <code>colour</code> это параметр функции <code>geom_point()</code>, not <code>aes()</code> правильно вот так</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> mpg) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> displ, <span class="dt">y =</span> hwy), <span class="dt">colour =</span> <span class="st">&quot;blue&quot;</span>)</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+</div>
+<div id="-3.3.2" class="section level3 unnumbered">
+<h3>Упражнения 3.3.2</h3>
+<div class="question">
+<p>Which variables in <code>mpg</code> are categorical? Which variables are continuous? (Hint: type <code>?mpg</code> to read the documentation for the dataset). How can you see this information when you run <code>mpg</code>? {.unnumbered}</p>
+</div>
+<p>Это те факторы, которые позволяют разделить на показатели. Чтобы понять какие факторы являются категориальными можно воспользоваться функцией <code>glimpse()</code>, которая показывает тип каждого столбца. Соответственно, те что <code>&lt;chr&gt;</code> и есть категориальные:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">glimpse</span>(mpg)</code></pre></div>
+<pre><code>## Observations: 234
+## Variables: 11
+## $ manufacturer &lt;chr&gt; &quot;audi&quot;, &quot;audi&quot;, &quot;audi&quot;, &quot;audi&quot;, &quot;audi&quot;, &quot;audi&quot;, &quot;...
+## $ model        &lt;chr&gt; &quot;a4&quot;, &quot;a4&quot;, &quot;a4&quot;, &quot;a4&quot;, &quot;a4&quot;, &quot;a4&quot;, &quot;a4&quot;, &quot;a4 qua...
+## $ displ        &lt;dbl&gt; 1.8, 1.8, 2.0, 2.0, 2.8, 2.8, 3.1, 1.8, 1.8, 2.0,...
+## $ year         &lt;int&gt; 1999, 1999, 2008, 2008, 1999, 1999, 2008, 1999, 1...
+## $ cyl          &lt;int&gt; 4, 4, 4, 4, 6, 6, 6, 4, 4, 4, 4, 6, 6, 6, 6, 6, 6...
+## $ trans        &lt;chr&gt; &quot;auto(l5)&quot;, &quot;manual(m5)&quot;, &quot;manual(m6)&quot;, &quot;auto(av)...
+## $ drv          &lt;chr&gt; &quot;f&quot;, &quot;f&quot;, &quot;f&quot;, &quot;f&quot;, &quot;f&quot;, &quot;f&quot;, &quot;f&quot;, &quot;4&quot;, &quot;4&quot;, &quot;4&quot;,...
+## $ cty          &lt;int&gt; 18, 21, 20, 21, 16, 18, 18, 18, 16, 20, 19, 15, 1...
+## $ hwy          &lt;int&gt; 29, 29, 31, 30, 26, 26, 27, 26, 25, 28, 27, 25, 2...
+## $ fl           &lt;chr&gt; &quot;p&quot;, &quot;p&quot;, &quot;p&quot;, &quot;p&quot;, &quot;p&quot;, &quot;p&quot;, &quot;p&quot;, &quot;p&quot;, &quot;p&quot;, &quot;p&quot;,...
+## $ class        &lt;chr&gt; &quot;compact&quot;, &quot;compact&quot;, &quot;compact&quot;, &quot;compact&quot;, &quot;comp...</code></pre>
+</div>
+<div id="-3.3.3" class="section level3 unnumbered">
+<h3>Упражнения 3.3.3</h3>
+<div class="question">
+<p>Map a continuous variable to <code>color</code>, <code>size</code>, and <code>shape</code>. How do these aesthetics behave differently for categorical vs. continuous variables? {.unnumbered}</p>
+</div>
+<p>Непрерывные переменные, это такие переменные которые принимают значения в некотором диапазоне. Непрерывной переменной является например <code>cty</code>, city miles per gallon, и показывает сколько проедет автомобиль в черте горда на один галлон топлива. Если сопоставить этой переменной <strong>цвет</strong> то получится</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(<span class="dt">x =</span> displ, <span class="dt">y =</span> hwy, <span class="dt">colour =</span> cty)) <span class="op">+</span>
+<span class="st">   </span><span class="kw">geom_point</span>()</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>Цвет распределяется в диапазоне переменной <code>cty</code>, то есть в пределах от примерно 10 до 35. Попробуем теперь соспоставить <strong>размер</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(<span class="dt">x =</span> displ, <span class="dt">y =</span> hwy, <span class="dt">size =</span> cty)) <span class="op">+</span>
+<span class="st">   </span><span class="kw">geom_point</span>()</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p>В принципе получается такая же картина, только точки выделены не цветом, а размером. И наконец, сопоставим <strong>форму</strong> непрерывной переменной</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#ggplot(mpg, aes(x = displ, y = hwy, shape = cty)) + geom_point()</span></code></pre></div>
+<p>А вот хуюшки. Программа выдаст <code>Ошибка: A continuous variable can not be mapped to shape</code>. Непрерывные переменные не соотносятся с атрибутом <code>shape</code>, так сделано специально. Потому что фигур всего 24, а наборов значений у непрерывной переменной может быть сколь угодно много</p>
+</div>
+<div id="-3.3.4" class="section level3 unnumbered">
+<h3>Упражнения 3.3.4</h3>
+<div class="question">
+<p>What happens if you map the same variable to multiple aesthetics? {.unnumbered}</p>
+</div>
+<p>Связать можно, вот например, переменная <code>drv</code> для цвета и для формы</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(<span class="dt">x =</span> displ, <span class="dt">y =</span> hwy, <span class="dt">color =</span> drv, <span class="dt">shape =</span> drv)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p>но это будет избыточное выделение.</p>
+</div>
+<div id="-3.3.5" class="section level3 unnumbered">
+<h3>Упражнения 3.3.5</h3>
+<div class="question">
+<p>What does the <code>stroke</code> aesthetic do? What shapes does it work with? (Hint: use <code>?geom_point</code>)</p>
+</div>
+<p><code>stroke</code> это размер границы фигуры. Он работает с фигурами, у которых помимо полной заливки есть цвет границы т.е. фигуры 21-24 <img src="img/shapes.png" alt="alt text" /></p>
+<p>Иллюстрирующий пример. Вот построение обычными точками</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(hwy, cyl))<span class="op">+</span>
+<span class="st"> </span><span class="kw">geom_point</span>()</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p>Теперь зададим красную заливку, и размер границы фигуры <span class="math inline">\(2\)</span></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(hwy, cyl)) <span class="op">+</span>
+<span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">shape=</span><span class="dv">21</span>,<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">fill=</span><span class="st">&quot;red&quot;</span>,<span class="dt">size=</span><span class="dv">3</span>,<span class="dt">stroke=</span><span class="dv">2</span>)</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p>Ну а теперь <span class="math inline">\(5\)</span></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(hwy, cyl)) <span class="op">+</span>
+<span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">shape=</span><span class="dv">21</span>,<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">fill=</span><span class="st">&quot;red&quot;</span>,<span class="dt">size=</span><span class="dv">3</span>,<span class="dt">stroke=</span><span class="dv">5</span>)</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+</div>
+<div id="-3.3.6" class="section level3 unnumbered">
+<h3>Упражнения 3.3.6</h3>
+<div class="question">
+<p>What happens if you map an aesthetic to something other than a variable name, like <code>aes(colour = displ &lt; 5)</code>?</p>
+</div>
+<p>Визуальные атрибуты можно задавать и логическими выражениями, как допустим в таком выражении:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"> <span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(displ,hwy, <span class="dt">color =</span> displ <span class="op">&lt;</span><span class="st"> </span><span class="dv">2</span>)) <span class="op">+</span>
+<span class="st">   </span><span class="kw">geom_point</span>()</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"> <span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(displ,hwy, <span class="dt">color =</span> displ <span class="op">&lt;</span><span class="st"> </span><span class="dv">4</span>)) <span class="op">+</span>
+<span class="st">   </span><span class="kw">geom_point</span>()</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"> <span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(displ,hwy, <span class="dt">size =</span> displ <span class="op">&gt;</span><span class="st"> </span><span class="dv">3</span>)) <span class="op">+</span>
+<span class="st">   </span><span class="kw">geom_point</span>()</code></pre></div>
+<pre><code>## Warning: Using size for a discrete variable is not advised.</code></pre>
+<p><img src="homework_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<p>К тому же <code>R</code> ругается, что лучше бы такое не делать ## Распространённые ошибки Проблемы случаются и это норм. Если что-то не получается, чекни код.</p>
+<p>Часто бывает что поставил <code>+</code> не туда. Он должен быть в конце строки, а не в начале.</p>
+</div>
+</div>
+<div id="section-3.4" class="section level2">
+<h2><span class="header-section-number">3.4</span> Панели</h2>
+<div id="-3.5.1" class="section level3 unnumbered">
+<h3>Упражнение 3.5.1</h3>
+<div class="question">
+<p>What happens if you facet on a continuous variable?</p>
+</div>
+<p>Как это работает.</p>
+<p>Построим график <code>highway miles per gallon</code> от <code>engine displacement, in litres</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(<span class="dt">x =</span> displ, <span class="dt">y =</span> hwy)) <span class="op">+</span>
+<span class="st">   </span><span class="kw">geom_point</span>()</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p>Теперь разделим на “окошки” т.е. возьмём срез графиков с теми же дискретными переменными, но в разрезе типа привода автомобиля <code>drv</code> от количества цилиндров <code>cyl</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(<span class="dt">x =</span> displ, <span class="dt">y =</span> hwy)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">facet_grid</span>(drv<span class="op">~</span><span class="st"> </span>cyl)</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-22-1.png" width="672" /> Получилось <span class="math inline">\(12\)</span> панелей, потому что <code>drv</code> дискретная, ограниченная переменная, у неё всего три набора значения (<span class="math inline">\(4, f, d\)</span>). Количество цилиндров <code>cyl</code> тоже ограниченная <span class="math inline">\(4,5,6,8\)</span>. Поэтому получилось <span class="math inline">\(3*4=12\)</span> значений. Так как панелей получилось немного, такое представление осязаемо, с ним можно работать, оно информативно.</p>
+<p>Если мы попробуем построить в одном измерении непрерывную переменную. То количество панелей возрастёт на количество значений этой переменной. Получится не очень информативно. Заменим в этом же построении количество цилиндров <code>cyl</code> на расстояние, пройденное за один галлон топлива в городской черте <code>cty</code>. Это непрерывная переменная, у которой много значений.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(<span class="dt">x =</span> displ, <span class="dt">y =</span> hwy)) <span class="op">+</span>
+<span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="st"> </span><span class="kw">facet_grid</span>(drv<span class="op">~</span>cty)</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-23-1.png" width="672" /> Вот что произойдет, если параметром для панели задать непрерывную переменную. Будет много окошек, информативность представленной информации падает.</p>
+</div>
+<div id="-3.5.2" class="section level3 unnumbered">
+<h3>Упражнение 3.5.2</h3>
+<div class="question">
+<p>What do the empty cells in plot with <code>facet_grid(drv ~ cyl)</code> mean? How do they relate to this plot?</p>
+</div>
+<p>Построим панели по заданному условию</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(<span class="dt">x =</span> displ, <span class="dt">y =</span> hwy)) <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="st">    </span><span class="kw">facet_grid</span>(drv<span class="op">~</span>cyl)</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<p>Пустые ячейки</p>
+<ul>
+<li><span class="math inline">\(cyl(5):drv(4)\)</span>;</li>
+<li><span class="math inline">\(cyl(4):drv(r)\)</span>;</li>
+<li><span class="math inline">\(cyl(5):drv(r)\)</span>;</li>
+</ul>
+<p>говорят о том, что нет точек удовлетворяющих этим разрезам данных. Иначе говоря, в наборе данных <code>mpg</code></p>
+<ul>
+<li>нет полноприводных авто с 5 цилиндрами</li>
+<li>заднеприводных авто с 4 цилиндрами</li>
+<li>заднеприводных авто с 5 цилиндрами</li>
+</ul>
+<p>Построим заданную функцию</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> mpg) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> drv, <span class="dt">y =</span> cyl))</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<p>Она соотносится с построенными выше панелями в том, что показывает отсутствие данных в комбинациях переменных <code>drv:cyl</code></p>
+</div>
+<div id="-3.5.3" class="section level3 unnumbered">
+<h3>Упражнение 3.5.3</h3>
+<div class="question">
+<p>What plots does the following code make? What does <code>«.»</code> do?</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> mpg) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> displ, <span class="dt">y =</span> hwy)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">facet_grid</span>(drv <span class="op">~</span><span class="st"> </span>.)</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> mpg) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> displ, <span class="dt">y =</span> hwy)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">facet_grid</span>(. <span class="op">~</span><span class="st"> </span>cyl)</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+</div>
+<p>Сравним с оригиналом:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> mpg) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> displ, <span class="dt">y =</span> hwy)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">facet_grid</span>(drv <span class="op">~</span><span class="st"> </span>cyl)</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<p>Как видно на самих построениях, точка убирает одно из измерений панели следующим образом:</p>
+<p><em>Если точка стоит в первой координате, <code>(. ~ param)</code>, то убираются строки </em>Если точка стоит во второй координате, <code>(param ~ .)</code>, то убираются столбцы</p>
+</div>
+<div id="-3.5.4" class="section level3 unnumbered">
+<h3>Упражнение 3.5.4</h3>
+<div class="question">
+<p>Take the first faceted plot in this section:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> mpg) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> displ, <span class="dt">y =</span> hwy)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>class, <span class="dt">nrow =</span> <span class="dv">2</span>)</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<p>What are the advantages to using faceting instead of the colour aesthetic? What are the disadvantages? How might the balance change if you had a larger dataset?</p>
+</div>
+<p>Для того чтобы сравнить это цветное выделение с выделением плитками. Посмотрим как выглядит выделение того же построения данных цветом:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> mpg) <span class="op">+</span><span class="st"> </span>
+<span class="st">   </span><span class="kw">geom_point</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> displ, <span class="dt">y =</span> hwy, <span class="dt">color =</span> class))</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+<ul>
+<li><p><strong>Преимущество</strong> построения плитками заключается в том, что каждая группы “очищена” от мусора других групп. Плитками проще оценить распределение точек в отдельно взятой группе. Кроме этого если выделять цветом построения с большим количеством групп, то необходимо более ответственно подходить к подбору цветов `– нужно делать их более контрастными. Потому что при увеличении количества групп, цвета начинают сливаться, и уже трудно различать к какой категории относится точка.</p></li>
+<li><p><strong>Недостаток</strong> построяния плитками заключается в том, что каждая группа строится в отдельной системе координат. Трудно сравнивать распределение точек между группами.</p></li>
+</ul>
+</div>
+<div id="-3.5.5" class="section level3 unnumbered">
+<h3>Упражнение 3.5.5</h3>
+<div class="question">
+<p>Read <code>?facet_wrap</code>. What does <code>nrow</code> do? What does <code>ncol</code> do? What other options control the layout of the individual panels? Why doesn’t <code>facet_grid()</code> have <code>nrow</code> and <code>ncol</code> arguments?</p>
+</div>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="introduction.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"download": ["homework.pdf", "homework.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "";
+    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
