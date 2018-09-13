@@ -125,7 +125,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{2018-09-03}
+    \date{2018-09-13}
 
 \usepackage{booktabs}
 
@@ -179,7 +179,7 @@ which these solutions would not exist---literally.
 \subsection*{Упражнение 3.2.1}\label{-3.2.1}
 \addcontentsline{toc}{subsection}{Упражнение 3.2.1}
 
-Run \texttt{ggplot(data\ =\ mpg)} what do you see? \{.unnumbered\}
+Run \texttt{ggplot(data\ =\ mpg)} what do you see?
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -198,7 +198,8 @@ Run \texttt{ggplot(data\ =\ mpg)} what do you see? \{.unnumbered\}
 \subsection*{Упражнение 3.2.2}\label{-3.2.2}
 \addcontentsline{toc}{subsection}{Упражнение 3.2.2}
 
-How many rows are in \texttt{mpg}? How many columns? \{.unnumbered\}
+How many rows are in \texttt{mpg}? How many columns?
+
 Чтобы проверить ``строение'' фрейма данных \texttt{mpg},можно
 воспользоваться двумя способами. Var1:
 
@@ -251,12 +252,35 @@ Var2:
 ## $ class        <chr> "compact", "compact", "compact", "compact", "comp...
 \end{verbatim}
 
+Сразу тут покажу, что каждый параметр означает:
+
+\begin{longtable}[]{@{}lc@{}}
+\toprule
+Название & Описание\tabularnewline
+\midrule
+\endhead
+manufacturer & изготовитель\tabularnewline
+model & модель\tabularnewline
+displ & объём двигателя в литрах\tabularnewline
+year & год изготовления\tabularnewline
+cyl & количество цилиндров\tabularnewline
+trans & тип трансмиссии\tabularnewline
+drv & тип привода\tabularnewline
+cty & количество пройденных миль по городу на один галлон
+топлива\tabularnewline
+hwy & количество пройденных миль за городом на один галлон
+топлива\tabularnewline
+fl & тип топлива\tabularnewline
+class & класс автомобиля\tabularnewline
+\bottomrule
+\end{longtable}
+
 \subsection*{Упражнение 3.2.3}\label{-3.2.3}
 \addcontentsline{toc}{subsection}{Упражнение 3.2.3}
 
 What does the \texttt{drv} variable describe? Read the help for
-\texttt{?mpg} to find out. \{.unnumbered\} \texttt{drv} --- это имя
-одного из параметров, оно обозначает тип привода автомобиля.
+\texttt{?mpg} to find out. \texttt{drv} --- это имя одного из
+параметров, оно обозначает тип привода автомобиля.
 
 \begin{longtable}[]{@{}lc@{}}
 \toprule
@@ -272,7 +296,7 @@ r & задний\tabularnewline
 \subsection*{Упражнение 3.2.4}\label{-3.2.4}
 \addcontentsline{toc}{subsection}{Упражнение 3.2.4}
 
-Make a scatter plot of \texttt{hwy} vs \texttt{cyl}. \{.unnumbered\}
+Make a scatter plot of \texttt{hwy} vs \texttt{cyl}.
 
 можно прописывать на одной координатной плоскости разные геометрические
 функции с индивидуальными параметрами, тогда правильнее будет писать вот
@@ -305,9 +329,10 @@ Var 1
 \addcontentsline{toc}{subsection}{Упражнение 3.2.5}
 
 What happens if you make a scatterplot of \texttt{class} vs
-\texttt{drv}? Why is the plot not useful? Оба параметра являются
-категориальными, или описательными. Можно построить
-\texttt{\textless{}chr\textgreater{}} от
+\texttt{drv}? Why is the plot not useful?
+
+Оба параметра являются категориальными, или описательными. Можно
+построить \texttt{\textless{}chr\textgreater{}} от
 \texttt{\textless{}chr\textgreater{}}.
 
 \begin{Shaded}
@@ -320,8 +345,8 @@ What happens if you make a scatterplot of \texttt{class} vs
 
 Но с точки зрения аналитики, такая информация не несёт большой пользы. В
 конкретном примере можно только сказать что, все автомобили класса
-2seater имеют задний привод. А в классе subcompact есть все типы
-привода.
+\texttt{2seater} имеют задний привод. А в классе \texttt{subcompact}
+есть все типы привода.
 
 \section{Эстетика визуализации}\label{-}
 
@@ -394,12 +419,13 @@ dataset). How can you see this information when you run \texttt{mpg}?
 
 Map a continuous variable to \texttt{color}, \texttt{size}, and
 \texttt{shape}. How do these aesthetics behave differently for
-categorical vs.~continuous variables? \{.unnumbered\} Непрерывные
-переменные, это такие переменные которые принимают значения в некотором
-диапазоне. Непрерывной переменной является например \texttt{cty}, city
-miles per gallon, и показывает сколько проедет автомобиль в черте горда
-на один галлон топлива. Если сопоставить этой переменной \textbf{цвет}
-то получится
+categorical vs.~continuous variables? \{.unnumbered\}
+
+Непрерывные переменные, это такие переменные которые принимают значения
+в некотором диапазоне. Непрерывной переменной является например
+\texttt{cty}, city miles per gallon, и показывает сколько проедет
+автомобиль в черте горда на один галлон топлива. Если сопоставить этой
+переменной \textbf{цвет} то получится
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -442,8 +468,10 @@ miles per gallon, и показывает сколько проедет авто
 \addcontentsline{toc}{subsection}{Упражнения 3.3.4}
 
 What happens if you map the same variable to multiple aesthetics?
-\{.unnumbered\} Связать можно, вот например, переменная \texttt{drv} для
-цвета и для формы
+\{.unnumbered\}
+
+Связать можно, вот например, переменная \texttt{drv} для цвета и для
+формы
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -550,7 +578,9 @@ name, like \texttt{aes(colour\ =\ displ\ \textless{}\ 5)}?
 \subsection*{Упражнение 3.5.1}\label{-3.5.1}
 \addcontentsline{toc}{subsection}{Упражнение 3.5.1}
 
-What happens if you facet on a continuous variable? Как это работает.
+What happens if you facet on a continuous variable?
+
+Как это работает.
 
 Построим график \texttt{highway\ miles\ per\ gallon} от
 \texttt{engine\ displacement,\ in\ litres}.
@@ -647,7 +677,7 @@ relate to this plot?
   заднеприводных авто с 5 цилиндрами
 \end{itemize}
 
-Построение функции
+Построим заданную функцию
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -657,6 +687,9 @@ relate to this plot?
 \end{Shaded}
 
 \includegraphics{homework_files/figure-latex/unnamed-chunk-25-1.pdf}
+
+Она соотносится с построенными выше панелями в том, что показывает
+отсутствие данных в комбинациях переменных \texttt{drv:cyl}
 
 \subsection*{Упражнение 3.5.3}\label{-3.5.3}
 \addcontentsline{toc}{subsection}{Упражнение 3.5.3}
@@ -673,8 +706,90 @@ What plots does the following code make? What does \texttt{«.»} do?
 
 \includegraphics{homework_files/figure-latex/unnamed-chunk-26-1.pdf}
 
-ggplot(data = mpg) + geom\_point(mapping = aes(x = displ, y = hwy)) +
-facet\_grid(. \textasciitilde{} cyl)
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggplot}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ mpg) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{geom_point}\NormalTok{(}\DataTypeTok{mapping =} \KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ displ, }\DataTypeTok{y =}\NormalTok{ hwy)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{facet_grid}\NormalTok{(. }\OperatorTok{~}\StringTok{ }\NormalTok{cyl)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{homework_files/figure-latex/unnamed-chunk-27-1.pdf}
+
+Сравним с оригиналом:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggplot}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ mpg) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{geom_point}\NormalTok{(}\DataTypeTok{mapping =} \KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ displ, }\DataTypeTok{y =}\NormalTok{ hwy)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{facet_grid}\NormalTok{(drv }\OperatorTok{~}\StringTok{ }\NormalTok{cyl)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{homework_files/figure-latex/unnamed-chunk-28-1.pdf}
+
+Как видно на самих построениях, точка убирает одно из измерений панели
+следующим образом:
+
+\emph{Если точка стоит в первой координате,
+\texttt{(.\ \textasciitilde{}\ param)}, то убираются строки }Если точка
+стоит во второй координате, \texttt{(param\ \textasciitilde{}\ .)}, то
+убираются столбцы
+
+\subsection*{Упражнение 3.5.4}\label{-3.5.4}
+\addcontentsline{toc}{subsection}{Упражнение 3.5.4}
+
+Take the first faceted plot in this section:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggplot}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ mpg) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{geom_point}\NormalTok{(}\DataTypeTok{mapping =} \KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ displ, }\DataTypeTok{y =}\NormalTok{ hwy)) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{facet_wrap}\NormalTok{(}\OperatorTok{~}\StringTok{ }\NormalTok{class, }\DataTypeTok{nrow =} \DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{homework_files/figure-latex/unnamed-chunk-29-1.pdf}
+
+What are the advantages to using faceting instead of the colour
+aesthetic? What are the disadvantages? How might the balance change if
+you had a larger dataset?
+
+Для того чтобы сравнить это цветное выделение с выделением плитками.
+Посмотрим как выглядит выделение того же построения данных цветом:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggplot}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ mpg) }\OperatorTok{+}\StringTok{ }
+\StringTok{   }\KeywordTok{geom_point}\NormalTok{(}\DataTypeTok{mapping =} \KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ displ, }\DataTypeTok{y =}\NormalTok{ hwy, }\DataTypeTok{color =}\NormalTok{ class))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{homework_files/figure-latex/unnamed-chunk-30-1.pdf}
+
+\begin{itemize}
+\item
+  \textbf{Преимущество} построения плитками заключается в том, что
+  каждая группы ``очищена'' от мусора других групп. Плитками проще
+  оценить распределение точек в отдельно взятой группе. Кроме этого если
+  выделять цветом построения с большим количеством групп, то необходимо
+  более ответственно подходить к подбору цветов `-- нужно делать их
+  более контрастными. Потому что при увеличении количества групп, цвета
+  начинают сливаться, и уже трудно различать к какой категории относится
+  точка.
+\item
+  \textbf{Недостаток} построяния плитками заключается в том, что каждая
+  группа строится в отдельной системе координат. Трудно сравнивать
+  распределение точек между группами.
+\end{itemize}
+
+\subsection*{Упражнение 3.5.5}\label{-3.5.5}
+\addcontentsline{toc}{subsection}{Упражнение 3.5.5}
+
+Read \texttt{?facet\_wrap}. What does \texttt{nrow} do? What does
+\texttt{ncol} do? What other options control the layout of the
+individual panels? Why doesn't \texttt{facet\_grid()} have \texttt{nrow}
+and \texttt{ncol} arguments?
 
 \bibliography{book.bib,packages.bib}
 
