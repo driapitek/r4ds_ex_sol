@@ -385,7 +385,6 @@ Run this code in your head and predict what the output will look like. Then, run
 </div>
 
 Это будет распределение `displ` от `hwy`. С цветом точек в зависимости от `drv`, т.е. три цвета - зелёный, красный и голубой. В этой же системе координат будет построена линия среднеквадратичного приближения без доверительного интервала с тем же цветом, что и точки.
-
 ```{r}
 ggplot(data = mpg, mapping = aes(x = displ, y = hwy, colour = drv)) +
   geom_point() +
@@ -393,3 +392,31 @@ ggplot(data = mpg, mapping = aes(x = displ, y = hwy, colour = drv)) +
 ```
 
 Поправочка - будет три линии приближений с цветом, соответсвующим цвету точек, по которым строится это приближение
+
+### Упражнения 3.6.3 {.unnumbered}
+<div class="question">
+What does `show.legend = FALSE` do? What happens if you remove it? Why do you think I used it earlier in the chapter?
+</div>
+
+Автор имеет в виду этот пример
+
+```{r}
+ggplot(mpg) +
+  geom_smooth(
+    mapping = aes(displ, hwy, colour = drv),
+    show.legend = FALSE
+  )
+```
+
+Инструкция `show.legend` распоряжает показывать легенду графика или нет. По умолчанию эта инструкция имеет значение `TRUE`. В примере, который используется в книге, инструкция `show.legend = FALSE` использовалась намеренно, чтобы в максимальном размере уместить в одну строку три графика. Тот же график с легендой выглядит вот так:
+```{r}
+ggplot(mpg) +
+  geom_smooth(
+    mapping = aes(displ, hwy, colour = drv)
+  )
+```
+
+### Упражнения 3.6.3 {.unnumbered}
+<div class="question">
+
+</div>
