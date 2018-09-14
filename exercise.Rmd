@@ -416,7 +416,9 @@ ggplot(mpg) +
   )
 ```
 
-### Упражнения 3.6.3 {.unnumbered}
-<div class="question">
 
+### Упражнения 3.6.4 {.unnumbered}
+<div class="question">
+What does the `se` argument to `geom_smooth()` do?
 </div>
+
