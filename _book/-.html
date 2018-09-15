@@ -25,7 +25,7 @@
 <meta name="author" content="Stas Masuta">
 
 
-<meta name="date" content="2018-09-13">
+<meta name="date" content="2018-09-15">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -130,6 +130,14 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.5.3"><i class="fa fa-check"></i>Упражнение 3.5.3</a></li>
 <li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.5.4"><i class="fa fa-check"></i>Упражнение 3.5.4</a></li>
 <li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.5.5"><i class="fa fa-check"></i>Упражнение 3.5.5</a></li>
+<li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.5.6"><i class="fa fa-check"></i>Упражнение 3.5.6</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>3.5</b> Геометрические объекты</a><ul>
+<li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.6.1"><i class="fa fa-check"></i>Упражнения 3.6.1</a></li>
+<li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.6.2"><i class="fa fa-check"></i>Упражнения 3.6.2</a></li>
+<li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.6.3"><i class="fa fa-check"></i>Упражнения 3.6.3</a></li>
+<li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.6.4"><i class="fa fa-check"></i>Упражнения 3.6.4</a></li>
+<li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.6.5"><i class="fa fa-check"></i>Упражнения 3.6.5</a></li>
 </ul></li>
 </ul></li>
 <li class="divider"></li>
@@ -515,6 +523,134 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h3>Упражнение 3.5.5</h3>
 <div class="question">
 <p>Read <code>?facet_wrap</code>. What does <code>nrow</code> do? What does <code>ncol</code> do? What other options control the layout of the individual panels? Why doesn’t <code>facet_grid()</code> have <code>nrow</code> and <code>ncol</code> arguments?</p>
+</div>
+<table>
+<thead>
+<tr class="header">
+<th>аргумент</th>
+<th align="center">что значит</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>nrow</code></td>
+<td align="center">количество строк</td>
+</tr>
+<tr class="even">
+<td><code>ncol</code></td>
+<td align="center">количество столбцов</td>
+</tr>
+</tbody>
+</table>
+<p>Эти переменные нужны, так как срез графика в <code>facet_wrap()</code> происходит по одной дискретной переменной. В свою очередь <code>facet_grid</code> использует комбинации двех переменных поэтому для построения не нужно выбирать количество строк или колонок.</p>
+</div>
+<div id="-3.5.6" class="section level3 unnumbered">
+<h3>Упражнение 3.5.6</h3>
+<div class="question">
+<p>When using <code>facet_grid()</code> you should usually put the variable with more unique levels in the columns. Why?</p>
+</div>
+<p>Экраны наших компьютеров, книги, чертежи, имеют альбомную ориентацию и на одном носители умещается больше данных. Поэтому визуально проще сравнивать большее количество переменных по-горизонтали.</p>
+</div>
+</div>
+<div id="-" class="section level2">
+<h2><span class="header-section-number">3.5</span> Геометрические объекты</h2>
+<div id="-3.6.1" class="section level3 unnumbered">
+<h3>Упражнения 3.6.1</h3>
+<div class="question">
+<p>What geom would you use to draw a line chart? A boxplot? A histogram? An area chart?</p>
+</div>
+<p>На русский язык “boxplot перевели как”полосчатый график“. Это конечно сбивает с толку, потому что boxplot это конечно”ящик с усами“. Исходя из этого</p>
+<table>
+<thead>
+<tr class="header">
+<th>Название графика</th>
+<th align="center">Объект <code>geom</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>linechart</td>
+<td align="center"><code>geom_line</code></td>
+</tr>
+<tr class="even">
+<td>boxplot</td>
+<td align="center"><code>geom_boxplot</code></td>
+</tr>
+<tr class="odd">
+<td>histogram</td>
+<td align="center"><code>geom_histogram</code></td>
+</tr>
+<tr class="even">
+<td>area chart</td>
+<td align="center"><code>geom_area</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="-3.6.2" class="section level3 unnumbered">
+<h3>Упражнения 3.6.2</h3>
+<div class="question">
+<p>Run this code in your head and predict what the output will look like. Then, run the code in R and check your predictions.</p>
+</div>
+<p>Это будет распределение <code>displ</code> от <code>hwy</code>. С цветом точек в зависимости от <code>drv</code>, т.е. три цвета - зелёный, красный и голубой. В этой же системе координат будет построена линия среднеквадратичного приближения без доверительного интервала с тем же цветом, что и точки.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> mpg, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> displ, <span class="dt">y =</span> hwy, <span class="dt">colour =</span> drv)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">se =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<p><img src="homework_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
+<p>Поправочка - будет три линии приближений с цветом, соответсвующим цвету точек, по которым строится это приближение</p>
+</div>
+<div id="-3.6.3" class="section level3 unnumbered">
+<h3>Упражнения 3.6.3</h3>
+<div class="question">
+<p>What does <code>show.legend = FALSE</code> do? What happens if you remove it? Why do you think I used it earlier in the chapter?</p>
+</div>
+<p>Автор имеет в виду этот пример</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mpg) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_smooth</span>(
+    <span class="dt">mapping =</span> <span class="kw">aes</span>(displ, hwy, <span class="dt">colour =</span> drv),
+    <span class="dt">show.legend =</span> <span class="ot">FALSE</span>
+  )</code></pre></div>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<p><img src="homework_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
+<p>Инструкция <code>show.legend</code> распоряжает показывать легенду графика или нет. По умолчанию эта инструкция имеет значение <code>TRUE</code>. В примере из книги, инструкция <code>show.legend = FALSE</code> использовалась намеренно, чтобы в максимальном размере уместить в одну строку три графика. Тот же график с легендой выглядит вот так:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mpg) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_smooth</span>(
+    <span class="dt">mapping =</span> <span class="kw">aes</span>(displ, hwy, <span class="dt">colour =</span> drv)
+  )</code></pre></div>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<p><img src="homework_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
+</div>
+<div id="-3.6.4" class="section level3 unnumbered">
+<h3>Упражнения 3.6.4</h3>
+<div class="question">
+<p>What does the <code>se</code> argument to <code>geom_smooth()</code> do?</p>
+</div>
+<p>Аргумент <code>se</code> распоряжает показывать ли доверительный интервал или нет. По умолчанию этот интервал показывается. В примере ниже доверительный интервал показывается:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mpg) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(displ, hwy))</code></pre></div>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<p><img src="homework_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
+<p>Теперь уберём его:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mpg) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(displ, hwy), <span class="dt">se =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<p><img src="homework_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
+</div>
+<div id="-3.6.5" class="section level3 unnumbered">
+<h3>Упражнения 3.6.5</h3>
+<div class="question">
+<p>Will these two graphs look different? Why/why not?</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> mpg, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> displ, <span class="dt">y =</span> hwy)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_smooth</span>()</code></pre></div>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<p><img src="homework_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> mpg, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> displ, <span class="dt">y =</span> hwy)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">data =</span> mpg, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> displ, <span class="dt">y =</span> hwy))</code></pre></div>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<p><img src="homework_files/figure-html/unnamed-chunk-36-2.png" width="672" /></p>
 </div>
 
 </div>

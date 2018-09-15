@@ -433,3 +433,33 @@ ggplot(mpg) +
 ggplot(mpg) + 
   geom_smooth(mapping = aes(displ, hwy), se = FALSE)
 ```
+
+### Упражнения 3.6.5 {.unnumbered}
+<div class="question">
+Will these two graphs look different? Why/why not?
+
+```{r, eval = FALSE}
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
+  geom_point() + 
+  geom_smooth()
+```
+
+```{r, eval = FALSE}
+ggplot() + 
+  geom_point(data = mpg, mapping = aes(x = displ, y = hwy)) + 
+  geom_smooth(data = mpg, mapping = aes(x = displ, y = hwy))
+```
+</div>
+
+Эти графики будут идентичными, потому что в первом случае в функции `ggplot()` задаются исходные условия сразу для всех функций, которые будут строится на этом поле построения. А во втором случае, все исходные условия для построений указаны в каждой функции индивидуально. И так как различий в этих условиях нет, то выглядеть они будут одинаково:
+```{r}
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
+  geom_point() + 
+  geom_smooth()
+```
+
+```{r}
+ggplot() + 
+  geom_point(data = mpg, mapping = aes(x = displ, y = hwy)) + 
+  geom_smooth(data = mpg, mapping = aes(x = displ, y = hwy))
+```
