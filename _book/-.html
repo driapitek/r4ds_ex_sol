@@ -25,7 +25,7 @@
 <meta name="author" content="Stas Masuta">
 
 
-<meta name="date" content="2018-09-15">
+<meta name="date" content="2018-09-16">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -138,6 +138,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.6.3"><i class="fa fa-check"></i>Упражнения 3.6.3</a></li>
 <li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.6.4"><i class="fa fa-check"></i>Упражнения 3.6.4</a></li>
 <li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.6.5"><i class="fa fa-check"></i>Упражнения 3.6.5</a></li>
+<li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.6.6"><i class="fa fa-check"></i>Упражнения 3.6.6</a></li>
 </ul></li>
 </ul></li>
 <li class="divider"></li>
@@ -644,14 +645,73 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> mpg, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> displ, <span class="dt">y =</span> hwy)) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_smooth</span>()</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> mpg, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> displ, <span class="dt">y =</span> hwy)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">data =</span> mpg, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> displ, <span class="dt">y =</span> hwy))</code></pre></div>
+</div>
+<p>Эти графики будут идентичными, потому что в первом случае в функции <code>ggplot()</code> задаются исходные условия сразу для всех функций, которые будут строится на этом поле построения. А во втором случае, все исходные условия для построений указаны в каждой функции индивидуально. И так как различий в этих условиях нет, то выглядеть они будут одинаково:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> mpg, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> displ, <span class="dt">y =</span> hwy)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_smooth</span>()</code></pre></div>
 <pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
-<p><img src="homework_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
+<p><img src="homework_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> mpg, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> displ, <span class="dt">y =</span> hwy)) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">data =</span> mpg, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> displ, <span class="dt">y =</span> hwy))</code></pre></div>
 <pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
-<p><img src="homework_files/figure-html/unnamed-chunk-36-2.png" width="672" /></p>
+<p><img src="homework_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
 </div>
+<div id="-3.6.6" class="section level3 unnumbered">
+<h3>Упражнения 3.6.6</h3>
+<div class="question">
+<p>Recreate the R code necessary to generate the following graphs. <img src="img/graphics3.6.6.png" alt="alt text" /></p>
+</div>
+<ol style="list-style-type: decimal">
+<li>В левом верхнем графике наложено два построения. Первое <code>geom_point()</code> - обычное построение без какой либо группировки и цветового выделения. Второе <code>geom_smouth()</code> - построение распределения без группировки и цветового выделения, без построения доверительного интервала. Так как у обоих построений одинаковые исходные условия, их можно “вынести за скобки”, то есть указать в “родительском” <code>ggplot()</code>:</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"> <span class="kw">ggplot</span>(mpg, <span class="dt">mapping =</span> <span class="kw">aes</span>(displ, hwy)) <span class="op">+</span>
+<span class="st">   </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="st">   </span><span class="kw">geom_smooth</span>(<span class="dt">se =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<p><img src="homework_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
+<ol start="2" style="list-style-type: decimal">
+<li>В правом верхнем графике наложено два построения. Первое <code>geom_point()</code> - обычное построение без какой либо группировки и цветового выделения. Второе <code>geom_smouth()</code> - построение распределения с группировкой по признаку <code>drv</code>, без построения доверительного интервала. Так как у двух постройний разные условия, лучше для каждого прописать исходные данные индивидуально</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"> <span class="kw">ggplot</span>(mpg) <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_point</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(displ, hwy)) <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_smooth</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(displ, hwy, <span class="dt">group =</span> drv), <span class="dt">se =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<p><img src="homework_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
+<ol start="3" style="list-style-type: decimal">
+<li>В левом среднем графике наложено два построения. Первое <code>geom_point()</code> - с цветовой группировкой по признаку <code>drv</code>. Второе <code>geom_smouth()</code> - построение распределения с цветовой группировкой по признаку <code>drv</code>, без построения доверительного интервала. Так как у обоих построений одинаковые исходные условия, их можно “вынести за скобки”, то есть указать в “родительском” <code>ggplot()</code>:</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"> <span class="kw">ggplot</span>(mpg, <span class="dt">mapping =</span> <span class="kw">aes</span>(displ, hwy, <span class="dt">colour =</span> drv)) <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_smooth</span>(<span class="dt">se =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<p><img src="homework_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
+<ol start="4" style="list-style-type: decimal">
+<li>В правом среднем графике наложено два построения. Первое <code>geom_point()</code> - с цветовой группировкой по признаку <code>drv</code>. Второе <code>geom_smouth()</code> - построение распределения без группировки и цветового выделения, без построения доверительного интервала. Так как у двух постройний разные условия, лучше для каждого прописать исходные данные индивидуально:</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"> <span class="kw">ggplot</span>(mpg) <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_point</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(displ, hwy, <span class="dt">colour =</span> drv)) <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_smooth</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(displ, hwy), <span class="dt">se =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<p><img src="homework_files/figure-html/unnamed-chunk-43-1.png" width="672" /></p>
+<ol start="5" style="list-style-type: decimal">
+<li>В левом нижнем графике наложено два построения. Первое <code>geom_point()</code> - с цветовой группировкой по признаку <code>drv</code>. Второе <code>geom_smouth()</code> - построение распределения с группировкой по признаку <code>drv</code>, с выделением каждой кривой группы разным типом линии, без построения доверительного интервала. Так как у двух постройний разные условия, лучше для каждого прописать исходные данные индивидуально:</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"> <span class="kw">ggplot</span>(mpg) <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_point</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(displ, hwy, <span class="dt">colour =</span> drv)) <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_smooth</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(displ, hwy, <span class="dt">linetype =</span> drv), <span class="dt">se =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<p><img src="homework_files/figure-html/unnamed-chunk-44-1.png" width="672" /></p>
+<ol start="6" style="list-style-type: decimal">
+<li>В правом нижнем графике только одно построение <code>geom_point()</code> - с цветовой группировкой по признаку <code>drv</code> и толстыми белыми границами у точек.</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"> <span class="kw">ggplot</span>(mpg, <span class="dt">mapping =</span> <span class="kw">aes</span>(displ, hwy, <span class="dt">fill =</span> drv)) <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_point</span>(<span class="dt">shape =</span> <span class="dv">21</span>, <span class="dt">colour =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">size =</span> <span class="dv">4</span>, <span class="dt">stroke =</span> <span class="dv">4</span>)</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-45-1.png" width="672" /></p>
 
 </div>
 </div>
