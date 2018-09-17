@@ -25,7 +25,7 @@
 <meta name="author" content="Stas Masuta">
 
 
-<meta name="date" content="2018-09-16">
+<meta name="date" content="2018-09-17">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -139,6 +139,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.6.4"><i class="fa fa-check"></i>Упражнения 3.6.4</a></li>
 <li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.6.5"><i class="fa fa-check"></i>Упражнения 3.6.5</a></li>
 <li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.6.6"><i class="fa fa-check"></i>Упражнения 3.6.6</a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>3.6</b> Статистические преобразования</a><ul>
+<li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.7.1"><i class="fa fa-check"></i>Упражнения 3.7.1</a></li>
 </ul></li>
 </ul></li>
 <li class="divider"></li>
@@ -712,6 +715,37 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"> <span class="kw">ggplot</span>(mpg, <span class="dt">mapping =</span> <span class="kw">aes</span>(displ, hwy, <span class="dt">fill =</span> drv)) <span class="op">+</span>
 <span class="st">    </span><span class="kw">geom_point</span>(<span class="dt">shape =</span> <span class="dv">21</span>, <span class="dt">colour =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">size =</span> <span class="dv">4</span>, <span class="dt">stroke =</span> <span class="dv">4</span>)</code></pre></div>
 <p><img src="homework_files/figure-html/unnamed-chunk-45-1.png" width="672" /></p>
+</div>
+</div>
+<div id="-" class="section level2">
+<h2><span class="header-section-number">3.6</span> Статистические преобразования</h2>
+<div id="-3.7.1" class="section level3 unnumbered">
+<h3>Упражнения 3.7.1</h3>
+<div class="question">
+<p>What is the default geom associated with <code>stat_summary()</code>? How could you rewrite the previous plot to use that geom function instead of the stat function?</p>
+</div>
+<p>Для того чтобы ответить на этот вопрос, необходимо открыть help - <code>?stat_summary</code></p>
+<p><code>stat_summary(mapping = NULL, data = NULL, geom = &quot;pointrange&quot;, position = &quot;identity&quot;, ..., fun.data = NULL, fun.y = NULL, fun.ymax = NULL, fun.ymin = NULL, fun.args = list(), na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)</code></p>
+<p>Это и есть ответ - со статистикой <code>stat_summary()</code> связана геометрия <code>geom = &quot;pointrange&quot;</code>.</p>
+<p>Теперь ответим на вопрос, как можно переписать код</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> diamonds) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">stat_summary</span>(
+    <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> cut, <span class="dt">y =</span> depth),
+    <span class="dt">fun.ymin =</span> min,
+    <span class="dt">fun.ymax =</span> max,
+    <span class="dt">fun.y =</span> median
+  )</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-46-1.png" width="672" /></p>
+<p>Необходимо заменить <code>stat_summary()</code> на <code>geom_pointrange()</code> и вставить название необходимой статистики:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> diamonds) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_pointrange</span>(
+    <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> cut, <span class="dt">y =</span> depth),
+    <span class="dt">stat =</span> <span class="st">&quot;summary&quot;</span>,
+    <span class="dt">fun.ymin =</span> min,
+    <span class="dt">fun.ymax =</span> max,
+    <span class="dt">fun.y =</span> median
+  )</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-47-1.png" width="672" /></p>
 
 </div>
 </div>

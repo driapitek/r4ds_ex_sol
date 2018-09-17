@@ -511,3 +511,41 @@ Recreate the R code necessary to generate the following graphs.
  ggplot(mpg, mapping = aes(displ, hwy, fill = drv)) +
     geom_point(shape = 21, colour = "white", size = 4, stroke = 4)
 ```
+
+
+## Статистические преобразования
+### Упражнения 3.7.1 {.unnumbered}
+<div class="question">
+What is the default geom associated with `stat_summary()`? How could you rewrite the previous plot to use that geom function instead of the stat function?
+</div>
+
+
+Для того чтобы ответить на этот вопрос, необходимо открыть help - `?stat_summary`
+
+`stat_summary(mapping = NULL, data = NULL, geom = "pointrange", position = "identity", ..., fun.data = NULL, fun.y = NULL, fun.ymax = NULL, fun.ymin = NULL, fun.args = list(), na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)`
+
+ Это и есть ответ - со статистикой  `stat_summary()` связана геометрия `geom = "pointrange"`.
+ 
+ Теперь ответим на вопрос, как можно переписать код
+ 
+```{r}
+ggplot(data = diamonds) + 
+  stat_summary(
+    mapping = aes(x = cut, y = depth),
+    fun.ymin = min,
+    fun.ymax = max,
+    fun.y = median
+  )
+```
+
+Необходимо заменить `stat_summary()` на `geom_pointrange()` и вставить название необходимой статистики:
+```{r}
+ggplot(data = diamonds) + 
+  geom_pointrange(
+    mapping = aes(x = cut, y = depth),
+    stat = "summary",
+    fun.ymin = min,
+    fun.ymax = max,
+    fun.y = median
+  )
+```
