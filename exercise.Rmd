@@ -549,3 +549,10 @@ ggplot(data = diamonds) +
     fun.y = median
   )
 ```
+
+### Упражнения 3.7.2 {.unnumbered}
+<div class="question">
+What does `geom_col()` do? How is it different to `geom_bar()`?
+</div>
+
+Функции имеют разные статистики по умолчанию. `geom_bar()` иметт `stat_count()`, а `geom_col()` имет `stat_identity()` Т.е. `geom_bar()` считает, сколько наблюдений попадает в просматриваемый диапазон и столбец показывает количество попавших наблюдений в диапазон. А `geom_col()` - строит столбцы по количеству наблюдений.
