@@ -145,6 +145,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.7.2"><i class="fa fa-check"></i>Упражнения 3.7.2</a></li>
 <li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.7.3"><i class="fa fa-check"></i>Упражнения 3.7.3</a></li>
 <li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.7.4"><i class="fa fa-check"></i>Упражнения 3.7.4</a></li>
+<li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.7.5"><i class="fa fa-check"></i>Упражнения 3.7.5</a></li>
 </ul></li>
 </ul></li>
 <li class="divider"></li>
@@ -762,13 +763,76 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="question">
 <p>Most geoms and stats come in pairs that are almost always used in concert. Read through the documentation and make a list of all the pairs. What do they have in common?</p>
 </div>
-<p>Общие эдементы у статистик и геометрий это <code>aes()</code>, <code>position</code> | <code>geom_</code> | <code>stat_</code> | | ————- |:————-:| | <code>path</code> | <code>eclipse</code>, <code>function</code>| | <code>point</code> | <code>identity</code>, <code>unique</code> | | <code>tile</code> | <code>summary_2d</code> | | <code>hex</code> | <code>summary_hex</code> | | <code>pointrange</code> | <code>summary_bin</code>, <code>summary</code> |</p>
+<p>Общие элементы у статистик и геометрий это <code>aes()</code>, <code>position</code>, а пары геометрия-статистика следующие:</p>
+<table>
+<thead>
+<tr class="header">
+<th><code>geom_</code></th>
+<th align="center"><code>stat_</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>path</code></td>
+<td align="center"><code>eclipse</code>, <code>function</code></td>
+</tr>
+<tr class="even">
+<td><code>point</code></td>
+<td align="center"><code>identity</code>, <code>unique</code></td>
+</tr>
+<tr class="odd">
+<td><code>tile</code></td>
+<td align="center"><code>summary_2d</code></td>
+</tr>
+<tr class="even">
+<td><code>hex</code></td>
+<td align="center"><code>summary_hex</code></td>
+</tr>
+<tr class="odd">
+<td><code>pointrange</code></td>
+<td align="center"><code>summary_bin</code>, <code>summary</code></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="-3.7.4" class="section level3 unnumbered">
 <h3>Упражнения 3.7.4</h3>
 <div class="question">
-<p>What variables does stat_smooth() compute? What parameters control its behavior?</p>
+<p>What variables does <code>stat_smooth()</code> compute? What parameters control its behavior?</p>
 </div>
+<ul>
+<li><p><code>y</code> - predicted value, прогнозируемое значение</p></li>
+<li><p><code>ymin</code> - lower pointwise confidence interval around the mean, нижний уровень доверительного интервала среднего значения</p></li>
+<li><p><code>ymax</code> - upper pointwise confidence interval around the mean, верхний уровень доверительного интервала среднего значения</p></li>
+<li><p><code>se</code> - standard error, стандтартное отклонение</p></li>
+</ul>
+<p>Я так полагаю, параметры которые регулируют поведение функции, это специальные методы. Если это не так, то я однажды вернусь сюда и дополню этот ответ.</p>
+</div>
+<div id="-3.7.5" class="section level3 unnumbered">
+<h3>Упражнения 3.7.5</h3>
+<div class="question">
+<p>In our proportion bar chart, we need to set group = 1 Why? In other words what is the problem with these two graphs?</p>
+<p>Graph #1</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> diamonds) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_bar</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> cut, <span class="dt">y =</span> ..prop..))</code></pre></div>
+<p>Graph #2</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> diamonds) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_bar</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> cut, <span class="dt">fill =</span> color, <span class="dt">y =</span> ..prop..))</code></pre></div>
+</div>
+<p>Если не указать значение <code>group</code>, то все столбики то есть построения будут иметь <code>prop = 1</code>. Функция <code>geom_bar</code> по умолчанию использует статистику <code>stat_count</code>, которая считает количество значений внутри группы.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> diamonds) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_bar</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> cut, <span class="dt">y =</span> ..prop..))</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-50-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> diamonds) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_bar</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> cut, <span class="dt">fill =</span> color, <span class="dt">y =</span> ..prop..))</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-50-2.png" width="672" /></p>
+<p>Проблема с этими двумя графиками заключается в том, что пропорции вычисляются внутри групп. Чтобы исправить, нужно указать группы в этих графиках:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> diamonds) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_bar</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> cut, <span class="dt">y =</span> ..prop.., <span class="dt">group =</span> <span class="dv">1</span>))</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-51-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> diamonds) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_bar</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> cut, <span class="dt">fill =</span> color, <span class="dt">y =</span> ..prop.., <span class="dt">group =</span> color))</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-51-2.png" width="672" /> ## Позиционные настройки</p>
 
 </div>
 </div>

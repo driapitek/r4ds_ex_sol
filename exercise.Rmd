@@ -562,17 +562,64 @@ What does `geom_col()` do? How is it different to `geom_bar()`?
 Most geoms and stats come in pairs that are almost always used in concert. Read through the documentation and make a list of all the pairs. What do they have in common?
 </div>
 
-Общие эдементы у статистик и геометрий это `aes()`, `position`
+Общие элементы у статистик и геометрий это `aes()`, `position`, а пары геометрия-статистика следующие:
+
 | `geom_`        | `stat_`         |
 | ------------- |:-------------:|
 | `path`  | `eclipse`, `function`|
 | `point`    | `identity`, `unique`  |
 | `tile` | `summary_2d`    |
 | `hex` | `summary_hex`    |
-| `pointrange` | `summary_bin`, `summary`    |
+| `pointrange` | `summary_bin`, `summary`|
 
 ### Упражнения 3.7.4 {.unnumbered}
 <div class="question">
-What variables does stat_smooth() compute? What parameters control its behavior?
+What variables does `stat_smooth()` compute? What parameters control its behavior?
 </div>
 
+* `y` - predicted value, прогнозируемое значение
+
+* `ymin` -  lower pointwise confidence interval around the mean, нижний уровень доверительного интервала среднего значения
+
+* `ymax` -  upper pointwise confidence interval around the mean, верхний уровень доверительного интервала среднего значения
+
+* `se` - standard error, стандтартное отклонение
+
+Я так полагаю, параметры которые регулируют поведение функции, это специальные методы. Если это не так, то я однажды вернусь сюда и дополню этот ответ.
+
+### Упражнения 3.7.5 {.unnumbered}
+<div class="question">
+In our proportion bar chart, we need to set group = 1 Why? In other words what is the problem with these two graphs?
+
+Graph #1
+```{r, eval = FALSE}
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, y = ..prop..))
+```
+
+Graph #2
+```{r, eval = FALSE}
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, fill = color, y = ..prop..))
+```
+</div>
+
+Если не указать значение `group`, то все столбики то есть построения будут иметь `prop = 1`. Функция `geom_bar` по умолчанию использует статистику `stat_count`, которая считает количество значений внутри группы.
+```{r}
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, y = ..prop..))
+
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, fill = color, y = ..prop..))
+```
+
+Проблема с этими двумя графиками заключается в том, что пропорции вычисляются внутри групп. Чтобы исправить, нужно указать группы в этих графиках:
+```{r}
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, y = ..prop.., group = 1))
+
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, fill = color, y = ..prop.., group = color))
+```
+
+## Позиционные настройки
