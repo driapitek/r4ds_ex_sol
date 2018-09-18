@@ -25,7 +25,7 @@
 <meta name="author" content="Stas Masuta">
 
 
-<meta name="date" content="2018-09-17">
+<meta name="date" content="2018-09-18">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -142,6 +142,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 <li class="chapter" data-level="3.6" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>3.6</b> Статистические преобразования</a><ul>
 <li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.7.1"><i class="fa fa-check"></i>Упражнения 3.7.1</a></li>
+<li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.7.2"><i class="fa fa-check"></i>Упражнения 3.7.2</a></li>
+<li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.7.3"><i class="fa fa-check"></i>Упражнения 3.7.3</a></li>
+<li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.7.4"><i class="fa fa-check"></i>Упражнения 3.7.4</a></li>
 </ul></li>
 </ul></li>
 <li class="divider"></li>
@@ -746,6 +749,26 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
     <span class="dt">fun.y =</span> median
   )</code></pre></div>
 <p><img src="homework_files/figure-html/unnamed-chunk-47-1.png" width="672" /></p>
+</div>
+<div id="-3.7.2" class="section level3 unnumbered">
+<h3>Упражнения 3.7.2</h3>
+<div class="question">
+<p>What does <code>geom_col()</code> do? How is it different to <code>geom_bar()</code>?</p>
+</div>
+<p>Функции имеют разные статистики по умолчанию. <code>geom_bar()</code> иметт <code>stat_count()</code>, а <code>geom_col()</code> имет <code>stat_identity()</code> Т.е. <code>geom_bar()</code> считает, сколько наблюдений попадает в просматриваемый диапазон и столбец показывает количество попавших наблюдений в диапазон. А <code>geom_col()</code> - строит столбцы по количеству наблюдений в диапазоне, а <code>geom_bar()</code> число наблюдений.</p>
+</div>
+<div id="-3.7.3" class="section level3 unnumbered">
+<h3>Упражнения 3.7.3</h3>
+<div class="question">
+<p>Most geoms and stats come in pairs that are almost always used in concert. Read through the documentation and make a list of all the pairs. What do they have in common?</p>
+</div>
+<p>Общие эдементы у статистик и геометрий это <code>aes()</code>, <code>position</code> | <code>geom_</code> | <code>stat_</code> | | ————- |:————-:| | <code>path</code> | <code>eclipse</code>, <code>function</code>| | <code>point</code> | <code>identity</code>, <code>unique</code> | | <code>tile</code> | <code>summary_2d</code> | | <code>hex</code> | <code>summary_hex</code> | | <code>pointrange</code> | <code>summary_bin</code>, <code>summary</code> |</p>
+</div>
+<div id="-3.7.4" class="section level3 unnumbered">
+<h3>Упражнения 3.7.4</h3>
+<div class="question">
+<p>What variables does stat_smooth() compute? What parameters control its behavior?</p>
+</div>
 
 </div>
 </div>
