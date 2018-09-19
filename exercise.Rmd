@@ -623,3 +623,19 @@ ggplot(data = diamonds) +
 ```
 
 ## Позиционные настройки
+### Упражнения 3.8.1 {.unnumbered}
+<div class="question">
+What is the problem with this plot? How could you improve it?
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) +
+  geom_point()
+```  
+</div>
+
+Это иллюстрация приведённой в книге проблемы **наложение графиков**. Все значения наносимые на график округляются - поэтому в одной точке может быть наложено несколько значений. Чтобы показать истинное количество точек в одном положении можно воспользоваться функцией `geom_jitter`, которой добавит случайный шум каждой точке.
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) +
+  geom_jitter()
+```
