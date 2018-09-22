@@ -732,3 +732,35 @@ What parameters to geom_jitter() control the amount of jittering?
 ```{r}
 ggplot(mpg, aes(cty, hwy)) + geom_jitter(width = 0.5, height = 0.5)
 ```
+
+### Упражнения 3.8.3 {.unnumbered}
+<div class="question">
+Compare and contrast `geom_jitter()` with `geom_count()`.
+</div>
+
+Возьмём данные из предыдущего примера, в которых уже известно, что происходит наложение данных:
+
+```{r}
+ ggplot(mpg, aes(cty, hwy)) + geom_point()
+```
+
+```{r}
+ ggplot(mpg, aes(cty, hwy)) + geom_jitter()
+```
+
+Теперь посмотрим что делает `geom_count()`
+
+```{r}
+ ggplot(mpg, aes(cty, hwy)) + geom_count()
+```
+
+Функция `geom_count()` тоже демонстрирует, что точки в построении накладываются. Но она делает это изящнее - в зависимости от количества точек, попавших в одно построение, увеличивается диаметр окружности. 
+
+* Преимущество `geom_count()` - не изменяются координаты точек.
+* Недостаток `geom_count()` - в зависимости от количества точек, радиус окружности может перекрывать рядом лежащие точки.
+
+Впрочем, в этом случае можно использовать дополнительное выделение цветом:
+
+```{r}
+ ggplot(mpg, aes(cty, hwy, color = drv)) + geom_count()
+```
