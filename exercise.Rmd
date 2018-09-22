@@ -764,3 +764,39 @@ Compare and contrast `geom_jitter()` with `geom_count()`.
 ```{r}
  ggplot(mpg, aes(cty, hwy, color = drv)) + geom_count()
 ```
+
+### Упражнения 3.8.4 {.unnumbered}
+<div class="question">
+What’s the default `position` adjustment for `geom_boxplot()`? Create a visualization of the `mpg` dataset that demonstrates it.
+</div>
+
+Согласно описанию функции `geom_boxplot()` значение по умолчанию у параметра `position = "dodge2"`.
+Оба парамтера `"dodge"` и `"dodge2"` строят рядом перекрывающиеся объекты рядом. Разница в том, что `"dodge"` лепит их вплотную, а `"dodge2"` добавляет промежуток. Или не совсем...
+
+```{r}
+ggplot(diamonds) +
+  geom_bar(
+    mapping = aes(x = cut, fill = clarity),
+    position = "dodge"
+    )
+```
+
+```{r}
+ggplot(diamonds) +
+  geom_bar(
+    mapping = aes(x = cut, fill = clarity),
+    position = "dodge2"
+    )
+```
+
+Пример для визуализации. 
+
+```{r}
+ggplot(mpg, aes(cty, hwy, color = drv)) + geom_boxplot()
+```
+
+Если использовать другое значение для `position`, то ящики будут накладываться друг на друга:
+
+```{r}
+ggplot(mpg, aes(cty, hwy, color = drv)) + geom_boxplot(position = "identity")
+```

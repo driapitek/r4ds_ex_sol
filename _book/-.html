@@ -150,6 +150,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="3.7" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>3.7</b> Позиционные настройки</a><ul>
 <li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.8.1"><i class="fa fa-check"></i>Упражнения 3.8.1</a></li>
 <li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.8.2"><i class="fa fa-check"></i>Упражнения 3.8.2</a></li>
+<li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.8.3"><i class="fa fa-check"></i>Упражнения 3.8.3</a></li>
+<li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.8.4"><i class="fa fa-check"></i>Упражнения 3.8.4</a></li>
 </ul></li>
 </ul></li>
 <li class="divider"></li>
@@ -970,6 +972,53 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Отрегулируем умеренные флуктуации, установив значение параметров <code>width</code> и <code>height</code> равным <span class="math inline">\(0,5\)</span></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(cty, hwy)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_jitter</span>(<span class="dt">width =</span> <span class="fl">0.5</span>, <span class="dt">height =</span> <span class="fl">0.5</span>)</code></pre></div>
 <p><img src="homework_files/figure-html/unnamed-chunk-61-1.png" width="672" /></p>
+</div>
+<div id="-3.8.3" class="section level3 unnumbered">
+<h3>Упражнения 3.8.3</h3>
+<div class="question">
+<p>Compare and contrast <code>geom_jitter()</code> with <code>geom_count()</code>.</p>
+</div>
+<p>Возьмём данные из предыдущего примера, в которых уже известно, что происходит наложение данных:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"> <span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(cty, hwy)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-62-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"> <span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(cty, hwy)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_jitter</span>()</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-63-1.png" width="672" /></p>
+<p>Теперь посмотрим что делает <code>geom_count()</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"> <span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(cty, hwy)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_count</span>()</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-64-1.png" width="672" /></p>
+<p>Функция <code>geom_count()</code> тоже демонстрирует, что точки в построении накладываются. Но она делает это изящнее - в зависимости от количества точек, попавших в одно построение, увеличивается диаметр окружности.</p>
+<ul>
+<li>Преимущество <code>geom_count()</code> - не изменяются координаты точек.</li>
+<li>Недостаток <code>geom_count()</code> - в зависимости от количества точек, радиус окружности может перекрывать рядом лежащие точки.</li>
+</ul>
+<p>Впрочем, в этом случае можно использовать дополнительное выделение цветом:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"> <span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(cty, hwy, <span class="dt">color =</span> drv)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_count</span>()</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-65-1.png" width="672" /></p>
+</div>
+<div id="-3.8.4" class="section level3 unnumbered">
+<h3>Упражнения 3.8.4</h3>
+<div class="question">
+<p>What’s the default <code>position</code> adjustment for <code>geom_boxplot()</code>? Create a visualization of the <code>mpg</code> dataset that demonstrates it.</p>
+</div>
+<p>Согласно описанию функции <code>geom_boxplot()</code> значение по умолчанию у параметра <code>position = &quot;dodge2&quot;</code>. Оба парамтера <code>&quot;dodge&quot;</code> и <code>&quot;dodge2&quot;</code> строят рядом перекрывающиеся объекты рядом. Разница в том, что <code>&quot;dodge&quot;</code> лепит их вплотную, а <code>&quot;dodge2&quot;</code> добавляет промежуток. Или не совсем…</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(diamonds) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_bar</span>(
+    <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> cut, <span class="dt">fill =</span> clarity),
+    <span class="dt">position =</span> <span class="st">&quot;dodge&quot;</span>
+    )</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-66-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(diamonds) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_bar</span>(
+    <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> cut, <span class="dt">fill =</span> clarity),
+    <span class="dt">position =</span> <span class="st">&quot;dodge2&quot;</span>
+    )</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-67-1.png" width="672" /></p>
+<p>Пример для визуализации.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(cty, hwy, <span class="dt">color =</span> drv)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_boxplot</span>()</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-68-1.png" width="672" /></p>
+<p>Если использовать другое значение для <code>position</code>, то ящики будут накладываться друг на друга:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(cty, hwy, <span class="dt">color =</span> drv)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_boxplot</span>(<span class="dt">position =</span> <span class="st">&quot;identity&quot;</span>)</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-69-1.png" width="672" /></p>
 
 </div>
 </div>
