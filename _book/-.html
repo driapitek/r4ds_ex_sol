@@ -25,7 +25,7 @@
 <meta name="author" content="Stas Masuta">
 
 
-<meta name="date" content="2018-09-18">
+<meta name="date" content="2018-09-22">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -146,6 +146,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.7.3"><i class="fa fa-check"></i>Упражнения 3.7.3</a></li>
 <li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.7.4"><i class="fa fa-check"></i>Упражнения 3.7.4</a></li>
 <li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.7.5"><i class="fa fa-check"></i>Упражнения 3.7.5</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>3.7</b> Позиционные настройки</a><ul>
+<li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.8.1"><i class="fa fa-check"></i>Упражнения 3.8.1</a></li>
+<li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.8.2"><i class="fa fa-check"></i>Упражнения 3.8.2</a></li>
 </ul></li>
 </ul></li>
 <li class="divider"></li>
@@ -832,7 +836,140 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p><img src="homework_files/figure-html/unnamed-chunk-51-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> diamonds) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_bar</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> cut, <span class="dt">fill =</span> color, <span class="dt">y =</span> ..prop.., <span class="dt">group =</span> color))</code></pre></div>
-<p><img src="homework_files/figure-html/unnamed-chunk-51-2.png" width="672" /> ## Позиционные настройки</p>
+<p><img src="homework_files/figure-html/unnamed-chunk-51-2.png" width="672" /></p>
+</div>
+</div>
+<div id="-" class="section level2">
+<h2><span class="header-section-number">3.7</span> Позиционные настройки</h2>
+<p>В заданиях часто используется фрейм данных <code>diamonds</code>, укажем его здесь:</p>
+<table style="width:42%;">
+<colgroup>
+<col width="19%" />
+<col width="22%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>параметр</th>
+<th align="center">описание</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>price</code></td>
+<td align="center">цена в долларах ($326–$18,823)</td>
+</tr>
+<tr class="even">
+<td><code>carat</code></td>
+<td align="center">вес бриллианта (0.2–5.01)</td>
+</tr>
+<tr class="odd">
+<td><code>cut</code></td>
+<td align="center">качество огранки (Fair, Good, Very Good, Premium, Ideal)</td>
+</tr>
+<tr class="even">
+<td><code>color</code></td>
+<td align="center">цвет бриллианта J (worst) to D (best)</td>
+</tr>
+<tr class="odd">
+<td><code>clarity</code></td>
+<td align="center">чистота, или прозрачность (I1 (worst), SI2, SI1, VS2, VS1, VVS2, VVS1, IF (best)</td>
+</tr>
+<tr class="even">
+<td><code>x</code></td>
+<td align="center">длинна в мм</td>
+</tr>
+<tr class="odd">
+<td><code>y</code></td>
+<td align="center">ширина в мм</td>
+</tr>
+<tr class="even">
+<td><code>z</code></td>
+<td align="center">высота в мм</td>
+</tr>
+<tr class="odd">
+<td><code>depth</code></td>
+<td align="center">величина total depth percentage = z / mean(x, y) = 2 * z / (x + y) (от 43 до 79)</td>
+</tr>
+<tr class="even">
+<td><code>table</code></td>
+<td align="center">ширина верхней части алмаза относительно самой широкой точки (от 43 до 95)</td>
+</tr>
+</tbody>
+</table>
+<p>варианты использования аргумента <code>position</code>:</p>
+<ul>
+<li><code>position = &quot;identity&quot;</code>. Строит столбцы с перекрыванием, т.е. в точности, где каждый объект должен находится. Это сложно заметить, поэтому если есть необходимость использовать эту настройку, то чтобы увидеть перекрытие нужно дополнительно указывать параметр прозрачности <code>alpha</code>:</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(
+  <span class="dt">data =</span> diamonds,
+  <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> cut, <span class="dt">fill =</span> clarity)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_bar</span>(<span class="dt">alpha =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">5</span>, <span class="dt">position =</span> <span class="st">&quot;identity&quot;</span>)</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-52-1.png" width="672" /></p>
+<p>или делать объекты незалитыми убирая у атрибута <code>fill</code> цвет:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(
+  <span class="dt">data =</span> diamonds,
+  <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> cut, <span class="dt">color =</span> clarity)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_bar</span>(<span class="dt">fill =</span> <span class="ot">NA</span>, <span class="dt">position =</span> <span class="st">&quot;identity&quot;</span>)</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-53-1.png" width="672" /></p>
+<ul>
+<li><code>position = &quot;fill&quot;</code> Создаёт стековые столбцы одинаковой высоты. Удобно сравнивать пропорции у значений.</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(diamonds) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_bar</span>(
+    <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> cut, <span class="dt">fill =</span> clarity),
+    <span class="dt">position =</span> <span class="st">&quot;fill&quot;</span>
+    )</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-54-1.png" width="672" /></p>
+<ul>
+<li><code>position = &quot;dodge&quot;</code>. Строит перекрывающиеся столбцы рядом друг с другом</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(diamonds) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_bar</span>(
+    <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> cut, <span class="dt">fill =</span> clarity),
+    <span class="dt">position =</span> <span class="st">&quot;dodge&quot;</span>
+    )</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-55-1.png" width="672" /></p>
+<ul>
+<li><code>position = &quot;jitter&quot;</code>. Не подходит для столбчатых диаграмм, но отлично подходит для диаграмм рассеивания. Если точки пересекаются, то чтобы показать истинное распределение значений <code>jitter</code> добавляет “шум”</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mpg) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>(
+    <span class="dt">mapping =</span> <span class="kw">aes</span>(displ, hwy),
+    <span class="dt">position =</span> <span class="st">&quot;jitter&quot;</span>
+  )</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-56-1.png" width="672" /></p>
+<div id="-3.8.1" class="section level3 unnumbered">
+<h3>Упражнения 3.8.1</h3>
+<div class="question">
+<p>What is the problem with this plot? How could you improve it?</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> mpg, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> cty, <span class="dt">y =</span> hwy)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>()</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-57-1.png" width="672" /></p>
+</div>
+<p>Это иллюстрация приведённой в книге проблемы <strong>наложение графиков</strong>. Все значения наносимые на график округляются - поэтому в одной точке может быть наложено несколько значений. Чтобы показать истинное количество точек в одном положении можно воспользоваться функцией <code>geom_jitter</code>, которой добавит случайный шум каждой точке.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> mpg, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> cty, <span class="dt">y =</span> hwy)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_jitter</span>()</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-58-1.png" width="672" /></p>
+</div>
+<div id="-3.8.2" class="section level3 unnumbered">
+<h3>Упражнения 3.8.2</h3>
+<div class="question">
+<p>What parameters to geom_jitter() control the amount of jittering?</p>
+</div>
+<p>Согласно описанию <a href="https://ggplot2.tidyverse.org/reference/geom_jitter.html"><code>geom_jitter()</code></a> есть два параметра для управления флуктуациями:</p>
+<ul>
+<li><code>width</code> для вертикального распределения</li>
+<li><code>height</code> для горизонтального распределения</li>
+</ul>
+<p>Разберём на примере. Возьмём диаграмму рассеивания:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"> <span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(cty, hwy)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-59-1.png" width="672" /></p>
+<p>Добавим флуктуаций:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"> <span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(cty, hwy)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_jitter</span>()</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-60-1.png" width="672" /></p>
+<p>Отрегулируем умеренные флуктуации, установив значение параметров <code>width</code> и <code>height</code> равным <span class="math inline">\(0,5\)</span></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(cty, hwy)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_jitter</span>(<span class="dt">width =</span> <span class="fl">0.5</span>, <span class="dt">height =</span> <span class="fl">0.5</span>)</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-61-1.png" width="672" /></p>
 
 </div>
 </div>
