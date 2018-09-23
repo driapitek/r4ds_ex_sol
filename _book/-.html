@@ -25,7 +25,7 @@
 <meta name="author" content="Stas Masuta">
 
 
-<meta name="date" content="2018-09-22">
+<meta name="date" content="2018-09-23">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -153,6 +153,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.8.3"><i class="fa fa-check"></i>Упражнения 3.8.3</a></li>
 <li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.8.4"><i class="fa fa-check"></i>Упражнения 3.8.4</a></li>
 </ul></li>
+<li class="chapter" data-level="3.8" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>3.8</b> Системы координат</a><ul>
+<li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.9.1"><i class="fa fa-check"></i>Упражнения 3.9.1</a></li>
+<li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.9.2"><i class="fa fa-check"></i>Упражнения 3.9.2</a></li>
+</ul></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Сделано с помощью bookdown</a></li>
@@ -181,6 +185,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Электронная версия книги по адресу <a href="http://r4ds.had.co.nz" class="uri">http://r4ds.had.co.nz</a>.</p>
 <p>Для начала работы подключаем библиотеку</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;tidyverse&quot;</span>)</code></pre></div>
+<p>Дополнительно, используются пакеты <code>install.packages(c(&quot;nycflights13&quot;, &quot;gapminder&quot;, &quot;Lahman&quot;))</code></p>
+<p>А это шпаргалка <a href="https://github.com/rstudio/cheatsheets/blob/master/data-visualization-2.1.pdf">cheat_sheet</a></p>
 <p>Не было упражнений.</p>
 </div>
 <div id="-" class="section level2">
@@ -956,7 +962,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="-3.8.2" class="section level3 unnumbered">
 <h3>Упражнения 3.8.2</h3>
 <div class="question">
-<p>What parameters to geom_jitter() control the amount of jittering?</p>
+<p>What parameters to <code>geom_jitter()</code> control the amount of jittering?</p>
 </div>
 <p>Согласно описанию <a href="https://ggplot2.tidyverse.org/reference/geom_jitter.html"><code>geom_jitter()</code></a> есть два параметра для управления флуктуациями:</p>
 <ul>
@@ -1019,6 +1025,40 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Если использовать другое значение для <code>position</code>, то ящики будут накладываться друг на друга:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(cty, hwy, <span class="dt">color =</span> drv)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_boxplot</span>(<span class="dt">position =</span> <span class="st">&quot;identity&quot;</span>)</code></pre></div>
 <p><img src="homework_files/figure-html/unnamed-chunk-69-1.png" width="672" /></p>
+</div>
+</div>
+<div id="-" class="section level2">
+<h2><span class="header-section-number">3.8</span> Системы координат</h2>
+<div id="-3.9.1" class="section level3 unnumbered">
+<h3>Упражнения 3.9.1</h3>
+<div class="question">
+<p>Turn a stacked bar chart into a pie chart using <code>coord_polar()</code></p>
+</div>
+<p>Хорошо, сначала построим стековую диаграмму:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">factor</span>(<span class="dv">1</span>), <span class="dt">fill =</span> <span class="kw">factor</span>(cyl))) <span class="op">+</span>
+<span class="st"> </span><span class="kw">geom_bar</span>()</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-70-1.png" width="672" /></p>
+<p><strong>РАЗОБРАТЬСЯ ЧТО ДЕЛАЕТ <code>factor()</code></strong></p>
+<p>Всё описание работы есть <a href="https://ggplot2.tidyverse.org/reference/coord_polar.html"><code>coord_polar()</code></a> поэтому я ограничусь здесь только выполнением задания. В документации к построению “пирогов” сказано что, нужно относится к этим построениям максимально острожно, что коррелирует с тем, что говорится в <a href="https://lpgenerator.ru/blog/2015/11/27/pochemu-vam-luchshe-perestat-ispolzovat-krugovye-diagrammy-ili-net/">дизайне и визуализации</a></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">factor</span>(<span class="dv">1</span>), <span class="dt">fill =</span> <span class="kw">factor</span>(cyl))) <span class="op">+</span>
+<span class="st"> </span><span class="kw">geom_bar</span>() <span class="op">+</span><span class="st"> </span><span class="kw">coord_polar</span>(<span class="dt">theta =</span> <span class="st">&quot;y&quot;</span>)</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-71-1.png" width="672" /></p>
+</div>
+<div id="-3.9.2" class="section level3 unnumbered">
+<h3>Упражнения 3.9.2</h3>
+<div class="question">
+<p>What does <code>labs()</code> do? Read the documentation.</p>
+</div>
+<p>Функция <code>labs()</code> нужна для подписей всего того что отображается на графике. Всё описание есть в хэлпе.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mpg) <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_point</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(displ, hwy, <span class="dt">colour =</span> drv)) <span class="op">+</span>
+<span class="st">    </span><span class="kw">labs</span>(<span class="dt">color =</span> <span class="st">&quot;Новое название&quot;</span>, 
+         <span class="dt">x =</span> <span class="st">&quot;ося порося&quot;</span>,
+         <span class="dt">y =</span> <span class="st">&quot;ося лося&quot;</span>,
+         <span class="dt">title =</span> <span class="st">&quot;Заголовок&quot;</span>, 
+         <span class="dt">subtitle =</span> <span class="st">&quot;под-заголовок&quot;</span>, 
+         <span class="dt">tag =</span> <span class="st">&quot;тэг&quot;</span>)</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-72-1.png" width="672" /></p>
 
 </div>
 </div>
