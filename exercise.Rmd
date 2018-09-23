@@ -6,6 +6,11 @@
 ```{r, message=FALSE}
 library("tidyverse")
 ```
+
+Дополнительно, используются пакеты
+```{r}
+install.packages(c("nycflights13", "gapminder", "Lahman"))
+```
 Не было упражнений.
 
 ## Первые шаги
@@ -708,7 +713,7 @@ ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) +
 
 ### Упражнения 3.8.2 {.unnumbered}
 <div class="question">
-What parameters to geom_jitter() control the amount of jittering?
+What parameters to `geom_jitter()` control the amount of jittering?
 </div>
 
 Согласно описанию [`geom_jitter()`](https://ggplot2.tidyverse.org/reference/geom_jitter.html) есть два параметра для управления флуктуациями:
@@ -800,3 +805,30 @@ ggplot(mpg, aes(cty, hwy, color = drv)) + geom_boxplot()
 ```{r}
 ggplot(mpg, aes(cty, hwy, color = drv)) + geom_boxplot(position = "identity")
 ```
+
+## Системы координат
+### Упражнения 3.9.1 {.unnumbered}
+<div class="question">
+Turn a stacked bar chart into a pie chart using `coord_polar()`
+</div>
+
+Хорошо, сначала построим стековую диаграмму:
+
+```{r}
+ggplot(mpg, aes(x = factor(1), fill = factor(cyl))) +
+ geom_bar()
+```
+
+**РАЗОБРАТЬСЯ ЧТО ДЕЛАЕТ `factor()`**
+
+Всё описание работы есть [`coord_polar()`](https://ggplot2.tidyverse.org/reference/coord_polar.html) поэтому я ограничусь здесь только выполнением задания.
+В документации к построению "пирогов" сказано что, нужно относится к этим построениям максимально острожно, что коррелирует с тем, что говорится в [дизайне и  визуализации](https://lpgenerator.ru/blog/2015/11/27/pochemu-vam-luchshe-perestat-ispolzovat-krugovye-diagrammy-ili-net/)
+
+```{r}
+ggplot(mpg, aes(x = factor(1), fill = factor(cyl))) +
+ geom_bar() + coord_polar(theta = "y")
+```
+
+### Упражнения 3.9.2 {.unnumbered}
+<div class="question">
+</div>
