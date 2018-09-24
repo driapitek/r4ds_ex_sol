@@ -872,3 +872,28 @@ ggplot(mpg) +
 <div class="question">
 What’s the difference between `coord_quickmap()` and `coord_map()`?
 </div>
+
+`Coord_map` проецирует часть земли, которая к слову является приблизительно сферической, на плоскую 2D-плоскость, используя любую проекцию, определенную пакетом `mapproj`. Карты, как правило, не сохраняют прямых линий, поэтому это требует значительных вычислений. Coord_quickmap - быстрое приближение, которое сохраняет прямые линии. Он лучше всего подходит для небольших площадей ближе к экватору.
+
+По умолчанию, `coord_map()` использует [проекцию Меркатора](https://ru.wikipedia.org/wiki/Проекция_Меркатора).
+Собственно в хэлпе больше информации с примерами. [ggplot](https://ggplot2.tidyverse.org/reference/coord_map.html)
+
+### Упражнения 3.9.3 {.unnumbered}
+<div class="question">
+What does the plot below tell you about the relationship between city and highway mpg? Why is `coord_fixed()` important? What does `geom_abline()` do?
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) +
+  geom_point() + 
+  geom_abline() +
+  coord_fixed()
+```  
+</div>
+
+Функция `coord_fixed()` представляет количество единиц по оси Y, эквивалентное одной единице по оси X. Что в свою очередь гарантирует, что линия, созданная `geom_abline()`, имеет угол $45^{\circ}$. 45-градусная линия позволяет легко сравнить пробег по шоссе и городу с корпусом, в котором город и шоссе MPG были равны.
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) +
+  geom_point() + 
+  geom_abline()
+``` 

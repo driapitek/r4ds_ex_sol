@@ -25,7 +25,7 @@
 <meta name="author" content="Stas Masuta">
 
 
-<meta name="date" content="2018-09-23">
+<meta name="date" content="2018-09-24">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -156,6 +156,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="3.8" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>3.8</b> Системы координат</a><ul>
 <li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.9.1"><i class="fa fa-check"></i>Упражнения 3.9.1</a></li>
 <li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.9.2"><i class="fa fa-check"></i>Упражнения 3.9.2</a></li>
+<li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.9.3"><i class="fa fa-check"></i>Упражнения 3.9.3</a></li>
+<li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.9.3-1"><i class="fa fa-check"></i>Упражнения 3.9.3</a></li>
 </ul></li>
 </ul></li>
 <li class="divider"></li>
@@ -1043,6 +1045,19 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">factor</span>(<span class="dv">1</span>), <span class="dt">fill =</span> <span class="kw">factor</span>(cyl))) <span class="op">+</span>
 <span class="st"> </span><span class="kw">geom_bar</span>() <span class="op">+</span><span class="st"> </span><span class="kw">coord_polar</span>(<span class="dt">theta =</span> <span class="st">&quot;y&quot;</span>)</code></pre></div>
 <p><img src="homework_files/figure-html/unnamed-chunk-71-1.png" width="672" /></p>
+<p>Можно использовать пример из упражнений</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(diamonds) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_bar</span>(
+    <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> cut, <span class="dt">fill =</span> clarity),
+    <span class="dt">position =</span> <span class="st">&quot;fill&quot;</span>
+    )</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-72-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(diamonds) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_bar</span>(
+    <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> cut, <span class="dt">fill =</span> clarity),
+    <span class="dt">position =</span> <span class="st">&quot;fill&quot;</span>) <span class="op">+</span>
+<span class="st">    </span><span class="kw">coord_polar</span>(<span class="dt">theta =</span> <span class="st">&quot;y&quot;</span>)</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-73-1.png" width="672" /></p>
 </div>
 <div id="-3.9.2" class="section level3 unnumbered">
 <h3>Упражнения 3.9.2</h3>
@@ -1058,7 +1073,30 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
          <span class="dt">title =</span> <span class="st">&quot;Заголовок&quot;</span>, 
          <span class="dt">subtitle =</span> <span class="st">&quot;под-заголовок&quot;</span>, 
          <span class="dt">tag =</span> <span class="st">&quot;тэг&quot;</span>)</code></pre></div>
-<p><img src="homework_files/figure-html/unnamed-chunk-72-1.png" width="672" /></p>
+<p><img src="homework_files/figure-html/unnamed-chunk-74-1.png" width="672" /></p>
+</div>
+<div id="-3.9.3" class="section level3 unnumbered">
+<h3>Упражнения 3.9.3</h3>
+<div class="question">
+<p>What’s the difference between <code>coord_quickmap()</code> and <code>coord_map()</code>?</p>
+</div>
+<p><code>Coord_map</code> проецирует часть земли, которая к слову является приблизительно сферической, на плоскую 2D-плоскость, используя любую проекцию, определенную пакетом <code>mapproj</code>. Карты, как правило, не сохраняют прямых линий, поэтому это требует значительных вычислений. Coord_quickmap - быстрое приближение, которое сохраняет прямые линии. Он лучше всего подходит для небольших площадей ближе к экватору.</p>
+<p>По умолчанию, <code>coord_map()</code> использует <a href="https://ru.wikipedia.org/wiki/Проекция_Меркатора">проекцию Меркатора</a>. Собственно в хэлпе больше информации с примерами. <a href="https://ggplot2.tidyverse.org/reference/coord_map.html">ggplot</a></p>
+</div>
+<div id="-3.9.3-1" class="section level3 unnumbered">
+<h3>Упражнения 3.9.3</h3>
+<div class="question">
+<p>What does the plot below tell you about the relationship between city and highway mpg? Why is <code>coord_fixed()</code> important? What does <code>geom_abline()</code> do?</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> mpg, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> cty, <span class="dt">y =</span> hwy)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_abline</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">coord_fixed</span>()</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-75-1.png" width="672" /></p>
+</div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> mpg, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> cty, <span class="dt">y =</span> hwy)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_abline</span>()</code></pre></div>
+<p><img src="homework_files/figure-html/unnamed-chunk-76-1.png" width="672" /></p>
 
 </div>
 </div>
