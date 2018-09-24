@@ -881,19 +881,46 @@ What’s the difference between `coord_quickmap()` and `coord_map()`?
 ### Упражнения 3.9.3 {.unnumbered}
 <div class="question">
 What does the plot below tell you about the relationship between city and highway mpg? Why is `coord_fixed()` important? What does `geom_abline()` do?
+</div>
 
 ```{r}
 ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) +
   geom_point() + 
   geom_abline() +
   coord_fixed()
-```  
-</div>
-
+``` 
+ 
 Функция `coord_fixed()` представляет количество единиц по оси Y, эквивалентное одной единице по оси X. Что в свою очередь гарантирует, что линия, созданная `geom_abline()`, имеет угол $45^{\circ}$. 45-градусная линия позволяет легко сравнить пробег по шоссе и городу с корпусом, в котором город и шоссе MPG были равны.
 
 ```{r}
 ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) +
   geom_point() + 
   geom_abline()
-``` 
+```
+
+## Многослойная грамматика графики
+
+Шаблон кода после всего пройденного материала выглядит следующим образом:
+
+```
+ggplot(data = <DATA>) + 
+  <GEOM_FUNCTION>(
+     mapping = aes(<MAPPINGS>),
+     stat = <STAT>, 
+     position = <POSITION>
+  ) +
+  <COORDINATE_FUNCTION> +
+  <FACET_FUNCTION>
+```
+
+# Рабочий процесс: основы
+## Основы написания кода
+Для вывода символа присвоения `<-` на MacBook, необходимо нажать комбинацию клавиш <option> + <-> (минус)
+
+## Что представляют собой имена
+`R` чувствителен к регистру.
+
+## Вызов функций
+
+## Упражнения
+### Упражнения 4.4.1 {.unnumbered}
