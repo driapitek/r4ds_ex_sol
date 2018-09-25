@@ -25,7 +25,7 @@
 <meta name="author" content="Stas Masuta">
 
 
-<meta name="date" content="2018-09-24">
+<meta name="date" content="2018-09-25">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -157,7 +157,17 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.9.1"><i class="fa fa-check"></i>Упражнения 3.9.1</a></li>
 <li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.9.2"><i class="fa fa-check"></i>Упражнения 3.9.2</a></li>
 <li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.9.3"><i class="fa fa-check"></i>Упражнения 3.9.3</a></li>
-<li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.9.3-1"><i class="fa fa-check"></i>Упражнения 3.9.3</a></li>
+<li class="chapter" data-level="" data-path="-.html"><a href="-.html#-3.9.4"><i class="fa fa-check"></i>Упражнения 3.9.4</a></li>
+</ul></li>
+<li class="chapter" data-level="3.9" data-path="-.html"><a href="-.html#--"><i class="fa fa-check"></i><b>3.9</b> Многослойная грамматика графики</a></li>
+<li class="chapter" data-level="3.10" data-path="-.html"><a href="-.html#--"><i class="fa fa-check"></i><b>3.10</b> Рабочий процесс: основы</a></li>
+<li class="chapter" data-level="3.11" data-path="-.html"><a href="-.html#--"><i class="fa fa-check"></i><b>3.11</b> Основы написания кода</a></li>
+<li class="chapter" data-level="3.12" data-path="-.html"><a href="-.html#---"><i class="fa fa-check"></i><b>3.12</b> Что представляют собой имена</a></li>
+<li class="chapter" data-level="3.13" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>3.13</b> Вызов функций</a></li>
+<li class="chapter" data-level="3.14" data-path="-.html"><a href="-.html#section-3.14"><i class="fa fa-check"></i><b>3.14</b> Упражнения</a><ul>
+<li class="chapter" data-level="" data-path="-.html"><a href="-.html#-4.4.1"><i class="fa fa-check"></i>Упражнение 4.4.1</a></li>
+<li class="chapter" data-level="" data-path="-.html"><a href="-.html#-4.4.2"><i class="fa fa-check"></i>Упражнение 4.4.2</a></li>
+<li class="chapter" data-level="" data-path="-.html"><a href="-.html#-4.4.3"><i class="fa fa-check"></i>Упражнение 4.4.3</a></li>
 </ul></li>
 </ul></li>
 <li class="divider"></li>
@@ -1083,20 +1093,83 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p><code>Coord_map</code> проецирует часть земли, которая к слову является приблизительно сферической, на плоскую 2D-плоскость, используя любую проекцию, определенную пакетом <code>mapproj</code>. Карты, как правило, не сохраняют прямых линий, поэтому это требует значительных вычислений. Coord_quickmap - быстрое приближение, которое сохраняет прямые линии. Он лучше всего подходит для небольших площадей ближе к экватору.</p>
 <p>По умолчанию, <code>coord_map()</code> использует <a href="https://ru.wikipedia.org/wiki/Проекция_Меркатора">проекцию Меркатора</a>. Собственно в хэлпе больше информации с примерами. <a href="https://ggplot2.tidyverse.org/reference/coord_map.html">ggplot</a></p>
 </div>
-<div id="-3.9.3-1" class="section level3 unnumbered">
-<h3>Упражнения 3.9.3</h3>
+<div id="-3.9.4" class="section level3 unnumbered">
+<h3>Упражнения 3.9.4</h3>
 <div class="question">
 <p>What does the plot below tell you about the relationship between city and highway mpg? Why is <code>coord_fixed()</code> important? What does <code>geom_abline()</code> do?</p>
+</div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> mpg, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> cty, <span class="dt">y =</span> hwy)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_abline</span>() <span class="op">+</span>
 <span class="st">  </span><span class="kw">coord_fixed</span>()</code></pre></div>
 <p><img src="homework_files/figure-html/unnamed-chunk-75-1.png" width="672" /></p>
-</div>
+<p>Функция <code>coord_fixed()</code> представляет количество единиц по оси Y, эквивалентное одной единице по оси X. Что в свою очередь гарантирует, что линия, созданная <code>geom_abline()</code>, имеет угол <span class="math inline">\(45^{\circ}\)</span>. 45-градусная линия позволяет легко сравнить пробег по шоссе и городу с корпусом, в котором город и шоссе MPG были равны.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> mpg, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> cty, <span class="dt">y =</span> hwy)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_abline</span>()</code></pre></div>
 <p><img src="homework_files/figure-html/unnamed-chunk-76-1.png" width="672" /></p>
+</div>
+</div>
+<div id="--" class="section level2">
+<h2><span class="header-section-number">3.9</span> Многослойная грамматика графики</h2>
+<p>Шаблон кода после всего пройденного материала выглядит следующим образом:</p>
+<pre><code>ggplot(data = &lt;DATA&gt;) + 
+  &lt;GEOM_FUNCTION&gt;(
+     mapping = aes(&lt;MAPPINGS&gt;),
+     stat = &lt;STAT&gt;, 
+     position = &lt;POSITION&gt;
+  ) +
+  &lt;COORDINATE_FUNCTION&gt; +
+  &lt;FACET_FUNCTION&gt;</code></pre>
+</div>
+<div id="--" class="section level2">
+<h2><span class="header-section-number">3.10</span> Рабочий процесс: основы</h2>
+<p><strong>ЗДЕСЬ ДОЛЖНА НАЧИНАТЬСЯ НОВАЯ ГЛАВА РАЗОБРАТЬСЯ ПОЧЕМУ ОНА НЕ НАЧИНАЕТСЯ</strong></p>
+</div>
+<div id="--" class="section level2">
+<h2><span class="header-section-number">3.11</span> Основы написания кода</h2>
+<p>Для вывода символа присвоения <code>&lt;-</code> на MacBook, необходимо нажать комбинацию клавиш <option> + &lt;-&gt; (минус)</p>
+</div>
+<div id="---" class="section level2">
+<h2><span class="header-section-number">3.12</span> Что представляют собой имена</h2>
+<p><code>R</code> чувствителен к регистру.</p>
+</div>
+<div id="-" class="section level2">
+<h2><span class="header-section-number">3.13</span> Вызов функций</h2>
+</div>
+<div id="section-3.14" class="section level2">
+<h2><span class="header-section-number">3.14</span> Упражнения</h2>
+<div id="-4.4.1" class="section level3 unnumbered">
+<h3>Упражнение 4.4.1</h3>
+<div class="question">
+<p>Why does this code not work?</p>
+<p><code>r   my_variable &lt;- 10   my_varıable</code></p>
+<p>Look carefully! (This may seem like an exercise in pointlessness, but training your brain to notice even the tiniest difference will pay off when programming.)</p>
+</div>
+<p>Код не работает, потому что допущена опечатка при вызове функции. Обратите внимание на <code>i</code>. Пишите без ошибок.</p>
+</div>
+<div id="-4.4.2" class="section level3 unnumbered">
+<h3>Упражнение 4.4.2</h3>
+<div class="question">
+<p>```r library(tidyverse)</p>
+<p>ggplot(dota = mpg) + geom_point(mapping = aes(x = displ, y = hwy))</p>
+<p>fliter(mpg, cyl = 8) filter(diamond, carat &gt; 3) ```</p>
+</div>
+<p>Должно быть так. В названии библиотеки забыли кавычки <code>&quot;&quot;</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;tidyverse&quot;</span>)</code></pre></div>
+<p>При объявнлении исходных данных допущена ошибка. Вместо <code>data</code> написано <code>dota</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> mpg) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> displ, <span class="dt">y =</span> hwy))</code></pre></div>
+<p>В следующем примере пришлось чуть повозиться. Тут одновременно несколько ошибок. Вместо <code>filter()</code> написано <code>fliter()</code>. А при объявлении, нужно было правильно сравнивать вместо <code>=</code> надо <code>==</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">filter</span>(mpg, <span class="dt">cyl =</span> <span class="dv">8</span>)</code></pre></div>
+<p>И в последнем примере при объявлении фрейма данных допущена опечатка. Вместо <code>diamond</code> надо писать <code>diamonds</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">filter</span>(diamonds, carat <span class="op">&gt;</span><span class="st"> </span><span class="dv">3</span>)</code></pre></div>
+</div>
+<div id="-4.4.3" class="section level3 unnumbered">
+<h3>Упражнение 4.4.3</h3>
+<div class="question">
+Press Alt + Shift + K. What happens? How can you get to the same place using the menus?
+</div>
 
 </div>
 </div>
