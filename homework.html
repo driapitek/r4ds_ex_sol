@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Решение упражнений из книги R Science</title>
+  <meta name="description" content="Здесь будут публиковаться решения заданий из книги">
+  <meta name="generator" content="bookdown <!--bookdown:version--> and GitBook 2.6.7">
+
+  <meta property="og:title" content="Решение упражнений из книги R Science" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Здесь будут публиковаться решения заданий из книги" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Решение упражнений из книги R Science" />
+  
+  <meta name="twitter:description" content="Здесь будут публиковаться решения заданий из книги" />
+  
+
+<meta name="author" content="Stas Masuta">
+
+
+<meta name="date" content="2018-09-25">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<!--bookdown:link_prev-->
+<!--bookdown:link_next-->
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+<!--bookdown:title:start-->
+<div id="header">
+<h1 class="title">Решение упражнений из книги R Science</h1>
+<h4 class="author"><em>Stas Masuta</em></h4>
+<h4 class="date"><em>2018-09-25</em></h4>
+</div>
+<!--bookdown:title:end-->
+
+<!--bookdown:toc:start-->
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+<!--bookdown:toc2:start-->
+<ul>
+<li><a><span class="toc-section-number">1</span> Введение</a><ul>
+<li><a href="#acknowledgments">Acknowledgments</a></li>
+</ul></li>
+<li><a href="#-"><span class="toc-section-number">2</span> Предварительный анализ</a><ul>
+<li><a href="#-1"><span class="toc-section-number">2.1</span> Введение</a></li>
+<li><a href="#-"><span class="toc-section-number">2.2</span> Первые шаги</a><ul>
+<li><a href="#-3.2.1">Упражнение 3.2.1</a></li>
+<li><a href="#-3.2.2">Упражнение 3.2.2</a></li>
+<li><a href="#-3.2.3">Упражнение 3.2.3</a></li>
+<li><a href="#-3.2.4">Упражнение 3.2.4</a></li>
+<li><a href="#-3.2.5">Упражнение 3.2.5</a></li>
+</ul></li>
+<li><a href="#-"><span class="toc-section-number">2.3</span> Эстетика визуализации</a><ul>
+<li><a href="#-3.3.1">Упражнения 3.3.1</a></li>
+<li><a href="#-3.3.2">Упражнения 3.3.2</a></li>
+<li><a href="#-3.3.3">Упражнения 3.3.3</a></li>
+<li><a href="#-3.3.4">Упражнения 3.3.4</a></li>
+<li><a href="#-3.3.5">Упражнения 3.3.5</a></li>
+<li><a href="#-3.3.6">Упражнения 3.3.6</a></li>
+</ul></li>
+<li><a href="#-"><span class="toc-section-number">2.4</span> Распространённые ошибки</a></li>
+<li><a><span class="toc-section-number">2.5</span> Панели</a><ul>
+<li><a href="#-3.5.1">Упражнение 3.5.1</a></li>
+<li><a href="#-3.5.2">Упражнение 3.5.2</a></li>
+<li><a href="#-3.5.3">Упражнение 3.5.3</a></li>
+<li><a href="#-3.5.4">Упражнение 3.5.4</a></li>
+<li><a href="#-3.5.5">Упражнение 3.5.5</a></li>
+<li><a href="#-3.5.6">Упражнение 3.5.6</a></li>
+</ul></li>
+<li><a href="#-"><span class="toc-section-number">2.6</span> Геометрические объекты</a><ul>
+<li><a href="#-3.6.1">Упражнения 3.6.1</a></li>
+<li><a href="#-3.6.2">Упражнения 3.6.2</a></li>
+<li><a href="#-3.6.3">Упражнения 3.6.3</a></li>
+<li><a href="#-3.6.4">Упражнения 3.6.4</a></li>
+<li><a href="#-3.6.5">Упражнения 3.6.5</a></li>
+<li><a href="#-3.6.6">Упражнения 3.6.6</a></li>
+</ul></li>
+<li><a href="#-"><span class="toc-section-number">2.7</span> Статистические преобразования</a><ul>
+<li><a href="#-3.7.1">Упражнения 3.7.1</a></li>
+<li><a href="#-3.7.2">Упражнения 3.7.2</a></li>
+<li><a href="#-3.7.3">Упражнения 3.7.3</a></li>
+<li><a href="#-3.7.4">Упражнения 3.7.4</a></li>
+<li><a href="#-3.7.5">Упражнения 3.7.5</a></li>
+</ul></li>
+<li><a href="#-"><span class="toc-section-number">2.8</span> Позиционные настройки</a><ul>
+<li><a href="#-3.8.1">Упражнения 3.8.1</a></li>
+<li><a href="#-3.8.2">Упражнения 3.8.2</a></li>
+<li><a href="#-3.8.3">Упражнения 3.8.3</a></li>
+<li><a href="#-3.8.4">Упражнения 3.8.4</a></li>
+</ul></li>
+<li><a href="#-"><span class="toc-section-number">2.9</span> Системы координат</a><ul>
+<li><a href="#-3.9.1">Упражнения 3.9.1</a></li>
+<li><a href="#-3.9.2">Упражнения 3.9.2</a></li>
+<li><a href="#-3.9.3">Упражнения 3.9.3</a></li>
+<li><a href="#-3.9.4">Упражнения 3.9.4</a></li>
+</ul></li>
+<li><a href="#--"><span class="toc-section-number">2.10</span> Многослойная грамматика графики</a></li>
+</ul></li>
+<li><a href="#--"><span class="toc-section-number">3</span> Рабочий процесс: основы</a><ul>
+<li><a href="#--"><span class="toc-section-number">3.1</span> Основы написания кода</a></li>
+<li><a href="#---"><span class="toc-section-number">3.2</span> Что представляют собой имена</a></li>
+<li><a href="#-"><span class="toc-section-number">3.3</span> Вызов функций</a></li>
+<li><a><span class="toc-section-number">3.4</span> Упражнения</a><ul>
+<li><a href="#-4.4.1">Упражнение 4.4.1</a></li>
+<li><a href="#-4.4.2">Упражнение 4.4.2</a></li>
+<li><a href="#-4.4.3">Упражнение 4.4.3</a></li>
+</ul></li>
+</ul></li>
+</ul>
+<!--bookdown:toc2:end-->
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Решение упражнений из книги R Science</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<!--bookdown:toc:end-->
+<!--bookdown:body:start-->
+<div class="section level1">
+<h1><span class="header-section-number">1</span> Введение</h1>
+<p>Placeholder</p>
+<div id="acknowledgments" class="section level2 unnumbered">
+<h2>Acknowledgments</h2>
+<!--chapter:end:index.Rmd-->
+</div>
+</div>
+<div id="-" class="section level1">
+<h1><span class="header-section-number">2</span> Предварительный анализ</h1>
+<p>Placeholder</p>
+<div id="-1" class="section level2">
+<h2><span class="header-section-number">2.1</span> Введение</h2>
+</div>
+<div id="-" class="section level2">
+<h2><span class="header-section-number">2.2</span> Первые шаги</h2>
+<div id="-3.2.1" class="section level3 unnumbered">
+<h3>Упражнение 3.2.1</h3>
+</div>
+<div id="-3.2.2" class="section level3 unnumbered">
+<h3>Упражнение 3.2.2</h3>
+</div>
+<div id="-3.2.3" class="section level3 unnumbered">
+<h3>Упражнение 3.2.3</h3>
+</div>
+<div id="-3.2.4" class="section level3 unnumbered">
+<h3>Упражнение 3.2.4</h3>
+</div>
+<div id="-3.2.5" class="section level3 unnumbered">
+<h3>Упражнение 3.2.5</h3>
+</div>
+</div>
+<div id="-" class="section level2">
+<h2><span class="header-section-number">2.3</span> Эстетика визуализации</h2>
+<div id="-3.3.1" class="section level3 unnumbered">
+<h3>Упражнения 3.3.1</h3>
+</div>
+<div id="-3.3.2" class="section level3 unnumbered">
+<h3>Упражнения 3.3.2</h3>
+</div>
+<div id="-3.3.3" class="section level3 unnumbered">
+<h3>Упражнения 3.3.3</h3>
+</div>
+<div id="-3.3.4" class="section level3 unnumbered">
+<h3>Упражнения 3.3.4</h3>
+</div>
+<div id="-3.3.5" class="section level3 unnumbered">
+<h3>Упражнения 3.3.5</h3>
+</div>
+<div id="-3.3.6" class="section level3 unnumbered">
+<h3>Упражнения 3.3.6</h3>
+</div>
+</div>
+<div id="-" class="section level2">
+<h2><span class="header-section-number">2.4</span> Распространённые ошибки</h2>
+</div>
+<div class="section level2">
+<h2><span class="header-section-number">2.5</span> Панели</h2>
+<div id="-3.5.1" class="section level3 unnumbered">
+<h3>Упражнение 3.5.1</h3>
+</div>
+<div id="-3.5.2" class="section level3 unnumbered">
+<h3>Упражнение 3.5.2</h3>
+</div>
+<div id="-3.5.3" class="section level3 unnumbered">
+<h3>Упражнение 3.5.3</h3>
+</div>
+<div id="-3.5.4" class="section level3 unnumbered">
+<h3>Упражнение 3.5.4</h3>
+</div>
+<div id="-3.5.5" class="section level3 unnumbered">
+<h3>Упражнение 3.5.5</h3>
+</div>
+<div id="-3.5.6" class="section level3 unnumbered">
+<h3>Упражнение 3.5.6</h3>
+</div>
+</div>
+<div id="-" class="section level2">
+<h2><span class="header-section-number">2.6</span> Геометрические объекты</h2>
+<div id="-3.6.1" class="section level3 unnumbered">
+<h3>Упражнения 3.6.1</h3>
+</div>
+<div id="-3.6.2" class="section level3 unnumbered">
+<h3>Упражнения 3.6.2</h3>
+</div>
+<div id="-3.6.3" class="section level3 unnumbered">
+<h3>Упражнения 3.6.3</h3>
+</div>
+<div id="-3.6.4" class="section level3 unnumbered">
+<h3>Упражнения 3.6.4</h3>
+</div>
+<div id="-3.6.5" class="section level3 unnumbered">
+<h3>Упражнения 3.6.5</h3>
+</div>
+<div id="-3.6.6" class="section level3 unnumbered">
+<h3>Упражнения 3.6.6</h3>
+</div>
+</div>
+<div id="-" class="section level2">
+<h2><span class="header-section-number">2.7</span> Статистические преобразования</h2>
+<div id="-3.7.1" class="section level3 unnumbered">
+<h3>Упражнения 3.7.1</h3>
+</div>
+<div id="-3.7.2" class="section level3 unnumbered">
+<h3>Упражнения 3.7.2</h3>
+</div>
+<div id="-3.7.3" class="section level3 unnumbered">
+<h3>Упражнения 3.7.3</h3>
+</div>
+<div id="-3.7.4" class="section level3 unnumbered">
+<h3>Упражнения 3.7.4</h3>
+</div>
+<div id="-3.7.5" class="section level3 unnumbered">
+<h3>Упражнения 3.7.5</h3>
+</div>
+</div>
+<div id="-" class="section level2">
+<h2><span class="header-section-number">2.8</span> Позиционные настройки</h2>
+<div id="-3.8.1" class="section level3 unnumbered">
+<h3>Упражнения 3.8.1</h3>
+</div>
+<div id="-3.8.2" class="section level3 unnumbered">
+<h3>Упражнения 3.8.2</h3>
+</div>
+<div id="-3.8.3" class="section level3 unnumbered">
+<h3>Упражнения 3.8.3</h3>
+</div>
+<div id="-3.8.4" class="section level3 unnumbered">
+<h3>Упражнения 3.8.4</h3>
+</div>
+</div>
+<div id="-" class="section level2">
+<h2><span class="header-section-number">2.9</span> Системы координат</h2>
+<div id="-3.9.1" class="section level3 unnumbered">
+<h3>Упражнения 3.9.1</h3>
+</div>
+<div id="-3.9.2" class="section level3 unnumbered">
+<h3>Упражнения 3.9.2</h3>
+</div>
+<div id="-3.9.3" class="section level3 unnumbered">
+<h3>Упражнения 3.9.3</h3>
+</div>
+<div id="-3.9.4" class="section level3 unnumbered">
+<h3>Упражнения 3.9.4</h3>
+</div>
+</div>
+<div id="--" class="section level2">
+<h2><span class="header-section-number">2.10</span> Многослойная грамматика графики</h2>
+<!--chapter:end:exercise.Rmd-->
+</div>
+</div>
+<div id="--" class="section level1">
+<h1><span class="header-section-number">3</span> Рабочий процесс: основы</h1>
+<div id="--" class="section level2">
+<h2><span class="header-section-number">3.1</span> Основы написания кода</h2>
+<p>Для вывода символа присвоения <code>&lt;-</code> на MacBook, необходимо нажать комбинацию клавиш <option> + &lt;-&gt; (минус)</p>
+</div>
+<div id="---" class="section level2">
+<h2><span class="header-section-number">3.2</span> Что представляют собой имена</h2>
+<p><code>R</code> чувствителен к регистру.</p>
+</div>
+<div id="-" class="section level2">
+<h2><span class="header-section-number">3.3</span> Вызов функций</h2>
+<p>Не было упражнений</p>
+</div>
+<div class="section level2">
+<h2><span class="header-section-number">3.4</span> Упражнения</h2>
+<div id="-4.4.1" class="section level3 unnumbered">
+<h3>Упражнение 4.4.1</h3>
+<div class="question">
+<p>Why does this code not work?</p>
+<p><code>r   my_variable &lt;- 10   my_varıable</code></p>
+<p>Look carefully! (This may seem like an exercise in pointlessness, but training your brain to notice even the tiniest difference will pay off when programming.)</p>
+</div>
+<p>Код не работает, потому что допущена опечатка при вызове функции. Обратите внимание на <code>i</code>. Пишите без ошибок.</p>
+</div>
+<div id="-4.4.2" class="section level3 unnumbered">
+<h3>Упражнение 4.4.2</h3>
+<div class="question">
+<p>```r library(tidyverse)</p>
+<p>ggplot(dota = mpg) + geom_point(mapping = aes(x = displ, y = hwy))</p>
+<p>fliter(mpg, cyl = 8) filter(diamond, carat &gt; 3) ```</p>
+</div>
+<p>Должно быть так. В названии библиотеки забыли кавычки <code>&quot;&quot;</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;tidyverse&quot;</span>)</code></pre></div>
+<p>При объявнлении исходных данных допущена ошибка. Вместо <code>data</code> написано <code>dota</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> mpg) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> displ, <span class="dt">y =</span> hwy))</code></pre></div>
+<p>В следующем примере пришлось чуть повозиться. Тут одновременно несколько ошибок. Вместо <code>filter()</code> написано <code>fliter()</code>. А при объявлении, нужно было правильно сравнивать вместо <code>=</code> надо <code>==</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">filter</span>(mpg, <span class="dt">cyl =</span> <span class="dv">8</span>)</code></pre></div>
+<p>И в последнем примере при объявлении фрейма данных допущена опечатка. Вместо <code>diamond</code> надо писать <code>diamonds</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">filter</span>(diamonds, carat <span class="op">&gt;</span><span class="st"> </span><span class="dv">3</span>)</code></pre></div>
+</div>
+<div id="-4.4.3" class="section level3 unnumbered">
+<h3>Упражнение 4.4.3</h3>
+<div class="question">
+Press Alt + Shift + K. What happens? How can you get to the same place using the menus?
+</div>
+<p>This gives a menu with keyboard shortcuts. This can be found in the menu under <code>Tools -&gt; Keyboard Shortcuts Help</code>.</p>
+<!--chapter:end:workflow_basics.Rmd-->
+</div>
+</div>
+</div>
+<!--bookdown:body:end-->
+            </section>
+
+          </div>
+        </div>
+      </div>
+<!--bookdown:link_prev-->
+<!--bookdown:link_next-->
+    </div>
+  </div>
+<!--bookdown:config-->
+
+</body>
+
+</html>

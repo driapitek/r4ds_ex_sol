@@ -1,0 +1,155 @@
+--- 
+title: "Решение упражнений из книги R Science"
+author: "Stas Masuta"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+documentclass: book
+bibliography: [book.bib, packages.bib]
+biblio-style: apalike
+link-citations: yes
+description: "Здесь будут публиковаться решения заданий из книги"
+---
+
+# Введение
+
+Placeholder
+
+
+## Acknowledgments {-}
+
+<!--chapter:end:index.Rmd-->
+
+
+# Предварительный анализ
+
+Placeholder
+
+
+## Введение
+## Первые шаги
+### Упражнение 3.2.1 {.unnumbered}
+### Упражнение 3.2.2 {.unnumbered}
+### Упражнение 3.2.3 {.unnumbered}
+### Упражнение 3.2.4 {.unnumbered}
+### Упражнение 3.2.5 {.unnumbered}
+## Эстетика визуализации
+### Упражнения 3.3.1 {.unnumbered} 
+### Упражнения 3.3.2 {.unnumbered} 
+### Упражнения 3.3.3 {.unnumbered} 
+### Упражнения 3.3.4 {.unnumbered} 
+### Упражнения 3.3.5 {.unnumbered}
+### Упражнения 3.3.6 {.unnumbered}
+## Распространённые ошибки
+## Панели
+### Упражнение 3.5.1 {.unnumbered}
+### Упражнение 3.5.2 {.unnumbered}
+### Упражнение 3.5.3 {.unnumbered}
+### Упражнение 3.5.4 {.unnumbered}
+### Упражнение 3.5.5 {.unnumbered}
+### Упражнение 3.5.6 {.unnumbered}
+## Геометрические объекты
+### Упражнения 3.6.1 {.unnumbered}
+### Упражнения 3.6.2 {.unnumbered}
+### Упражнения 3.6.3 {.unnumbered}
+### Упражнения 3.6.4 {.unnumbered}
+### Упражнения 3.6.5 {.unnumbered}
+### Упражнения 3.6.6 {.unnumbered}
+## Статистические преобразования
+### Упражнения 3.7.1 {.unnumbered}
+### Упражнения 3.7.2 {.unnumbered}
+### Упражнения 3.7.3 {.unnumbered}
+### Упражнения 3.7.4 {.unnumbered}
+### Упражнения 3.7.5 {.unnumbered}
+## Позиционные настройки
+### Упражнения 3.8.1 {.unnumbered}
+### Упражнения 3.8.2 {.unnumbered}
+### Упражнения 3.8.3 {.unnumbered}
+### Упражнения 3.8.4 {.unnumbered}
+## Системы координат
+### Упражнения 3.9.1 {.unnumbered}
+### Упражнения 3.9.2 {.unnumbered}
+### Упражнения 3.9.3 {.unnumbered}
+### Упражнения 3.9.4 {.unnumbered}
+## Многослойная грамматика графики
+
+<!--chapter:end:exercise.Rmd-->
+
+---
+output: html_document
+editor_options:
+  chunk_output_type: console
+---
+
+# Рабочий процесс: основы
+
+## Основы написания кода
+Для вывода символа присвоения `<-` на MacBook, необходимо нажать комбинацию клавиш <option> + <-> (минус)
+
+## Что представляют собой имена
+`R` чувствителен к регистру.
+
+## Вызов функций
+Не было упражнений
+
+## Упражнения
+### Упражнение 4.4.1 {.unnumbered}
+<div class="question">
+  Why does this code not work?
+  
+  ```{r, eval = FALSE}
+my_variable <- 10
+my_varıable
+```
+
+Look carefully! (This may seem like an exercise in pointlessness, but training your brain to notice even the tiniest difference will pay off when programming.)
+</div>
+  
+  Код не работает, потому что допущена опечатка при вызове функции. Обратите внимание на `i`. Пишите без ошибок.
+
+### Упражнение 4.4.2 {.unnumbered}
+<div class="question">
+  ```{r, eval = FALSE}
+library(tidyverse)
+
+ggplot(dota = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy))
+
+fliter(mpg, cyl = 8)
+filter(diamond, carat > 3)
+```
+</div>
+  
+  Должно быть так. В названии библиотеки забыли кавычки `""`
+
+```{r, eval = FALSE}
+library("tidyverse")
+```
+
+При объявнлении исходных данных допущена ошибка. Вместо `data` написано `dota`
+
+```{r, eval = FALSE}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy))
+```
+
+В следующем примере пришлось чуть повозиться. Тут одновременно несколько ошибок. Вместо `filter()` написано `fliter()`. А при объявлении, нужно было правильно сравнивать вместо `=` надо `==`
+
+```{r, eval = FALSE}
+filter(mpg, cyl = 8)
+```
+
+И в последнем примере при объявлении фрейма данных допущена опечатка. Вместо `diamond` надо писать `diamonds`.
+```{r, eval = FALSE}
+filter(diamonds, carat > 3)
+```
+
+### Упражнение 4.4.3 {.unnumbered}
+<div class="question">
+  Press Alt + Shift + K. What happens? How can you get to the same place using the menus?
+  </div>
+  
+  This gives a menu with keyboard shortcuts. This can be found in the menu under `Tools -> Keyboard Shortcuts Help`.
+
+
+<!--chapter:end:workflow_basics.Rmd-->
+

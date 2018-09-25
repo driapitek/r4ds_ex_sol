@@ -10,6 +10,12 @@ link-citations: yes
 description: "Здесь будут публиковаться решения заданий из книги"
 ---
 
+---
+output: html_document
+editor_options:
+  chunk_output_type: console
+---
+
 # Введение
 
 Это электронная версия решений упражнений, свёрстанная при помощи **bookdown**, который можно установить здесь:

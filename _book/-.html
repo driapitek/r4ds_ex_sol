@@ -1124,7 +1124,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 <div id="--" class="section level2">
 <h2><span class="header-section-number">3.10</span> Рабочий процесс: основы</h2>
-<p><strong>ЗДЕСЬ ДОЛЖНА НАЧИНАТЬСЯ НОВАЯ ГЛАВА РАЗОБРАТЬСЯ ПОЧЕМУ ОНА НЕ НАЧИНАЕТСЯ</strong></p>
 </div>
 <div id="--" class="section level2">
 <h2><span class="header-section-number">3.11</span> Основы написания кода</h2>
@@ -1136,6 +1135,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 <div id="-" class="section level2">
 <h2><span class="header-section-number">3.13</span> Вызов функций</h2>
+<p>Не было упражнений</p>
 </div>
 <div id="section-3.14" class="section level2">
 <h2><span class="header-section-number">3.14</span> Упражнения</h2>
@@ -1143,7 +1143,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h3>Упражнение 4.4.1</h3>
 <div class="question">
 <p>Why does this code not work?</p>
-<p><code>r   my_variable &lt;- 10   my_varıable</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_variable &lt;-<span class="st"> </span><span class="dv">10</span>
+my_varıable</code></pre></div>
 <p>Look carefully! (This may seem like an exercise in pointlessness, but training your brain to notice even the tiniest difference will pay off when programming.)</p>
 </div>
 <p>Код не работает, потому что допущена опечатка при вызове функции. Обратите внимание на <code>i</code>. Пишите без ошибок.</p>
@@ -1151,9 +1152,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="-4.4.2" class="section level3 unnumbered">
 <h3>Упражнение 4.4.2</h3>
 <div class="question">
-<p>```r library(tidyverse)</p>
-<p>ggplot(dota = mpg) + geom_point(mapping = aes(x = displ, y = hwy))</p>
-<p>fliter(mpg, cyl = 8) filter(diamond, carat &gt; 3) ```</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)
+
+<span class="kw">ggplot</span>(<span class="dt">dota =</span> mpg) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> displ, <span class="dt">y =</span> hwy))
+
+<span class="kw">fliter</span>(mpg, <span class="dt">cyl =</span> <span class="dv">8</span>)
+<span class="kw">filter</span>(diamond, carat <span class="op">&gt;</span><span class="st"> </span><span class="dv">3</span>)</code></pre></div>
 </div>
 <p>Должно быть так. В названии библиотеки забыли кавычки <code>&quot;&quot;</code></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;tidyverse&quot;</span>)</code></pre></div>
@@ -1168,8 +1173,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="-4.4.3" class="section level3 unnumbered">
 <h3>Упражнение 4.4.3</h3>
 <div class="question">
-Press Alt + Shift + K. What happens? How can you get to the same place using the menus?
+<p>Press Alt + Shift + K. What happens? How can you get to the same place using the menus?</p>
 </div>
+<p>This gives a menu with keyboard shortcuts. This can be found in the menu under <code>Tools -&gt; Keyboard Shortcuts Help</code>.</p>
+
 
 </div>
 </div>
