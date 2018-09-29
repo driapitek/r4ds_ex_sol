@@ -123,7 +123,7 @@ sqrt(2) ^ 2 == 1
 
 Функция `filter()` включает в вывод лишь те строки, для которых условие имеет значение `TRUE`. `FALSE` и `NA` исключаются.
 
-### Упражнение 5.3.1.1 {.unnumbered} 
+### Упражнение 5.2.4.1 {.unnumbered} 
 <div class="question">
 Найдите все авиарейсы, которые
 </div>
@@ -176,4 +176,19 @@ airlanes
 
 ```{r}
 (moon <- filter(flights, dep_time == 2400 | dep_time <= 600))
+```
+
+### Упражнение 5.2.4.2 {.unnumbered} 
+<div class="question">
+Another useful `dplyr` filtering helper is `between()`. What does it do? Can you use it to simplify the code needed to answer the previous challenges?
+</div>
+
+Из описания в хэлпе, функция `between()` это короткая запись для `>= left & x <= right`. Или если быть точным: `between(x, left, right)`. Конечно её гораздо удобнее использовать. Эту функцию можно применить к упражнению  *г*. Сравним:
+
+```{r}
+(sum_flights <- filter(flights, month %in% c(7, 8, 9)))
+```
+
+```{r}
+(sum_flights <- filter(flights, between(month, 7, 9)))
 ```
