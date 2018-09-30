@@ -192,3 +192,42 @@ Another useful `dplyr` filtering helper is `between()`. What does it do? Can you
 ```{r}
 (sum_flights <- filter(flights, between(month, 7, 9)))
 ```
+
+### Упражнение 5.2.4.3 {.unnumbered} 
+<div class="question">
+How many flights have a missing `dep_time`? What other variables are missing? What might these rows represent?
+</div>
+
+```{r}
+(filter(flights, is.na(dep_time)))
+```
+
+Ответ 8255 рейсов. Так же отсутствуют: `dep_delay`, `arr_time`, `arr_delay`. Вероятно это отменённые рейсы.
+
+
+### Упражнение 5.2.4.3 {.unnumbered} 
+<div class="question">
+Why is `NA ^ 0` not missing? Why is `NA | TRUE` not missing? Why is `FALSE & NA` not missing? Can you figure out the general rule? (`NA * 0` is a tricky counterexample!)
+</div>
+
+1. `NA ^ 0 == 1`. Всё в точности с математикой, которая говорит, что любое значение в степени 0 == 1 или точнее $x^0=1$
+
+1. `NA | TRUE`. Всё или ПРАВДА всегда правда :
+
+| $a$ | $b$ | $a\lor b$ |
+| - |:-:||:-:|
+| 0 | 0 | 0 |
+| 0 | 1 | 1 |
+| 1 | 0 | 1 |
+| 1 | 1 | 1 |
+
+1. `FALSE & NA`. Всё и ЛОЖЬ всегда Ложь.
+
+| $a$ | $b$ | $a\land b$ |
+| - |:-:||:-:|
+| 0 | 0 | 0 |
+| 0 | 1 | 0 |
+| 1 | 0 | 0 |
+| 1 | 1 | 1 |
+
+1. `NA * 0`. Причина по которой значение неопределено. Это то что умножение чего угодна на бесконечность, равно бесконечности, или правильнее - неопределённое значение. [нечисло](https://ru.wikipedia.org/wiki/NaN)
