@@ -123,6 +123,8 @@ sqrt(2) ^ 2 == 1
 
 Функция `filter()` включает в вывод лишь те строки, для которых условие имеет значение `TRUE`. `FALSE` и `NA` исключаются.
 
+Для того чтобы проверить является ли используемое значением отсутствующим можно использовать функцию `is.na()`
+
 ### Упражнение 5.2.4.1 {.unnumbered} 
 <div class="question">
 Найдите все авиарейсы, которые
@@ -204,8 +206,7 @@ How many flights have a missing `dep_time`? What other variables are missing? Wh
 
 Ответ 8255 рейсов. Так же отсутствуют: `dep_delay`, `arr_time`, `arr_delay`. Вероятно это отменённые рейсы.
 
-
-### Упражнение 5.2.4.3 {.unnumbered} 
+### Упражнение 5.2.4.4 {.unnumbered} 
 <div class="question">
 Why is `NA ^ 0` not missing? Why is `NA | TRUE` not missing? Why is `FALSE & NA` not missing? Can you figure out the general rule? (`NA * 0` is a tricky counterexample!)
 </div>
@@ -231,3 +232,89 @@ Why is `NA ^ 0` not missing? Why is `NA | TRUE` not missing? Why is `FALSE & NA`
 | 1 | 1 | 1 |
 
 1. `NA * 0`. Причина по которой значение неопределено. Это то что умножение чего угодна на бесконечность, равно бесконечности, или правильнее - неопределённое значение. [нечисло](https://ru.wikipedia.org/wiki/NaN)
+
+
+## Перестановка строк с помощью функции `arange()`
+
+Синтаксис у этой функции такой же как у фильтра. `arranga()` сортирует по убыванию, а не фильтрует список. При этом отсутствующие значения всегда остаются в конце. При этом для сортировки по возрастанию используется функция `desc()`
+
+### Упражнение 5.3.1.1 {.unnumbered} 
+<div class="question">
+How could you use `arrange()` to sort all missing values to the start? (Hint: use `is.na()`).
+</div>
+
+Берём пример из учебника.
+
+```{r}
+arrange(flights, desc(arr_delay))
+```
+
+Добавляем как подсказывают, функцию `is.na()`
+
+```{r}
+arrange(flights, desc(is.na(arr_delay)))
+```
+
+### Упражнение 5.3.1.2 {.unnumbered}
+<div class="question">
+Sort `flights` to find the most delayed flights. Find the flights that left earliest.
+</div>
+
+Чтобы найти рейсы с самыми большими задержками, сортируем по возрастанию соответствующий столбец `dep_delay`
+
+```{r}
+arrange(flights, desc(dep_delay))
+```
+
+Первые десять рейсов задерживались на время от 896 минут до 1301, это почти сутки (21 час) в аэропорте. Уффф.
+
+Чтобы найти рейсы с самым ранним временем вылета, сортируем по убыванию соответствующий столбец `dep_time`
+
+```{r}
+arrange(flights, dep_time)
+```
+
+Ожидаемо, это время вылетов в полночь и минутой позднее.
+
+### Упражнение 5.3.1.3 {.unnumbered}
+<div class="question">
+Sort `flights` to find the fastest flights.
+</div>
+
+Чтобы найти самые быстрые полёты, отсортируем все полёты по времени проведённому в воздухе. Это столбец `air_time` отсортированный по возрастанию.
+
+```{r}
+arrange(flights, air_time)
+```
+
+### Упражнение 5.3.1.4 {.unnumbered}
+<div class="question">
+Which flights traveled the longest? Which traveled the shortest?
+</div>
+
+Сделаем так, сначала отсортируем по расстоянию, а потом по времени проведённому в воздухе
+
+```{r}
+arrange(flights, desc(distance))
+```
+
+Самые длинные полёты из `JFK` в `HNL`. Из Нью-Йорка в Гонолулу - 4983 мили.
+
+```{r}
+arrange(flights, desc(distance))
+```
+
+[Полёт длится 691 минуту](https://www.google.com/maps/dir/Гонолулу+(HNL),+300+Rodgers+Blvd,+Honolulu,+HI+96819,+США/JFK+International+Airport,+New+York,+NY,+USA/@27.4344347,-126.6384014,4.03z/data=!4m14!4m13!1m5!1m1!1s0x7c006f943168f55f:0x7ed111b1cbf331df!2m2!1d-157.9250736!2d21.3245132!1m5!1m1!1s0x89c26650d5404947:0xec4fb213489f11f0!2m2!1d-73.7781391!2d40.6413111!3e4)
+
+
+```{r}
+arrange(flights, distance)
+```
+
+Самый короткий из `EWR` в `LGA`. Перелёт в пределах Нью-Йорка, который по всей видимости не состоялся, так как у него нету времени полёта. Следующий за ним это полёт из Нью-Арка в Филадельфию - 80 миль. Посмотрим ещё и по времени, проведённому в воздухе:
+
+```{r}
+arrange(flights, distance, air_time)
+```
+
+## Выбор столбцов с помощью функции `select()`
