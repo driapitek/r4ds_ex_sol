@@ -318,3 +318,131 @@ arrange(flights, distance, air_time)
 ```
 
 ## Выбор столбцов с помощью функции `select()`
+
+Функция `select()` помогает отобрать из фрейма данных необходимые столбцы. Синтаксис простой и привычный
+
+* Указать конкретные столбцы можно через запятую 
+```{r}
+select(flights, year, month, day)
+```
+
+* Указать столбцы в промежутке
+```{r}
+select(flights, year:day)
+```
+
+* Выбрать всех столбцов за исключением тех, которые находятся между столбцами включая последние
+```{r}
+select(flights, -(year:day))
+```
+
+* `start_with("abc")` - соответствует именам, начинающимся с последовательности символов "abc"
+
+* `end_with("abc")` - соответствует именам, заканчивающимся последовательностью символов "abc"
+
+* `contains("abc")` - соответствует именам, содержащим последовательности символов "abc"
+
+* `matches("(.)\\1")` - выбирает переменные, соответствующие регулярному выражению.
+
+* `num_range("x", 1:3)` - соответствует `x1`, `x2`, `x3`
+
+* Переименовать переменные, сохраняя все переменные не указанные в явном виде
+```{r}
+rename(flights, tail_num = tailnum)
+```
+
+* Переместить в начало переменные.
+```{r}
+select(flights, time_hour, air_time, everything())
+```
+
+### Упражнение 5.4.1.1 {.unnumbered}
+<div class="question">
+Brainstorm as many ways as possible to select `dep_time`, `dep_delay`, `arr_time`, and `arr_delay` from `flights`.
+</div>
+
+
+1. Указать конкретные столбцы через запятую
+```{r}
+select(flights, dep_time, dep_delay, arr_time, arr_delay)
+```
+
+1. Указать столбцы в промежутке и исключить лишние
+```{r}
+select(flights, dep_time:arr_delay, -sched_dep_time, -sched_arr_time)
+```
+
+1. Изощренный способ. Перенесём в начало нужные столбцы, отбросим лишние в промежутке
+```{r}
+new_flights <- select(flights, dep_time, dep_delay, arr_time, arr_delay, everything())
+select(new_flights, -(year:time_hour))
+```
+
+1. Укажем номера столбцов
+```{r}
+select(flights, 4, 5, 6, 9)
+```
+
+1. Столбцы начинающиеся на `dep_` и `arr_`
+```{r}
+select(flights, starts_with("dep_"), starts_with("arr_"))
+```
+
+1. Столбцы содержащие и не содержащие
+```{r}
+select(flights, contains("_time"), contains("_delay"), -contains("sched"), -contains("air"))
+```
+
+### Упражнение 5.4.1.2 {.unnumbered}
+<div class="question">
+What happens if you include the name of a variable multiple times in a `select()` call?
+</div>
+
+Если одна и та же переменная указана несколько раз, она всё равно отобразится один раз
+```{r}
+select(flights, dep_time, dep_time, dep_time)
+```
+
+### Упражнение 5.4.1.3 {.unnumbered}
+<div class="question">
+What does the `one_of()` function do? Why might it be helpful in conjunction with this vector?
+</div>
+
+Функция `one_of()` берёт переменные в символьном векторе. Это может быть полезно, если как в примере у нас есть символьный вектор значений, которые необходимо взять
+
+```{r}
+vars <- c("year", "month", "day", "dep_delay", "arr_delay")
+select(flights, one_of(vars))
+```
+
+### Упражнение 5.4.1.4 {.unnumbered}
+<div class="question">
+Does the result of running the following code surprise you? How do the select helpers deal with case by default? How can you change that default?
+</div>
+
+```{r}
+select(flights, contains("TIME"))
+```
+
+Удивительно, что `contains()` невосприимчив к регистру:
+
+```{r}
+select(flights, contains("time"))
+```
+
+Оказывается, это регшулируется параметром `ignore.case` который по умолчанию `TRUE`:
+
+```{r}
+select(flights, contains("TIME", ignore.case = FALSE))
+```
+
+
+Вот список всех функций, согласно хэлпу, невосприимчивых по умолчанию к регистру:
+
+* `starts_with(match, ignore.case = TRUE, vars = peek_vars())`
+
+* `ends_with(match, ignore.case = TRUE, vars = peek_vars())`
+
+* `contains(match, ignore.case = TRUE, vars = peek_vars())`
+
+* `matches(match, ignore.case = TRUE, vars = peek_vars())`
