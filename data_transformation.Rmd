@@ -2,8 +2,8 @@
 editor_options:
   chunk_output_type: console
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 
 ## Трансформация данных
@@ -446,3 +446,5 @@ select(flights, contains("TIME", ignore.case = FALSE))
 * `contains(match, ignore.case = TRUE, vars = peek_vars())`
 
 * `matches(match, ignore.case = TRUE, vars = peek_vars())`
+
+## Добавление столбцов с помощью функции `mutate()`
