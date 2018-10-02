@@ -448,3 +448,97 @@ select(flights, contains("TIME", ignore.case = FALSE))
 * `matches(match, ignore.case = TRUE, vars = peek_vars())`
 
 ## Добавление столбцов с помощью функции `mutate()`
+
+Функция `mutate()` позволяет добавлять в конец исходного фрейма данных столбцы. 
+
+Сделаем чуть более показательный набор данных:
+```{r}
+flights_sml <- select(flights, 
+  year:day, 
+  ends_with("delay"), 
+  distance, 
+  air_time
+)
+```
+
+
+Теперь добавим в конец этого набора дополнительные вычисления
+```{r}
+mutate(flights_sml,
+  gain = dep_delay - arr_delay,
+  speed = distance / air_time * 60
+)
+```
+
+Чтобы сохранить только вычисления, без указания дополнительных столбцов, используется функция `transmute()`
+
+```{r}
+transmute(flights,
+  gain = dep_delay - arr_delay,
+  hours = air_time / 60,
+  gain_per_hour = gain / hours
+)
+```
+
+### Полезные функции создания объектов
+
+* Арифметические операторы `+`, `-`, `*`, `/`, `^`
+
+* Модулярная арифметика. Целочисленное деление - `%/%`. Взятие остатка - `%%`. Показательный пример:
+
+```{r}
+transmute(flights,
+  dep_time,
+  hour = dep_time %/% 100,
+  minute = dep_time %% 100
+)
+```
+
+* Логарифмические функции `log()`, `log2`, `log10()`
+
+* Смещения. Вперёд - `lag()`. Назад - `lead()`
+
+* Кумулятивные и скользящие агрегаты. `cumsum()`, `cummin()`, `cumprod()`, `cummax()`, `cummean()`
+
+* Логические операторы `<`, `>`, `>=`, `<=`, `!=`
+
+* Ранжирование. Функции ранжирования `row_number(x)`, `ntile(x, n)`, `min_rank(x)`, `dense_rank(x)`,`percent_rank(x)`, `cume_dist(x)`. В этих функциях `desc()` меняет направление.
+
+### Упражнение 5.5.2.1 {.unnumbered}
+<div class="question">
+Currently `dep_time` and `sched_dep_time` are convenient to look at, but hard to compute with because they’re not really continuous numbers. Convert them to a more convenient representation of number of minutes since midnight.
+</div>
+
+Заданные параметры `dep_time` and `sched_dep_time` записаны в формате HHMM. Чтобы получить из исходных данных последовательный формат, необходимо произвести целочисленное деление на 100, и к результату добавить остаток от деления.
+
+```{r}
+transmute(flights,
+  dep_time,
+  sched_dep_time,
+  dep_time_minute = ((dep_time %/% 100) * 60) + dep_time %% 100,
+  sched_dep_time_minute = ((sched_dep_time %/% 100) * 60) + sched_dep_time %% 100
+)
+```
+
+Можно добавить эти значения в исходную выборку:
+```{r}
+mutate(flights,
+  dep_time_minute = ((dep_time %/% 100) * 60) + dep_time %% 100,
+  sched_dep_time_minute = ((sched_dep_time %/% 100) * 60) + sched_dep_time %% 100
+)
+```
+
+### Упражнение 5.5.2.2 {.unnumbered}
+<div class="question">
+Compare `air_time` with `arr_time - dep_time`. What do you expect to see? What do you see? What do you need to do to fix it?
+</div>
+
+Значения данных `dep_time` и `arr_time` это время отправления и время прибытия соответственно записанные в формате HHMM. `air_time` - это время полёта, записанное в минутах. Естественно, если мы просто вычтем из времени прибытия время отправления в текущем формате, мы не получим `air_time`.
+
+Чтобы числа совпадали нужно 
+
+1. для начала привести их к общей форме записи в минутах.
+
+1. затем необходимо учесть прилёт на другой день
+
+1. и ещё необходимо учитывать разное время часовых поясов.
