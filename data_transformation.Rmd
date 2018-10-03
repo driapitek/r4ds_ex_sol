@@ -542,3 +542,53 @@ Compare `air_time` with `arr_time - dep_time`. What do you expect to see? What d
 1. затем необходимо учесть прилёт на другой день
 
 1. и ещё необходимо учитывать разное время часовых поясов.
+
+
+
+
+
+
+
+### Упражнение 5.5.2.3 {.unnumbered}
+<div class="question">
+
+</div>
+
+
+
+
+
+### Упражнение 5.5.2.4 {.unnumbered}
+<div class="question">
+
+</div>
+
+
+
+
+
+
+
+### Упражнение 5.5.2.5 {.unnumbered}
+<div class="question">
+
+</div>
+
+
+
+
+
+### Упражнение 5.5.2.6 {.unnumbered}
+<div class="question">
+What trigonometric functions does R provide?
+</div>
+
+В R есть следующие тригонометрические функции.
+
+* Простые: `cos(x)`, `sin(x)`, `tan(x)`
+
+* Арки `acos(x)`, `asin(x)`, `atan(x)`, `atan2(y, x)`
+
+* И ещё `cospi(x)`, `sinpi(x)`, `tanpi(x)`
+
+## Получение групповых итогов с помощью функции `summarize()`
