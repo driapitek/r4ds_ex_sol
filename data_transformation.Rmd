@@ -586,13 +586,35 @@ arrange(new_delay, desc(dep_delay))
 
 ### Упражнение 5.5.2.4 {.unnumbered}
 <div class="question">
-
+Find the 10 most delayed flights using a ranking function. How do you want to handle ties? Carefully read the documentation for `min_rank()`.
 </div>
 
+Задрежка вылета `dep_delay`. Найти 10 авиарейсов, можно функцией `arrange()`
+
+```{r}
+(arrange(flights, desc(dep_delay)))
+```
+
+Но так мы возьмём все связанные данные.
+Чтобы ограничить выдачу, можно использовать функцию `min_rank()`.
+Я воспользуюсь этой функцией чтобы взять первые 10 авиарейсов по рангу.
+Сначала посмотрим что делает `min_rank()`:
+
+```{r}
+(transmute(flights, dep_delay_rank = min_rank(-dep_delay)))
+```
+
+Теперь добавим к имеющемуся набору данных новых столбуц с обратным ранжированным столбцом `dep_delay()`
+
+```{r}
+(flights_delayed <- mutate(flights, dep_delay_rank = min_rank(-dep_delay)))
+```
 
 
-
-
+Затем возьмём первые 10 значений:
+```{r}
+(filter(flights_delayed, dep_delay_rank <= 10))
+```
 
 
 ### Упражнение 5.5.2.5 {.unnumbered}
