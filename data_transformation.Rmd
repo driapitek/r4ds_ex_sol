@@ -610,21 +610,21 @@ Find the 10 most delayed flights using a ranking function. How do you want to ha
 (flights_delayed <- mutate(flights, dep_delay_rank = min_rank(-dep_delay)))
 ```
 
-
 Затем возьмём первые 10 значений:
 ```{r}
 (filter(flights_delayed, dep_delay_rank <= 10))
 ```
 
-
 ### Упражнение 5.5.2.5 {.unnumbered}
 <div class="question">
-
+What does `1:3 + 1:10` return? Why?
 </div>
 
+```{r}
+1:3 + 1:10
+```
 
-
-
+Это возвращает такой странный результат, потому что при складывании двух векторов разной длинны, происходит "дополнение" длинного вектора, повторением сначала значениями короткого. Проще говоря: `c(1 + 1, 2 + 2, 3 + 3, 1 + 4, 2 + 5, 3 + 6, 1 + 7, 2 + 8, 3 + 9, 1 + 10)`
 
 ### Упражнение 5.5.2.6 {.unnumbered}
 <div class="question">
