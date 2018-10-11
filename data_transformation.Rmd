@@ -860,32 +860,73 @@ Which is more important: arrival delay or departure delay?
 
 ### Упражнение 5.6.7.2 {.unnumbered}
 <div class="question">
-
+Come up with another approach that will give you the same output as not_cancelled `%>% count(dest)` and `not_cancelled %>% count(tailnum, wt = distance)` (without using `count()`).
 </div>
 
 
 ### Упражнение 5.6.7.3 {.unnumbered}
 <div class="question">
-
+Our definition of cancelled flights (`is.na(dep_delay) | is.na(arr_delay)` ) is slightly suboptimal. Why? Which is the most important column?
 </div>
 
 
 ### Упражнение 5.6.7.4 {.unnumbered}
 <div class="question">
-
+Look at the number of cancelled flights per day. Is there a pattern? Is the proportion of cancelled flights related to the average delay?
 </div>
 
 ### Упражнение 5.6.7.5 {.unnumbered}
 <div class="question">
-
+Which `carrier` has the worst delays? Challenge: can you disentangle the effects of bad airports vs. bad carriers? Why/why not? (Hint: think about `flights %>% group_by(carrier, dest) %>% summarise(n())`)
 </div>
 
 ### Упражнение 5.6.7.6 {.unnumbered}
 <div class="question">
-
+Подсчитайте для каждого воздушного судна количество авиарейсов, совершенных до первой задержки более чем на 1 час.
 </div>
 
 ### Упражнение 5.6.7.7 {.unnumbered}
 <div class="question">
+What does the `sort` argument to `count()` do. When might you use it?
+</div>
+
+## Групповое изменение (и фильтрация)
+
+* Найти члены каждой группы имеющие наихудшие показатели
+
+```{r}
+flights_sml <- select(flights, 
+  year:day, 
+  ends_with("delay"), 
+  distance, 
+  air_time)
+
+flights_sml %>% 
+  group_by(year, month, day) %>%
+  filter(rank(desc(arr_delay)) < 10)
+```
+
+* Найти все группы которым соответствует превышение порогового значения
+
+```{r}
+popular_dests <- flights %>% 
+  group_by(dest) %>% 
+  filter(n() > 365)
+popular_dests
+```
+
+* Стандартизировать для вычисоения метрик групп
+
+```{r}
+popular_dests %>% 
+  filter(arr_delay > 0) %>% 
+  mutate(prop_delay = arr_delay / sum(arr_delay)) %>% 
+  select(year:day, dest, arr_delay, prop_delay)
+```
+
+### Упражнение 5.7.1.1 {.unnumbered}
+<div class="question">
 
 </div>
+
+
