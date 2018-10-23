@@ -859,19 +859,79 @@ Which is more important: arrival delay or departure delay?
 Разобьём ответ на части.
 Вначале напридумываем как минимум пять типичных характеристик времени задержки для групп авиарейсов:
 
-1. Мера положения - *среднее время* задержки вылета/прилёта самолёта
+1. Мера положения - *среднее время* задержки вылета самолёта
 
-1. Мера положения - *медиана* времени задержки вылета/прилёта самолёта
+2. Мера положения - *среднее время* задержки прилёта самолёта
 
-1. Мера изменчивости - *среднеквадратичное отклонение* времени задержки вылета/прилёта самолёта
+3. Мера изменчивости - *среднеквадратичное отклонение* времени задержки вылета самолёта
 
-1. Мера ранжирования - *максимальное* время задержки вылета/прилёта самолёта
+4. Мера изменчивости - *среднеквадратичное отклонение* времени задержки прилёта самолёта
 
-1. Мера изменчивости - *межквартильный размах* времени задержки вылета/прилёта самолёта
+5. Мера ранжирования - *максимальное* время задержки вылет самолёта
 
-Далее будем придумывать способы доступа к придуманным характеристикам. Группировать будем по направлениям.
+6. Мера ранжирования - *максимальное* время задержки прилёта самолёта
 
+Далее будем придумывать способы доступа к придуманным характеристикам. Группировать будем по дню вылета. В зависимости от задачи, группировать можно по разным параметрам - аэропорт прилёта, аэропорт вылета, время в пути, по любому доступному временному срезу, по номеру авиарейса.
 
+* *Cреднее время* задержки вылета самолёта
+```{r}
+dep_delay_mean <- flights %>%                                # Присвой в dep_delay_mean значения из набора данных flights ЗАТЕМ
+  group_by(year, month, day) %>%                             # Сгруппируй по дням прилёта
+  summarise(dep_mean = mean(dep_delay, na.rm = TRUE))        # В arr_mean посчитай среднее время задержки вылета
+ggplot(dep_delay_mean) +                                     
+    geom_smooth(mapping = aes(day, dep_mean), se = FALSE) +  # Построй прямые по дням без стандартного отклонения
+    facet_wrap(~ month, nrow = 3)                            # Сгруппируй построения по месяцам в три строки
+```
+
+* *Cреднее время* задержки прилёта самолёта
+```{r}
+arr_delay_mean <- flights %>% 
+  group_by(year, month, day) %>%                           
+  summarise(arr_mean = mean(arr_delay, na.rm = TRUE))        
+ggplot(arr_delay_mean) +                                     
+    geom_smooth(mapping = aes(day, arr_mean), se = FALSE) +  
+    facet_wrap(~ month, nrow = 3)                            
+```
+
+* *Cреднеквадратичное отклонение* времени задержки вылета самолёта
+```{r}
+arr_delay_sd <- flights %>%                               
+  group_by(year, month, day) %>%       
+  summarise(arr_sd = sd(arr_delay, na.rm = TRUE))      
+ggplot(arr_delay_sd) +                                     
+    geom_smooth(mapping = aes(day, arr_sd), se = FALSE) +  
+    facet_wrap(~ month, nrow = 3)                   
+```
+
+* *Cреднеквадратичное отклонение* времени задержки прилёта самолёта
+```{r}
+dep_delay_sd <- flights %>%     
+  group_by(year, month, day) %>%                    
+  summarise(dep_sd = sd(dep_delay, na.rm = TRUE))     
+ggplot(dep_delay_sd) +                                     
+    geom_smooth(mapping = aes(day, dep_sd), se = FALSE) +  
+    facet_wrap(~ month, nrow = 3)                         
+```
+
+* *Максимальное* время задержки вылета самолёта
+```{r}
+dep_delay_max <- flights %>%               
+  group_by(year, month, day) %>%         
+  summarise(dep_max = max(dep_delay, na.rm = TRUE))        
+ggplot(dep_delay_max) +                                     
+    geom_smooth(mapping = aes(day, dep_max), se = FALSE) + 
+    facet_wrap(~ month, nrow = 3)
+```
+
+* *Максимальное* время задержки прилета самолёта
+```{r}
+arr_delay_max <- flights %>%               
+  group_by(year, month, day) %>%         
+  summarise(arr_max = max(arr_delay, na.rm = TRUE))        
+ggplot(arr_delay_max) +                                     
+    geom_smooth(mapping = aes(day, arr_max), se = FALSE) + 
+    facet_wrap(~ month, nrow = 3)
+```
 
 ### Упражнение 5.6.7.2 {.unnumbered}
 <div class="question">
