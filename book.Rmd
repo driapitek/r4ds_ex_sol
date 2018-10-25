@@ -1,3 +1,8 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 # Предварительный анализ
 ## Визуализация данных с помощью `ggplot2`
 ### Введение
@@ -2003,23 +2008,37 @@ Our definition of cancelled flights (`is.na(dep_delay) | is.na(arr_delay)` ) is 
 filter(flights, is.na(dep_delay) & is.na(arr_delay))
 ```
 
-ТАким образом, выражение ниже, больше похоже на отменённые рейсы
-```{r}
-filter(flights, is.na(dep_delay) & is.na(arr_delay) & is.na(air_time))
-```
+ТАким образом, выражение выше, больше похоже на отменённые рейсы
 
 #### Упражнение 5.6.7.4
 <div class="question">
 Look at the number of cancelled flights per day. Is there a pattern? Is the proportion of cancelled flights related to the average delay?
 </div>
 
+Это была задача на внимательность. Сначала я искал закономерности в наборе данных `not_canceled`. И естественно у меня не получалось найти отменённые рейсы, поскольку набор данных `not_canceled` изначально не содержит пропущенных значений. Остальное дело техники:
+
 ```{r}
-not_canceled %>%
-  group_by(year, month, day) %>%
-    summarise(sum_dist = sum(is.na(dep_time)))
+canceled_delayed <- flights %>%                                # Присвой результаты в переменную
+  mutate(canceled = (is.na(dep_delay) & is.na(arr_delay))) %>% # Добавь параметр отменённых рейсов
+  group_by(year, month, day) %>%                               # Сгруппируй по дате
+    summarise(
+      prop_canceled = mean(canceled),                          # Посчитай долю отмененных рейсов
+      avg_dep_delay = mean(dep_delay, na.rm = TRUE))           # Посчитай среднее время задержки
+
+ggplot(canceled_delayed, aes(avg_dep_delay, prop_canceled)) +  # Построй график для иллюстрации зависимости
+  geom_point() +
+  geom_smooth()
 ```
 
-ДОДЕЛАТЬ
+Как видно на приведённом графике, зависимость между отменёнными авиарейсами и сдреним временем задержки есть - она прямая, и близка к линейной
+
+Интересно, как сильно на график влияет выбора оси ординат:
+```{r}
+ggplot(canceled_delayed, aes(prop_canceled, avg_dep_delay)) +
+  geom_point() +
+  geom_smooth()
+```
+
 
 #### Упражнение 5.6.7.5
 <div class="question">
