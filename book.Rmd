@@ -174,10 +174,12 @@ ggplot(mpg, aes(x = displ, y = hwy, size = cty)) +
 А вот хуюшки. Программа выдаст `Ошибка: A continuous variable can not be mapped to shape`.
 Непрерывные переменные не соотносятся с атрибутом `shape`, так сделано специально. Потому что фигур всего 24, а наборов значений у непрерывной переменной может быть сколь угодно много
 
-#### Упражнения 3.3.4  
+#### Упражнения 3.3.4
+
 <div class="question">
 What happens if you map the same variable to multiple aesthetics? 
 </div>
+
 Связать можно, вот например, переменная `drv` для цвета и для формы
 ```{r}
 ggplot(mpg, aes(x = displ, y = hwy, color = drv, shape = drv)) + geom_point()
@@ -2008,7 +2010,7 @@ Our definition of cancelled flights (`is.na(dep_delay) | is.na(arr_delay)` ) is 
 filter(flights, is.na(dep_delay) & is.na(arr_delay))
 ```
 
-ТАким образом, выражение выше, больше похоже на отменённые рейсы
+Таким образом, выражение выше, больше похоже на отменённые рейсы
 
 #### Упражнение 5.6.7.4
 <div class="question">
@@ -2030,20 +2032,46 @@ ggplot(canceled_delayed, aes(avg_dep_delay, prop_canceled)) +  # Построй 
   geom_smooth()
 ```
 
-Как видно на приведённом графике, зависимость между отменёнными авиарейсами и сдреним временем задержки есть - она прямая, и близка к линейной
+Как видно на приведённом графике, зависимость между отменёнными авиарейсами и сдреним временем задержки есть - она прямая и близка к линейной
 
-Интересно, как сильно на график влияет выбора оси ординат:
+Интересно, как сильно на график влияет выбор оси ординат:
 ```{r}
 ggplot(canceled_delayed, aes(prop_canceled, avg_dep_delay)) +
   geom_point() +
   geom_smooth()
 ```
 
-
 #### Упражнение 5.6.7.5
 <div class="question">
-Which `carrier` has the worst delays? Challenge: can you disentangle the effects of bad airports vs. bad carriers? Why/why not? (Hint: think about `flights %>% group_by(carrier, dest) %>% summarise(n())`)
+Which carrier has the worst delays? Challenge: can you disentangle the effects of bad airports vs. bad carriers? Why/why not? (Hint: think about `flights %>% group_by(carrier, dest) %>% summarise(n())`)
 </div>
+
+Что является задержкой? задержка вылета или задержка прилёта? Так как однозначного ответа нет, я буду использовать задержку вылета `dep_delay`.
+
+```{r}
+flights %>%
+  group_by(carrier) %>%
+  summarise(dep_delay = mean(dep_delay, na.rm = TRUE)) %>%
+  arrange(desc(dep_delay))
+```
+
+Перевозчик `F9` чаще остальных допускал задержки.
+
+Разделить эффекты плохих перевозчиков и плохих аэропортов можно. 
+Если плохой *аэропорт*, то у всех перевозчиков будут задержки в этом аэропорте.
+Если плохой *перевозчик*, то в сравнении с другими перевозчиками, у него будет выше средняя задержка в каждом аэропорте.
+Возможно ли это?
+
+
+
+Код из подсказки считает количество рейсов который каждый перевозчик совершил в каждый аэропорт:
+
+```{r}
+flights %>%    
+  group_by(carrier, dest) %>% 
+  summarise(count = n())
+```
+
 
 #### Упражнение 5.6.7.6
 <div class="question">
@@ -2055,7 +2083,7 @@ Which `carrier` has the worst delays? Challenge: can you disentangle the effects
 What does the `sort` argument to `count()` do. When might you use it?
 </div>
 
-### Групповое изменение (и фильтрация)
+### Групповое видоизменение (и фильтрация)
 
 * Найти члены каждой группы имеющие наихудшие показатели
 
@@ -2080,7 +2108,7 @@ popular_dests <- flights %>%
 popular_dests
 ```
 
-* Стандартизировать для вычисоения метрик групп
+* Стандартизировать для вычисления метрик групп
 
 ```{r}
 popular_dests %>% 
