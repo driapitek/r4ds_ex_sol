@@ -2146,3 +2146,23 @@ Refer back to the table of useful mutate and filtering functions. Describe how e
 
 Они работают для каждого параметра по отдельности, а не по всему фрейму данных. Например среднее будет вычислять среднее значение в каждой группе.
 
+#### Упражнение 5.7.1.2
+<div class="question">
+Which plane (`tailnum`) has the worst on-time record?
+</div>
+
+```{r}
+not_canceled %>%                  # беру состоявшиеся рейсы
+  group_by(tailnum) %>%           # группирую по номеру самолёта
+  summarise(
+    worst = mean(arr_delay)) %>%  # подсчитываю в группе среднее время задержки прибытия
+  arrange(desc(worst))            # сортирую список по убыванию
+```
+
+#### Упражнение 5.7.1.3
+<div class="question">
+What time of day should you fly if you want to avoid delays as much as possible?
+</div>
+
+Чтобы узнать, нужно сгруппировать по времени вылета
+
