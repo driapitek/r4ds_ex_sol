@@ -2225,3 +2225,38 @@ lagged_delays %>%                                       # Берём набор 
     x = "Предыдущая задержка вылета, мин")
 ```
 
+
+#### Упражнение 5.7.1.6
+<div class="question">
+Look at each destination. Can you find flights that are suspiciously fast? (i.e. flights that represent a potential data entry error). Compute the air time of a flight relative to the shortest flight to that destination. Which flights were most delayed in the air?
+</div>
+
+Мой изначальный код:
+```{r}
+flights %>%
+  group_by(origin, dest) %>%
+  mutate(n = mean(air_time, na.rm = FALSE),
+         fu = air_time - n) %>%
+  filter(fu < 0) %>%
+  arrange(fu) %>%
+  select(-(day:carrier))
+```
+
+Я хотел просто посмотреть отклонение от среднего. Однако такой подход в корне неверен. Да и к тому же, я исключал отсутствующие значения только на этапе подсчёта среднего, а их необходимо было удалить сразу.
+Изначально я хотел подсчитать средеквадратичное отклонение, но профакапился.
+
+Модифицированный код, который я подсмотрел, основан на [z-Оценка](https://ru.wikipedia.org/wiki/Z-оценка), или другими словами стандартное отклонение. Стандартное отклонение, считается по формуле: ${\displaystyle z={x-{\bar {X}} \over S_{x}}}$
+
+```{r}
+flights %>%                                                # Берём все полёты
+  filter(!is.na(air_time)) %>%                             # Исключаем отсутствующие значения
+  group_by(origin, dest) %>%                               # Группируем по паре место вылета, место назначения
+  mutate(air_time_mean = mean(air_time),                   # Добавляем в набор данных, параметр средного значения
+         air_time_sd = sd(air_time),                       # Так же добавляем среднеквадратичное отклонение
+         n = n()) %>%                                      # Добавляем счётчик рейсов
+  ungroup() %>%                                            # Ангруппим чтобы вернуться к исходным данным, но с новыми параметрами
+  mutate(z = (air_time - air_time_mean) / air_time_sd) %>% # Считаем стандартное отклонение
+  arrange(z) %>%                                           # Сортируем по возрастанию стандартного отклонения
+  select(-(day:carrier))                                   # Убираем "лишнее" при выводе в консоль
+```
+
