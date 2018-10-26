@@ -2197,4 +2197,31 @@ not_canceled %>%              # Берём состаявшиеся рейсы
   arrange(fu)                 # Сортируем данные по возрастанию средней времени задержки рейса
 ```
 
+#### Упражнение 5.7.1.5
+<div class="question">
+Delays are typically temporally correlated: even once the problem that caused the initial delay has been resolved, later flights are delayed to allow earlier flights to leave. Using `lag()` explore how the delay of a flight is related to the delay of the immediately preceding flight.
+</div>
+
+Следующий код, показывает задержку вылета из того же аэропорта. Похоже на расписание вылетов из каждого аэропорта.
+```{r}
+(lagged_delays <- flights %>%                       # Берём исходный набор данных
+  arrange(origin, year, month, day, dep_time) %>%   # Сортируем по возрастанию с указанным порядком
+  group_by(origin) %>%                              # Группируем по пункту назначения
+  mutate(dep_delay_lag = lag(dep_delay)) %>%        # Добавляем временное смещение
+  filter(!is.na(dep_delay), !is.na(dep_delay_lag))) # Убираем отсутствующие значения
+```
+
+
+```{r}
+lagged_delays %>%                                       # Берём набор данных с указанными задержками вылета
+  group_by(dep_delay_lag) %>%                           # Группируем по временному смещению
+  summarise(
+    dep_delay_mean = mean(dep_delay)) %>%               # Считаем среднюю задержку
+  ggplot(aes(y = dep_delay_mean, x = dep_delay_lag)) +  # Строим диаграмму рассеяния и сглаженную прямую
+  geom_point() +
+  geom_smooth() +
+  labs(                                                 # Задаём названия осям
+    y = "Задержка вылета, мин", 
+    x = "Предыдущая задержка вылета, мин")
+```
 
