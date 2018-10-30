@@ -2565,3 +2565,25 @@ ggplot(diamonds2, aes(x,y)) +
   geom_point(na.rm = TRUE)
 ```
 
+
+#### Упражнение 7.3.5.1
+<div class="question">
+What happens to missing values in a histogram? What happens to missing values in a bar chart? Why is there a difference?
+</div>
+
+#### Упражнение 7.3.5.2
+<div class="question">
+What does `na.rm = TRUE` do in `mean()` and `sum()`?
+</div>
+
+Аргумент `na.rm = TRUE` в функциях `mean()` и `sum()`, позволяет производить подсчёт не взирая на отсутствующие значения.
+
+```{r}
+x <- c(1, 3, 5, 7, 9, NA)
+sum(x, na.rm = FALSE)
+```
+
+```{r}
+x <- c(1, 3, 5, 7, 9, NA)
+sum(x, na.rm = TRUE)
+```
