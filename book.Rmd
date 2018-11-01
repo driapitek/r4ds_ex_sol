@@ -283,7 +283,7 @@ What do the empty cells in plot with `facet_grid(drv ~ cyl)` mean? How do they r
 ```{r}
 ggplot(mpg, aes(x = displ, y = hwy)) +
     geom_point() +
-    facet_grid(drv~cyl)
+    facet_grid(drv ~ cyl)
 ```
 
 Пустые ячейки 
@@ -2588,16 +2588,59 @@ ggplot(diamonds) +
 
 1. Есть всплеск в точках около 750
 
+1. Распределение цены плавно убывает от всплеска 750, до примерно 19000
+
 ```{r}
 ggplot(diamonds) +
   geom_histogram(aes(price), binwidth = 10) +
   coord_cartesian(xlim = c(0, 2500))
 ```
 
+```{r}
+ggplot(diamonds) +
+  geom_histogram(aes(price), binwidth = 10) +
+  coord_cartesian(xlim = c(15000, 19000))
+```
+
+```{r}
+ggplot(diamonds) +
+  geom_histogram(aes(price), binwidth = 100)
+```
+
 #### Упражнение 7.3.4.3
 <div class="question">
 How many diamonds are 0.99 carat? How many are 1 carat? What do you think is the cause of the difference?
 </div>
+
+Разница ощутима
+```{r}
+diamonds %>%
+  filter(carat >= 0.99, carat <= 1) %>%
+  count(carat)
+```
+
+```{r}
+diamonds %>%
+  filter(carat >= 0.99, carat <= 1) %>%
+  group_by(carat) %>%
+  summarise(mean_price = mean(price))
+```
+
+Визуализация 
+```{r}
+diamonds %>%
+  group_by(carat) %>%
+  summarise(mean_price = mean(price)) %>%
+  ggplot(aes(mean_price, carat)) +
+  geom_point()
+```
+
+```{r}
+diamonds %>%
+   filter(carat >= 0.9, carat <= 1.1) %>%
+   count(carat) %>%
+   print(n = 30)
+```
 
 #### Упражнение 7.3.4.4
 <div class="question">
