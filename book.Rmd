@@ -2612,12 +2612,14 @@ ggplot(diamonds) +
 How many diamonds are 0.99 carat? How many are 1 carat? What do you think is the cause of the difference?
 </div>
 
-Разница ощутима
+разница ощутима:
 ```{r}
 diamonds %>%
   filter(carat >= 0.99, carat <= 1) %>%
   count(carat)
 ```
+
+Истинная природа может скрываться в округлении веса до сотой, ради цены:
 
 ```{r}
 diamonds %>%
@@ -2626,7 +2628,7 @@ diamonds %>%
   summarise(mean_price = mean(price))
 ```
 
-Визуализация 
+А может и не скрываться. Эта визуализация показывает пусть и нелинейную но прямопропорциональную зависимость средней цены от веса бриллианта
 ```{r}
 diamonds %>%
   group_by(carat) %>%
@@ -2635,6 +2637,7 @@ diamonds %>%
   geom_point()
 ```
 
+Вероятно бриллианты с "круглыми" каратами более популярны
 ```{r}
 diamonds %>%
    filter(carat >= 0.9, carat <= 1.1) %>%
@@ -2642,11 +2645,28 @@ diamonds %>%
    print(n = 30)
 ```
 
+Не то чтобы это правда, но очень на то похоже
+
 #### Упражнение 7.3.4.4
 <div class="question">
-Compare and contrast `coord_cartesian()` vs `xlim()` or `ylim()` when zooming in on a histogram. What happens if you leave binwidth unset? What happens if you try and zoom so only half a bar shows?
+Compare and contrast `coord_cartesian()` vs `xlim()` or `ylim()` when zooming in on a histogram. What happens if you leave `binwidth` unset? What happens if you try and zoom so only half a bar shows?
 </div>
 
+Функция `coord_cartesian()` как бы увеличивает масштаб в указанных координатах
+```{r}
+ggplot(diamonds) +
+  geom_histogram(aes(price), binwidth = 10) +
+  coord_cartesian(xlim = c(1000, 2000))
+```
+
+В то время как `xlim()` удаляет все значение между указанными координатами. О чем `R` любезно предупреждает при построении графика.
+```{r}
+ggplot(diamonds) +
+  geom_histogram(aes(price), binwidth = 10) +
+  xlim(1000, 2000)
+```
+
+Если не задать аргумент `binwidth`, то ав
 
 
 ### Отсутствующие значения
