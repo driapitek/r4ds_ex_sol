@@ -2410,7 +2410,7 @@ library("nycflights13")
 
 ```{r}
 ggplot(data = diamonds) +
-  geom_bar(mapping = aes(x = cut))
+  geom_bar(aes(cut))
 ```
 
 Высота столбца соответсвует количеству наблюдений для каждого значения. Вычисление вручную:
@@ -2694,11 +2694,35 @@ ggplot(diamonds2, aes(x,y)) +
   geom_point(na.rm = TRUE)
 ```
 
-
 #### Упражнение 7.3.5.1
 <div class="question">
 What happens to missing values in a histogram? What happens to missing values in a bar chart? Why is there a difference?
 </div>
+
+В гистограмме переменная `x` должна быть числовой, а `stat_bin()` группирует наблюдения по диапазонам в ячейки. Поскольку числовое значение наблюдений `NA` неизвестно, они не могут быть помещены в конкретный столбец и отбрасываются.
+
+```{r}
+ggplot(diamonds2, aes(y)) +
+  geom_histogram(na.rm = TRUE, binwidth = 0.1)
+```
+
+В функции `geom_bar()` отсутствующие значения `NA` рассматриваются как другая категория. Аргумент `aes(x)` в `geom_bar()` требует дискретной (категориальной) переменной, а отсутствующие значения действуют как другая категория.
+
+```{r}
+diamonds2 %>%
+  ggplot() +
+  geom_bar(aes(y))
+```
+
+Пример лучше иллюстрирующий сказанное:
+
+```{r}
+diamonds %>%
+  mutate(cut = if_else(runif(n()) < 0.1, NA_character_, as.character(cut))) %>%
+  ggplot() +
+  geom_bar(mapping = aes(x = cut))
+```
+
 
 #### Упражнение 7.3.5.2
 <div class="question">
