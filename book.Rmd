@@ -2938,3 +2938,62 @@ ggplot(data = diamonds, mapping = aes(x = cut, y = price)) +
 ```
 
 Скрипичный график представляет собой компактную визуализацию непрерывного распределения. [Подробнее о построении скрипичного графика](http://www.stat.cmu.edu/~rnugent/PCMI2016/papers/ViolinPlots.pdf)
+
+#### Упражнение 7.5.1.1.6
+<div class="question">
+If you have a small dataset, it’s sometimes useful to use `geom_jitter()` to see the relationship between a continuous and categorical variable. The ggbeeswarm package provides a number of methods similar to geom_jitter(). List them and briefly describe what each one does.
+</div>
+
+В описании встретилось два метода 
+
+* `geom_quasirandom()` создает графики, которые представляют собой смесь джиттера и скрипки. Существует несколько разных методов, которые точно определяют, как генерируется случайное расположение точек.
+
+* `geom_beeswarm()` создает построение, подобное построению скрипки, но компенсируя точки.
+
+Вспомним построение язиков для визуализации расхода топлива в зависимости от класса автомобиля
+
+```{r}
+ggplot(mpg) +
+  geom_boxplot(aes(x = reorder(class, hwy, FUN = median), 
+                   y = hwy))
+```
+
+Теперь построим квазирандомом
+
+```{r}
+library("ggbeeswarm")
+ggplot(mpg) +
+  geom_quasirandom(aes(x = reorder(class, hwy, FUN = median),
+                                 y = hwy))
+```
+
+Эта визуализация похожа на ящики с усами, но по количеству и плотности точек можно нагляднее представить характер распределения.
+У этого построения есть несколько методов задания распределения рандомности точек.
+
+```{r}
+ggplot(mpg) +
+  geom_quasirandom(aes(x = reorder(class, hwy, FUN = median),
+                                 y = hwy),
+                   method = "frowney")
+```
+
+```{r}
+ggplot(mpg) +
+  geom_quasirandom(aes(x = reorder(class, hwy, FUN = median),
+                                 y = hwy),
+                   method = "smiley")
+```
+
+Но перейдём теперь к `geom_beeswarm()`
+
+```{r}
+ggplot(mpg) +
+  geom_beeswarm(aes(x = reorder(class, hwy, FUN = median),
+                                 y = hwy))
+```
+
+В принципе у него тоже есть некий алгоритм рандомности, но в общих чертах выглядит похоже на предыдущие построения. У него плотность точек побольше.
+
+#### Две категориальные переменные
+
+
