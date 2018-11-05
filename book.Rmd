@@ -171,7 +171,7 @@ ggplot(mpg, aes(x = displ, y = hwy, size = cty)) +
 ```{r}
 #ggplot(mpg, aes(x = displ, y = hwy, shape = cty)) + geom_point()
 ```
-А вот хуюшки. Программа выдаст `Ошибка: A continuous variable can not be mapped to shape`.
+А вот и нет. Программа выдаст `Ошибка: A continuous variable can not be mapped to shape`.
 Непрерывные переменные не соотносятся с атрибутом `shape`, так сделано специально. Потому что фигур всего 24, а наборов значений у непрерывной переменной может быть сколь угодно много
 
 #### Упражнения 3.3.4
@@ -2812,7 +2812,7 @@ ggplot() +
   geom_boxplot(mapping = aes(x = canceled, y = sched_dep_time_minute))  # Строим ящик с усами
 ```
 
-#### Упражнение 7.5.1.1.1
+#### Упражнение 7.5.1.1.2
 <div class="question">
 What variable in the `diamonds` dataset is most important for predicting the price of a diamond? How is that variable correlated with `cut`? Why does the combination of those two relationships lead to lower quality diamonds being more expensive?
 </div>
@@ -2857,3 +2857,33 @@ ggplot(diamonds, aes(cut, carat)) +
 ```
 
 Наблюдается небольшая обратная зависимость --- при улучшении качества огранки, немного изменяется цена. Примечательно, что самые большие бриллианты имеют плохую огранку. Это может быть связано с тем, что большие бриллианты это самородки. Маленьким бриллиантам нужно уделить больше внимания, чтобы они выглядели более презентабельно при продаже.
+
+#### Упражнение 7.5.1.1.3
+<div class="question">
+Install the `ggstance` package, and create a horizontal boxplot. How does this compare to using `coord_flip()`?
+</div>
+
+Ранее мы использовали поворот системы координат в примере с визуализацией расхода топлива от класса автомобиля.
+```{r}
+ggplot(mpg) +
+  geom_boxplot(aes(x = reorder(class, hwy, FUN = median), 
+                   y = hwy)) +
+  coord_flip()
+```
+
+Для того что сделать горизонтальную диаграмму размаха через функции пакета `ggstance`, необходимо подключить его и воспользоваться функцией `geom_boxploth()`. 
+
+```{r}
+library("ggstance")
+ggplot(mpg) +
+  geom_boxploth(aes(x = reorder(class, hwy, FUN = median),
+                    y = hwy))
+```
+
+Похоже, что эта функция специально предназначена для построения горизонтальных диаграмм размахов (ящиков с усами).
+```{r}
+ggplot(mpg) +
+  geom_boxploth(aes(y = reorder(class, hwy, FUN = median),
+                    x = hwy))
+```
+
