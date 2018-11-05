@@ -2677,7 +2677,7 @@ ggplot(diamonds) +
 
 ```{r}
 diamonds2 <- diamonds %>%
-  filter(between(y, 3, 20)) # Возьми только знаения между 3 и 20 
+  filter(between(y, 3, 20)) # Возьми только значения между 3 и 20 
 ```
 
 * Лучше всего заменить необычные значения отсутствующими. Для замены можно использовать функцию `ifelse()`. Эта функция и по смыслу и по синтаксису похожа на функцию `ЕСЛИ` в Excel.
@@ -3047,5 +3047,69 @@ diamonds %>%
   mutate(prop = n / sum(n)) %>%
   ggplot(aes(color, cut)) +
   geom_tile(aes(fill = prop))
+```
+
+Группировка по цвету имеет более упорядоченный вид.
+
+#### Упражнение 7.5.2.1.2
+<div class="question">
+Use `geom_tile()` together with `dplyr` to explore how average flight delays vary by destination and month of year. What makes the plot difficult to read? How could you improve it?
+</div>
+
+Итак, сначала построим распределение средней задержки в разрезе двух категориальных переменных  месяца отправки и направлению вылета.
+
+```{r}
+flights %>%
+  group_by(month, dest) %>%                           # Группируем по месяцу и направлению
+  summarise(mean = mean(dep_delay, na.rm = TRUE)) %>% # Вводим новую переменную, в которой считаем среднее время задержки в группах
+  ggplot(aes(month, dest)) +                          # Строим диаграмму распределения с заливкой по среднему значению
+  geom_tile(aes(fill = mean)) +
+  labs(x = "Mесяц", y = "Направление", fill = "Задержка отправления")
+```
+
+Затрудняет чтение диаграммы отсутствие месяцев. Чтобы представить месяцы в более привычной форме нужно использовать функцию `factor()`, я пока не знаю как она работает. Но она помогла.
+
+```{r}
+flights %>%
+  group_by(month, dest) %>%                           
+  summarise(mean = mean(dep_delay, na.rm = TRUE)) %>% 
+  ggplot(aes(factor(month), dest)) +
+  geom_tile(aes(fill = mean)) +
+  labs(x = "Mесяц", y = "Направление", fill = "Задержка отправления")
+```
+
+Мешают отсутсвующие значения. Удалим их. 
+
+С этим пришлось повозиться, и сделать необычную конструкцию.
+Её суть заключается в том, чтобы отображать на графике только те направления, по которым летали в каждый месяц года
+
+
+```{r}
+flights %>%
+  group_by(month, dest) %>%                           
+  summarise(mean = mean(dep_delay, na.rm = TRUE)) %>% 
+  group_by(dest) %>%
+  filter(n() == 12) %>%
+  
+  
+  ggplot(aes(factor(month), dest)) +
+  geom_tile(aes(fill = mean)) +
+  labs(x = "Mесяц", y = "Направление", fill = "Задержка отправления")
+```
+
+Можно сортировать не по алфавиту направления, а по какому-нибудь значимому параметру, например по среднему количеству полётов в году, или по средней задержки. Для того чтобы отсортировать переменную `dest` необходимо вос
+
+```{r}
+flights %>%
+  group_by(month, dest) %>%                           
+  summarise(mean = mean(dep_delay, na.rm = TRUE)) %>% 
+  group_by(dest) %>%
+  filter(n() == 12) %>%
+  ungroup() %>%
+  mutate(dest = reorder(dest, mean)) %>%
+  
+  ggplot(aes(factor(month), dest)) +
+  geom_tile(aes(fill = mean)) + 
+  labs(x = "Mесяц", y = "Направление", fill = "Задержка отправления")
 ```
 
