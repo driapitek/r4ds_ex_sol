@@ -2996,4 +2996,52 @@ ggplot(mpg) +
 
 #### Две категориальные переменные
 
+Порой необходимо проверить как между собой связаны две категориальные переменные. Например когда необходимо установить, какая пара категориальных переменных чаще всего встречается. Для этого можно воспользоваться несколькими способами.
+
+* Посчитать количество точек попавших в каждую пару внутренней функцией пакета
+
+```{r}
+ggplot(diamonds) +
+  geom_count(aes(cut, color))
+```
+
+* Посчитать через `dplyr`
+
+```{r}
+diamonds %>% 
+  count(color, cut)
+```
+
+и затем визуализировать
+
+```{r}
+diamonds %>% 
+  count(color, cut) %>%  
+  ggplot(mapping = aes(x = color, y = cut)) +
+    geom_tile(mapping = aes(fill = n)) +
+  coord_flip()
+```
+
+#### Упражнение 7.5.2.1.1
+<div class="question">
+How could you rescale the `count` dataset above to more clearly show the distribution of `cut` within `colour`, or `colour` within `cut`?
+</div>
+
+```{r}
+diamonds %>%
+  count(color, cut) %>%
+  group_by(color) %>%
+  mutate(prop = n / sum(n)) %>%
+  ggplot(mapping = aes(x = color, y = cut)) +
+  geom_tile(mapping = aes(fill = prop))
+```
+
+```{r}
+diamonds %>%
+  count(color, cut) %>%
+  group_by(cut) %>%
+  mutate(prop = n / sum(n)) %>%
+  ggplot(mapping = aes(x = color, y = cut)) +
+  geom_tile(mapping = aes(fill = prop))
+```
 
