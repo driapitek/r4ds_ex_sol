@@ -3027,21 +3027,25 @@ diamonds %>%
 How could you rescale the `count` dataset above to more clearly show the distribution of `cut` within `colour`, or `colour` within `cut`?
 </div>
 
+Сгруппируем по отдельности, сначала по цвету, потом по степени огранки и в каждом случае введём переменную вычисляющую пропорцию. Для того чтобы можно было сравнить в одних условиях.
+
 ```{r}
 diamonds %>%
-  count(color, cut) %>%
-  group_by(color) %>%
-  mutate(prop = n / sum(n)) %>%
-  ggplot(mapping = aes(x = color, y = cut)) +
-  geom_tile(mapping = aes(fill = prop))
+  count(color, cut) %>%                        # Считаем количество значений в парах
+  group_by(color) %>%                          # Группирупм по цвету
+  mutate(prop = n / sum(n)) %>%                # Добавляем переменную, в которой вычисляем пропорцию
+  ggplot(aes(color, cut)) +
+  geom_tile(aes(fill = prop))                  # Делаем заливку введённой переменной
 ```
+
+Теперь проделаем всё тоже самое, но с группировкой по `cut`
 
 ```{r}
 diamonds %>%
   count(color, cut) %>%
   group_by(cut) %>%
   mutate(prop = n / sum(n)) %>%
-  ggplot(mapping = aes(x = color, y = cut)) +
-  geom_tile(mapping = aes(fill = prop))
+  ggplot(aes(color, cut)) +
+  geom_tile(aes(fill = prop))
 ```
 
