@@ -2887,3 +2887,22 @@ ggplot(mpg) +
                     x = hwy))
 ```
 
+#### Упражнение 7.5.1.1.4
+<div class="question">
+One problem with box plots is that they were developed in an era of much smaller datasets and tend to display a prohibitively large number of “outlying values”. One approach to remedy this problem is the letter value plot. Install the `lvplot` package, and try using `geom_lv()` to display the distribution of `price` vs `cut`. What do you learn?
+
+How do you interpret the plots?
+</div>
+
+Ух ты, много раз задумывался о том, что ящики это что-то старенькое, и на них ну уж очень много данных попадает порой в область выбросов. Оказывается это так и есть. Устанавливаем пакет и подключаем библиотеку
+
+```{r}
+library("lvplot")
+
+ggplot(diamonds, aes(x = cut, y = price)) +
+  geom_lv()
+```
+
+[В статье](https://vita.had.co.nz/papers/letter-value-plot.pdf) объясняются преимущества Side-by-side LV boxplots, а так же показаны примеры и сравнения. Здесь объяснений приводить не буду, ограничусь тем, что скажу что новый вид диаграмм более информативен посравнению с ящиками с усами Джона Тьюки.
+
+
