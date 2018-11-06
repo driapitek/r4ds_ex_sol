@@ -3149,3 +3149,61 @@ flights %>%
   labs(x = "Mесяц", y = "Направление", fill = "Задержка отправления") +
   coord_flip()
 ```
+
+#### Две непрерывные переменные
+
+С одним из способов визуализации двух непрерывных переменных я уже знаком. Это точечная диаграмма рассеяния.
+
+```{r}
+ggplot(diamonds) +
+  geom_point(aes(carat, price))
+```
+
+Даже при таком построении просматривается экспоненциальный характер связи. Однако большое скопление точек затрудняет восприятие. Частично эту ситуацию может решит введение уже знакомой мне прозрачности
+
+```{r}
+ggplot(diamonds) +
+  geom_point(aes(carat, price), 
+             alpha = 0.01)
+```
+
+Однако это не панацея. Чуть более полезное решение --- использование карманов (интервалов значений). Так называем карманы создаются с помощью функций `geom_bin2d()` и `geom_hex()`. Для использования последней необходимо установить пакет `hexbin`. 
+
+```{r}
+ggplot(smaller) +
+  geom_bin2d(aes(carat, price))
+```
+
+```{r}
+ggplot(smaller) +
+  geom_hex(aes(carat, price))
+```
+
+Это красиво. Но есть старые добрые методы от Тьюки --- ящики с усами. 
+
+```{r}
+ggplot(smaller, aes(carat, price)) +
+  geom_boxplot(aes(group = cut_width(carat, 0.1)))
+```
+
+Однако ящики с усами имеют один и тот же внешний вид, за исключением количества выбросов, независимо от количества наблюдений, которым они соответствуют. ПОэтому судить о том , какое количество наблюдений просуммировано в каждом кармане очень трудно. ОДин из способов сделать это возможным заключается в использовании карманов, ширина которых пропорциональна количеству точек данных `varwidth = TRUE`
+
+```{r}
+ggplot(smaller, aes(carat, price)) +
+  geom_boxplot(aes(group = cut_width(carat, 0.1)),
+               varwidth = TRUE)
+```
+
+Не очень наглядно, но говорят иногда выручает. Ещё один способ, заключается в том, чтобы отражать примерно одно и то же количество точек в каждом кармане. Это делается с помощью функции `cut_number()`
+
+```{r}
+ggplot(smaller, aes(carat, price)) +
+  geom_boxplot(aes(group = cut_number(carat, 20)))
+```
+
+#### Упражнение 7.5.3.1.1
+<div class="question">
+Instead of summarizing the conditional distribution with a box plot, you could use a frequency polygon. What do you need to consider when using `cut_width()` vs `cut_number()`? How does that impact a visualization of the 2d distribution of `carat` and `price`?
+</div>
+
+
