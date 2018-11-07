@@ -2900,7 +2900,7 @@ How do you interpret the plots?
 library("lvplot")
 
 ggplot(diamonds, aes(x = cut, y = price)) +
-  geom_lv()
+  geom_lv(aes(fill=..LV..))
 ```
 
 [В статье](https://vita.had.co.nz/papers/letter-value-plot.pdf) объясняются преимущества Side-by-side LV boxplots, а так же показаны примеры и сравнения. Здесь объяснений приводить не буду, ограничусь тем, что скажу что новый вид диаграмм более информативен посравнению с ящиками с усами Джона Тьюки.
@@ -3170,6 +3170,7 @@ ggplot(diamonds) +
 Однако это не панацея. Чуть более полезное решение --- использование карманов (интервалов значений). Так называем карманы создаются с помощью функций `geom_bin2d()` и `geom_hex()`. Для использования последней необходимо установить пакет `hexbin`. 
 
 ```{r}
+#install.packages("hexbin")
 ggplot(smaller) +
   geom_bin2d(aes(carat, price))
 ```
@@ -3204,6 +3205,40 @@ ggplot(smaller, aes(carat, price)) +
 #### Упражнение 7.5.3.1.1
 <div class="question">
 Instead of summarizing the conditional distribution with a box plot, you could use a frequency polygon. What do you need to consider when using `cut_width()` vs `cut_number()`? How does that impact a visualization of the 2d distribution of `carat` and `price`?
+</div>
+
+Принимая решение о том какую из функций использовать, необходимо учитывать следующие факторы
+
+* При использовании `cut_width()` необходимо указать ширину просматриваемого диапазона. 
+
+* При использовании `cut_number()` необходимо указать количество ящиков, которое необходимо построить. 
+
+#### Упражнение 7.5.3.1.2
+<div class="question">
+Visualize the distribution of `carat`, partitioned by `price`.
+</div>
+
+Как я понял это задание --- нужно сгруппировать данные в ящиках по переменной `price`. Это означает, что нужно указать группировку либо по количеству ящиков, которые будем строить, т.е.`cut_number()`. Сначала я построил вот такое распределение.
+
+```{r}
+ggplot(diamonds, aes(price, carat)) +
+  geom_boxplot(aes(group = cut_number(price, 10))) +
+  coord_flip()
+```
+
+Здесь построено 10 ящиков сгруппированных по переменной `price`, с примерно одним количеством точек в кармане или диапазоне. В принципе подобное же решение но с группировкой по переменной `carat` приведена в учебнике. Меня смущает здесь тот факт, что столбцы ящиков с усами имеют разную ширину хотя они и показывают количество точек попавших в карман. Чтобы построить ящики равной ширины и при этом отобразить количество точек попавших в наблюдение, можно убрать группировку при построении оставив только функцию `cut_number`
+
+```{r}
+ggplot(diamonds, aes(cut_number(price, 10), carat)) +
+  geom_boxplot() +
+  coord_flip()
+```
+
+Как видно такое построение не повлияло на характер распределения, однако сделало визуализацию чуть более аккуратной. Такой подход ситуативен, потому что повторюсь --- первый вариант даёт наглядное представление о количестве точек, попавших в карман.
+
+#### Упражнение 7.5.3.1.3
+<div class="question">
+How does the `price` distribution of very large diamonds compare to small diamonds. Is it as you expect, or does it surprise you?
 </div>
 
 
