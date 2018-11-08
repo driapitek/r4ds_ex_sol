@@ -3291,3 +3291,20 @@ ggplot(diamonds, aes(x = cut_number(price, 6), y = carat)) +
   xlab("price")
 ```
 
+#### Упражнение 7.5.3.1.5
+<div class="question">
+Two dimensional plots reveal outliers that are not visible in one dimensional plots. For example, some points in the plot below have an unusual combination of `x` and `y` values, which makes the points outliers even though their `x` and `y` values appear normal when examined separately.
+</div>
+
+Почему в данном случае легче заметить необычные точки на диаграмме рассеяния, чем на диаграмме использующей карманы.
+
+```{r}
+ggplot(data = diamonds) +
+  geom_point(mapping = aes(x = x, y = y)) +
+  coord_cartesian(xlim = c(4, 11), ylim = c(4, 11))
+```
+
+Потому что при построении ящиков или диаграмм с карманами, эти точки могут попасть в прос
+
+
+
