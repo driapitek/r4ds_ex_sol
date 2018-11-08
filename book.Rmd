@@ -3253,7 +3253,41 @@ ggplot(smaller, aes(carat, price)) +
 
 #### Упражнение 7.5.3.1.4
 <div class="question">
-
+Combine two of the techniques you’ve learned to visualize the combined distribution of `cut`, `carat`, and `price`.
 </div>
 
+Попробуем несколько способов визуализации указанных переменных. Один из первых --- это объединение панелями.
+
+Уже на этом этапе понятно, что интерпритируемость некоторых вариантов значительно хуже других.
+
+```{r}
+ggplot(diamonds, aes(carat, price)) +
+  geom_boxplot(aes(group = cut_width(carat, 0.5))) +
+  facet_wrap(~ cut, nrow = 2)
+```
+
+Построение в панелях ящиков с усами, даёт некоторое представление о взаимном распределении переменных, однако на сравнение необходимо затратить некоторое время. Чуть более интересную визуализацию панелями даёт построение шестигранных диаграмм
+
+```{r}
+ggplot(diamonds, aes(carat, price)) +
+  geom_hex() +
+  facet_wrap(~ cut, nrow = 2)
+```
+
+Следующий способ --- построить ящики с усами, разбить просматриваемый диапазон на равное количество карманов, и в каждом диапазоне разбить один ящик на несколько, согласно категориальной переменной. Так как категориальная переменная одна `cut`, то в зависимости от того, распределение какой переменной мы хотим изучить, будем создавать карманы либо по весу
+
+```{r}
+ggplot(diamonds, aes(x = cut_number(carat, 6), y = price)) +
+  geom_boxplot(aes(color = cut)) +
+  xlab("carat")
+```
+
+Либо по цене
+
+```{r}
+ggplot(diamonds, aes(x = cut_number(price, 6), y = carat)) +
+  geom_boxplot(aes(color = cut)) +
+  coord_flip() +
+  xlab("price")
+```
 
