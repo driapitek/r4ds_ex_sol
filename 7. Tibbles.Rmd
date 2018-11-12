@@ -24,7 +24,12 @@ editor_options:
 Пакет `tibble` является частью ядра библиотеки `tidyverse`.
 
 ```{r}
-library(tidyverse)
+library("tidyverse")
+library("viridis")
+library("forcats")
+library("nycflights13")
+library("Lahman")
+library("dplyr")
 ```
 
 ### Создание tibble-фреймов 
@@ -95,3 +100,19 @@ nycflights13::flights %>%
   print(n = 10, width = Inf) # Параметр width = Inf указывает что выводить нужно все столбцы
 ```
 
+КРоме того можно управлять поведением при печати заданным по умолчанию, с помощью группы настроек `options`
+
+* `options(tibble.print_max = n, tibble.print_min = m)`: если количество строк больше `m` вывести на печать лишь `n` строк. Чтобы всегда отображались все строки, используй вариант `ooptions(dplyr.print_min = Inf)`
+
+* Чтобы всегда выводить на печать все столбцы, независимо от ширины экрана, используй `options(tibble.width = Inf)
+
+полный список возможных опций `packege?tibble`.
+
+МОжно воспользоваться встроенным средством просмотра
+
+```{r}
+nycflights13::flights %>% 
+  View()
+```
+
+#### Извлечение поднаборов
