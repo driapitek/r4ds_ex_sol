@@ -109,7 +109,7 @@ ggplot(data = mpg, aes(x = hwy, y = cyl))+
 #### Упражнение 3.2.5 
 <div class="question">
 What happens if you make a scatterplot of `class` vs `drv`? Why is the plot not useful?
-<di/v>
+</div>
 
 Оба параметра являются категориальными, или описательными. Можно построить `<chr>` от `<chr>`. 
 ```{r}
