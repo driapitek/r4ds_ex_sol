@@ -268,19 +268,25 @@ annoying <- tibble(
 )
 ```
 
-Извлекаем переменную
+1. Извлекаем переменную
 ```{r}
-# Извлекаем переменную 1 как вектор
-annoying$"1"
-
 # Эта запись возвращает тиббл-столбец
 annoying[1]
 
-# А эта запись возвращает вектор
+# Извлекаем переменную 1 как вектор
+annoying$"1"
+
+# Эта запись возвращает вектор
 annoying[[1]]
+
+# И эта запись возвращает вектор
+annoying[["1"]]
+
+# И эта запись возвращает вектор
+annoying$`1`
 ```
 
-Строим точечный график для переменных `1` и `2`
+1. Строим точечный график для переменных `1` и `2`
 ```{r}
 # Создаём точечный график либо вот так
 ggplot(annoying, aes(x = annoying[[1]], y = annoying[[2]])) + 
@@ -289,6 +295,78 @@ ggplot(annoying, aes(x = annoying[[1]], y = annoying[[2]])) +
 # Либо вот так
 ggplot(annoying, aes(x = annoying$"1", y = annoying$"2")) + 
   geom_point()
+
+# Но лучше всего вот так!
+ggplot(annoying, aes(x = `1`, y = `2`)) + 
+  geom_point()
+```
+
+1. Создаём ещё один столбец
+
+```{r}
+# Можно старым знакомым методом
+annoying %>%
+  mutate(`3` = `2` / `1`)
+```
+
+```{r}
+# Можно попроще
+annoying[["3"]] <- annoying$`2` / annoying$`1`
+```
+
+
+1. Изменяем названия столбцов
+
+```{r}
+annoying <- rename(annoying, one = `1`, two = `2`, three = `3`)
+print(annoying)
+```
+
+#### Упражнение 10.6.5
+<div class="question">
+What does `tibble::enframe()` do? When might you use it?
+</div>
+
+`tibble::enframe()` преобразует атомные векторы или списки в двухколонные кадры данных. Для неназванных векторов естественная последовательность используется как столбец имен.
+
+```{r}
+1:6
+```
+
+```{r}
+enframe(1:6)
+```
+
+
+```{r}
+c(a = 5, b = 7)
+```
+
+```{r}
+enframe(c(a = 5, b = 7))
+```
+
+Другими словами функция преобразует именованные векторы в data frame с именами и значениями
+
+```{r}
+enframe(c(a = 1, b = 2, c = 3))
+```
+
+
+#### Упражнение 10.6.5
+<div class="question">
+What option controls how many additional column names are printed at the footer of a tibble?
+</div>
+
+За возможность выводить столбцы отвечает функция `print()`. Количеством выводимых столбцов в колонтитуле управляет параметр `n_extra`
+
+```{r}
+print(nycflights13::flights)
+```
+
+
+```{r}
+print(nycflights13::flights, n_extra = 2)
 ```
 
 
