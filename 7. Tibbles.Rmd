@@ -353,7 +353,7 @@ enframe(c(a = 1, b = 2, c = 3))
 ```
 
 
-#### Упражнение 10.6.5
+#### Упражнение 10.6.6
 <div class="question">
 What option controls how many additional column names are printed at the footer of a tibble?
 </div>
