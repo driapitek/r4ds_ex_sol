@@ -467,3 +467,107 @@ What are the most important arguments to `locale()`?
 
 * `tz` часовой пояс 
 
+#### Упражнение 11.3.5.2
+<div class="question">
+1. What happens if you try and set `decimal_mark` and `grouping_mark` to the same character? 
+
+2. What happens to the default value of `grouping_mark` when you set `decimal_mark` to `","`? 
+
+3. What happens to the default value of `decimal_mark` when you set the `grouping_mark` to `"."`?
+</div>
+
+1. Должна произойти ошибка, потому что интерпретатор попадёт в вилку, что считать десятичным разделитем а что группировкой (так и есть)
+
+```{r}
+parse_number(
+  "$123.456.789",
+  locale = locale(grouping_mark = ".", decimal_mark = "."))
+```
+
+2. Не знаю, вероятно `grouping_mark` изменит своё значение на точку (так и есть)
+
+```{r}
+locale(decimal_mark = ",")
+```
+
+3. Вероятно так же как и в примере выше, `decimal_mark` изменит своё значение на запятую 
+
+```{r}
+locale(grouping_mark = ".")
+```
+
+
+#### Упражнение 11.3.5.3
+<div class="question">
+I didn’t discuss the `date_format` and `time_format` options to `locale()`. What do they do? Construct an example that shows when they might be useful.
+</div>
+
+```{r}
+locale()
+```
+
+По умолчанию заданы форматы `%AD` и `%AT` для соответственно даты и времени.
+
+```{r}
+parse_date("1 января 2018", "%d %B %Y", locale = locale(date_names = "ru", date_format = ))
+
+parse_date("21 окт. 1991", "%d %b %Y", locale = locale("ru", time_format ="ioojdpijsdf" ))
+```
+
+Сложно придумать пример, если они на что-то и влияют, то мне не удалось придумать пример
+
+
+#### Упражнение 11.3.5.4
+<div class="question">
+If you live outside the US, create a new locale object that encapsulates the settings for the types of file you read most commonly.
+</div>
+
+Да я живу за пределами Штатов, но пожалуй менять настройки пока что не буду. При случае, если это понадобится надо будет почитать хэлп к локали `?locale`
+
+#### Упражнение 11.3.5.5
+<div class="question">
+What’s the difference between `read_csv()` and `read_csv2()`?
+</div>
+
+* Функция `read_csv()` читает текстовые файлы с *запятой* в качестве разделителя
+
+* Функция `read_csv2()` читает текстовые файлы с *точку с запятой* в качестве разделителя
+
+#### Упражнение 11.3.5.6
+<div class="question">
+What are the most common encodings used in Europe? What are the most common encodings used in Asia? Do some googling to find out.
+</div>
+
+UTF-8 стандарт. Еще уважаемый Скоморохов завещал в любой непонятной ситуации юзать ютф. Вот небольшой расклад по странам и регионам.
+
+* Japanese: JIS X 0208, Shift JIS, ISO-2022-JP
+* Chinese: GB 2312, GBK, GB 18030
+* Korean: KS X 1001, EUC-KR, ISO-2022-KR
+* Western European Latin script languages: ISO-8859-1, Windows-1250 (also CP-1250 for code-point)
+* Eastern European Latin script languages: ISO-8859-2, Windows-1252
+* Greek: ISO-8859-7
+* Turkish: ISO-8859-9, Windows-1254
+* Hebrew: ISO-8859-8, IBM424, Windows 1255
+* Russian: Windows 1251
+* Japanese: Shift JIS, ISO-2022-JP, EUC-JP
+* Korean: ISO-2022-KR, EUC-KR
+* Chinese: GB18030, ISO-2022-CN (Simplified), Big5 (Traditional)
+* Arabic: ISO-8859-6, IBM420, Windows 1256
+
+почитать [http://kunststube.net/encoding/](http://kunststube.net/encoding/)
+
+#### Упражнение 11.3.5.7
+<div class="question">
+enerate the correct format string to parse each of the following dates and times:
+</div>
+
+```{r}
+d1 <- "January 1, 2010"
+d2 <- "2015-Mar-07"
+d3 <- "06-Jun-2017"
+d4 <- c("August 19 (2015)", "July 1 (2015)")
+d5 <- "12/30/14" # Dec 30, 2014
+t1 <- "1705"
+t2 <- "11:15:10.12 PM"
+```
+
