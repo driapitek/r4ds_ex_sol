@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Решение упражнений из книги R Science</title>
+  <meta name="description" content="Здесь будут публиковаться решения заданий из книги">
+  <meta name="generator" content="bookdown <!--bookdown:version--> and GitBook 2.6.7">
+
+  <meta property="og:title" content="Решение упражнений из книги R Science" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Здесь будут публиковаться решения заданий из книги" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Решение упражнений из книги R Science" />
+  
+  <meta name="twitter:description" content="Здесь будут публиковаться решения заданий из книги" />
+  
+
+<meta name="author" content="Stas Masuta">
+
+
+<meta name="date" content="2018-11-30">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<!--bookdown:link_prev-->
+<!--bookdown:link_next-->
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+<!--bookdown:title:start-->
+<div id="header">
+<h1 class="title">Решение упражнений из книги R Science</h1>
+<h4 class="author"><em>Stas Masuta</em></h4>
+<h4 class="date"><em>2018-11-30</em></h4>
+</div>
+<!--bookdown:title:end-->
+
+<!--bookdown:toc:start-->
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+<!--bookdown:toc2:start-->
+<ul>
+<li><a><span class="toc-section-number">1</span> Введение</a></li>
+<li><a href="#-"><span class="toc-section-number">2</span> Предварительный анализ</a><ul>
+<li><a href="#----ggplot2"><span class="toc-section-number">2.1</span> Визуализация данных с помощью <code>ggplot2</code></a><ul>
+<li><a href="#-1"><span class="toc-section-number">2.1.1</span> Введение</a></li>
+<li><a href="#-"><span class="toc-section-number">2.1.2</span> Первые шаги</a></li>
+<li><a href="#-"><span class="toc-section-number">2.1.3</span> Эстетика визуализации</a></li>
+<li><a href="#-"><span class="toc-section-number">2.1.4</span> Распространённые ошибки</a></li>
+<li><a><span class="toc-section-number">2.1.5</span> Панели</a></li>
+<li><a href="#-"><span class="toc-section-number">2.1.6</span> Геометрические объекты</a></li>
+<li><a href="#-"><span class="toc-section-number">2.1.7</span> Статистические преобразования</a></li>
+<li><a href="#-"><span class="toc-section-number">2.1.8</span> Позиционные настройки</a></li>
+<li><a href="#-"><span class="toc-section-number">2.1.9</span> Системы координат</a></li>
+<li><a href="#--"><span class="toc-section-number">2.1.10</span> Многослойная грамматика графики</a></li>
+</ul></li>
+<li><a href="#--"><span class="toc-section-number">2.2</span> Рабочий процесс: основы</a><ul>
+<li><a href="#--"><span class="toc-section-number">2.2.1</span> Основы написания кода</a></li>
+<li><a href="#---"><span class="toc-section-number">2.2.2</span> Что представляют собой имена</a></li>
+<li><a href="#-"><span class="toc-section-number">2.2.3</span> Вызов функций</a></li>
+</ul></li>
+<li><a href="#-----dplyr"><span class="toc-section-number">2.3</span> Преобразование данных с помощью пакета <code>dplyr</code></a><ul>
+<li><a href="#-2"><span class="toc-section-number">2.3.1</span> Введение</a></li>
+<li><a href="#-----filter"><span class="toc-section-number">2.3.2</span> Фильтрация строк с помощью функции <code>filter()</code></a></li>
+<li><a href="#-----arange"><span class="toc-section-number">2.3.3</span> Перестановка строк с помощью функции <code>arange()</code></a></li>
+<li><a href="#-----select"><span class="toc-section-number">2.3.4</span> Выбор столбцов с помощью функции <code>select()</code></a></li>
+<li><a href="#-----mutate"><span class="toc-section-number">2.3.5</span> Добавление столбцов с помощью функции <code>mutate()</code></a></li>
+<li><a href="#------summarize"><span class="toc-section-number">2.3.6</span> Получение групповых итогов с помощью функции <code>summarize()</code></a></li>
+<li><a href="#---"><span class="toc-section-number">2.3.7</span> Групповое видоизменение (и фильтрация)</a></li>
+</ul></li>
+<li><a href="#---"><span class="toc-section-number">2.4</span> Организация рабочего процесса: скрипты</a><ul>
+<li><a href="#-"><span class="toc-section-number">2.4.1</span> Выполнение кода</a></li>
+<li><a href="#--rstudio"><span class="toc-section-number">2.4.2</span> Диагностические средства RStudio</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#stocks-gathernazavanie_peremennoy-price--time"><span class="toc-section-number">3</span> stocks %&gt;% gather(nazavanie_peremennoy, price, -time)</a><ul>
+<li><a href="#--"><span class="toc-section-number">3.1</span> Предварительный анализ данных</a><ul>
+<li><a href="#-3"><span class="toc-section-number">3.1.1</span> Введение</a></li>
+<li><a><span class="toc-section-number">3.1.2</span> Вопросы</a></li>
+<li><a><span class="toc-section-number">3.1.3</span> Вариация</a></li>
+<li><a href="#--2"><span class="toc-section-number">3.1.4</span> Отсутствующие значения</a></li>
+<li><a><span class="toc-section-number">3.1.5</span> Ковариация</a></li>
+<li><a href="#----"><span class="toc-section-number">3.1.6</span> Шаблоны поведения переменных и модели</a></li>
+<li><a href="#--ggplot"><span class="toc-section-number">3.1.7</span> Вызов функций <code>ggplot</code></a></li>
+<li><a href="#-"><span class="toc-section-number">3.1.8</span> Дополнительная информация</a></li>
+</ul></li>
+<li><a href="#---"><span class="toc-section-number">3.2</span> Организация рабочего процесса: проекты</a><ul>
+<li><a href="#---"><span class="toc-section-number">3.2.1</span> Что является вашим достоянием</a></li>
+<li><a href="#---"><span class="toc-section-number">3.2.2</span> Где находится ваш анализ</a></li>
+<li><a href="#--"><span class="toc-section-number">3.2.3</span> Пути и каталоги</a></li>
+<li><a href="#-rstudio"><span class="toc-section-number">3.2.4</span> Проекты RStudio</a></li>
+<li><a><span class="toc-section-number">3.2.5</span> Резюме</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#-"><span class="toc-section-number">4</span> Подготовка данных</a><ul>
+<li><a href="#-tibble-----tibble"><span class="toc-section-number">4.1</span> Создание tibble-фреймов с помощью пакета <code>tibble</code></a><ul>
+<li><a href="#-4"><span class="toc-section-number">4.1.1</span> Введение</a></li>
+<li><a href="#-tibble-"><span class="toc-section-number">4.1.2</span> Создание tibble-фреймов</a></li>
+<li><a href="#-tibble----data.frame"><span class="toc-section-number">4.1.3</span> Сравнение tibble-фреймов с фреймами <code>data.frame</code></a></li>
+<li><a href="#----"><span class="toc-section-number">4.1.4</span> Взаимодействие с разработанным ранее кодом</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#read_delimfile-delim"><span class="toc-section-number">5</span> read_delim(file, delim = “|”)</a><ul>
+<li><a href="#-----reader"><span class="toc-section-number">5.1</span> Импорт данных с помощью пакета <code>reader</code></a><ul>
+<li><a href="#-5"><span class="toc-section-number">5.1.1</span> Введение</a></li>
+<li><a href="#--"><span class="toc-section-number">5.1.2</span> Приступаем к работе</a></li>
+<li><a href="#--"><span class="toc-section-number">5.1.3</span> Синтаксический анализ векторов</a></li>
+<li><a href="#--"><span class="toc-section-number">5.1.4</span> Синтаксический анализ файлов</a></li>
+<li><a href="#--"><span class="toc-section-number">5.1.5</span> Запись в файл</a></li>
+<li><a href="#--"><span class="toc-section-number">5.1.6</span> Другие типы данных</a></li>
+</ul></li>
+<li><a href="#-----tidyr"><span class="toc-section-number">5.2</span> Аккуратизация данных с помощью пакета <code>tidyr</code></a><ul>
+<li><a href="#-6"><span class="toc-section-number">5.2.1</span> Введение</a></li>
+<li><a href="#-"><span class="toc-section-number">5.2.2</span> Аккуратные данные</a></li>
+<li><a href="#---"><span class="toc-section-number">5.2.3</span> Рассредоточение и сведение столбцов</a></li>
+</ul></li>
+</ul></li>
+</ul>
+<!--bookdown:toc2:end-->
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Решение упражнений из книги R Science</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<!--bookdown:toc:end-->
+<!--bookdown:body:start-->
+<div class="section level1">
+<h1><span class="header-section-number">1</span> Введение</h1>
+<p>Это электронная версия решений упражнений, свёрстанная при помощи <strong>bookdown</strong>, который можно установить здесь:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;bookdown&quot;</span>)
+<span class="co"># or the development version</span>
+<span class="co"># devtools::install_github(&quot;rstudio/bookdown&quot;)</span></code></pre></div>
+<!--chapter:end:index.Rmd-->
+</div>
+<div id="-" class="section level1">
+<h1><span class="header-section-number">2</span> Предварительный анализ</h1>
+<p>Placeholder</p>
+<div id="----ggplot2" class="section level2">
+<h2><span class="header-section-number">2.1</span> Визуализация данных с помощью <code>ggplot2</code></h2>
+<div id="-1" class="section level3">
+<h3><span class="header-section-number">2.1.1</span> Введение</h3>
+</div>
+<div id="-" class="section level3">
+<h3><span class="header-section-number">2.1.2</span> Первые шаги</h3>
+<div id="-3.2.1" class="section level4">
+<h4><span class="header-section-number">2.1.2.1</span> Упражнение 3.2.1</h4>
+</div>
+<div id="-3.2.2" class="section level4">
+<h4><span class="header-section-number">2.1.2.2</span> Упражнение 3.2.2</h4>
+</div>
+<div id="-3.2.3" class="section level4">
+<h4><span class="header-section-number">2.1.2.3</span> Упражнение 3.2.3</h4>
+</div>
+<div id="-3.2.4" class="section level4">
+<h4><span class="header-section-number">2.1.2.4</span> Упражнение 3.2.4</h4>
+</div>
+<div id="-3.2.5" class="section level4">
+<h4><span class="header-section-number">2.1.2.5</span> Упражнение 3.2.5</h4>
+</div>
+</div>
+<div id="-" class="section level3">
+<h3><span class="header-section-number">2.1.3</span> Эстетика визуализации</h3>
+<div id="-3.3.1" class="section level4">
+<h4><span class="header-section-number">2.1.3.1</span> Упражнения 3.3.1</h4>
+</div>
+<div id="-3.3.2" class="section level4">
+<h4><span class="header-section-number">2.1.3.2</span> Упражнения 3.3.2</h4>
+</div>
+<div id="-3.3.3" class="section level4">
+<h4><span class="header-section-number">2.1.3.3</span> Упражнения 3.3.3</h4>
+</div>
+<div id="-3.3.4" class="section level4">
+<h4><span class="header-section-number">2.1.3.4</span> Упражнения 3.3.4</h4>
+</div>
+<div id="-3.3.5" class="section level4">
+<h4><span class="header-section-number">2.1.3.5</span> Упражнения 3.3.5</h4>
+</div>
+<div id="-3.3.6" class="section level4">
+<h4><span class="header-section-number">2.1.3.6</span> Упражнения 3.3.6</h4>
+</div>
+</div>
+<div id="-" class="section level3">
+<h3><span class="header-section-number">2.1.4</span> Распространённые ошибки</h3>
+</div>
+<div class="section level3">
+<h3><span class="header-section-number">2.1.5</span> Панели</h3>
+<div id="-3.5.1" class="section level4">
+<h4><span class="header-section-number">2.1.5.1</span> Упражнение 3.5.1</h4>
+</div>
+<div id="-3.5.2" class="section level4">
+<h4><span class="header-section-number">2.1.5.2</span> Упражнение 3.5.2</h4>
+</div>
+<div id="-3.5.3" class="section level4">
+<h4><span class="header-section-number">2.1.5.3</span> Упражнение 3.5.3</h4>
+</div>
+<div id="-3.5.4" class="section level4">
+<h4><span class="header-section-number">2.1.5.4</span> Упражнение 3.5.4</h4>
+</div>
+<div id="-3.5.5" class="section level4">
+<h4><span class="header-section-number">2.1.5.5</span> Упражнение 3.5.5</h4>
+</div>
+<div id="-3.5.6" class="section level4">
+<h4><span class="header-section-number">2.1.5.6</span> Упражнение 3.5.6</h4>
+</div>
+</div>
+<div id="-" class="section level3">
+<h3><span class="header-section-number">2.1.6</span> Геометрические объекты</h3>
+<div id="-3.6.1" class="section level4">
+<h4><span class="header-section-number">2.1.6.1</span> Упражнения 3.6.1</h4>
+</div>
+<div id="-3.6.2" class="section level4">
+<h4><span class="header-section-number">2.1.6.2</span> Упражнения 3.6.2</h4>
+</div>
+<div id="-3.6.3" class="section level4">
+<h4><span class="header-section-number">2.1.6.3</span> Упражнения 3.6.3</h4>
+</div>
+<div id="-3.6.4" class="section level4">
+<h4><span class="header-section-number">2.1.6.4</span> Упражнения 3.6.4</h4>
+</div>
+<div id="-3.6.5" class="section level4">
+<h4><span class="header-section-number">2.1.6.5</span> Упражнения 3.6.5</h4>
+</div>
+<div id="-3.6.6" class="section level4">
+<h4><span class="header-section-number">2.1.6.6</span> Упражнения 3.6.6</h4>
+</div>
+</div>
+<div id="-" class="section level3">
+<h3><span class="header-section-number">2.1.7</span> Статистические преобразования</h3>
+<div id="-3.7.1" class="section level4">
+<h4><span class="header-section-number">2.1.7.1</span> Упражнения 3.7.1</h4>
+</div>
+<div id="-3.7.2" class="section level4">
+<h4><span class="header-section-number">2.1.7.2</span> Упражнения 3.7.2</h4>
+</div>
+<div id="-3.7.3" class="section level4">
+<h4><span class="header-section-number">2.1.7.3</span> Упражнения 3.7.3</h4>
+</div>
+<div id="-3.7.4" class="section level4">
+<h4><span class="header-section-number">2.1.7.4</span> Упражнения 3.7.4</h4>
+</div>
+<div id="-3.7.5" class="section level4">
+<h4><span class="header-section-number">2.1.7.5</span> Упражнения 3.7.5</h4>
+</div>
+</div>
+<div id="-" class="section level3">
+<h3><span class="header-section-number">2.1.8</span> Позиционные настройки</h3>
+<div id="-3.8.1" class="section level4">
+<h4><span class="header-section-number">2.1.8.1</span> Упражнения 3.8.1</h4>
+</div>
+<div id="-3.8.2" class="section level4">
+<h4><span class="header-section-number">2.1.8.2</span> Упражнения 3.8.2</h4>
+</div>
+<div id="-3.8.3" class="section level4">
+<h4><span class="header-section-number">2.1.8.3</span> Упражнения 3.8.3</h4>
+</div>
+<div id="-3.8.4" class="section level4">
+<h4><span class="header-section-number">2.1.8.4</span> Упражнения 3.8.4</h4>
+</div>
+</div>
+<div id="-" class="section level3">
+<h3><span class="header-section-number">2.1.9</span> Системы координат</h3>
+<div id="-3.9.1" class="section level4">
+<h4><span class="header-section-number">2.1.9.1</span> Упражнения 3.9.1</h4>
+</div>
+<div id="-3.9.2" class="section level4">
+<h4><span class="header-section-number">2.1.9.2</span> Упражнения 3.9.2</h4>
+</div>
+<div id="-3.9.3" class="section level4">
+<h4><span class="header-section-number">2.1.9.3</span> Упражнения 3.9.3</h4>
+</div>
+<div id="-3.9.4" class="section level4">
+<h4><span class="header-section-number">2.1.9.4</span> Упражнения 3.9.4</h4>
+</div>
+</div>
+<div id="--" class="section level3">
+<h3><span class="header-section-number">2.1.10</span> Многослойная грамматика графики</h3>
+<!--chapter:end:1_data_visualisation.Rmd-->
+</div>
+</div>
+<div id="--" class="section level2">
+<h2><span class="header-section-number">2.2</span> Рабочий процесс: основы</h2>
+<div id="--" class="section level3">
+<h3><span class="header-section-number">2.2.1</span> Основы написания кода</h3>
+</div>
+<div id="---" class="section level3">
+<h3><span class="header-section-number">2.2.2</span> Что представляют собой имена</h3>
+</div>
+<div id="-" class="section level3">
+<h3><span class="header-section-number">2.2.3</span> Вызов функций</h3>
+<div id="-4.4.1" class="section level4">
+<h4><span class="header-section-number">2.2.3.1</span> Упражнение 4.4.1</h4>
+</div>
+<div id="-4.4.2" class="section level4">
+<h4><span class="header-section-number">2.2.3.2</span> Упражнение 4.4.2</h4>
+</div>
+<div id="-4.4.3" class="section level4">
+<h4><span class="header-section-number">2.2.3.3</span> Упражнение 4.4.3</h4>
+<!--chapter:end:2_workflow_basics.Rmd-->
+</div>
+</div>
+</div>
+<div id="-----dplyr" class="section level2">
+<h2><span class="header-section-number">2.3</span> Преобразование данных с помощью пакета <code>dplyr</code></h2>
+<div id="-2" class="section level3">
+<h3><span class="header-section-number">2.3.1</span> Введение</h3>
+<div id="-" class="section level4">
+<h4><span class="header-section-number">2.3.1.1</span> Используемые ресурсы</h4>
+</div>
+<div id="-nycflights13" class="section level4">
+<h4><span class="header-section-number">2.3.1.2</span> Пакет <code>nycflights13</code></h4>
+</div>
+<div id="----dplyr" class="section level4">
+<h4><span class="header-section-number">2.3.1.3</span> Основные сведения о пакете <code>dplyr</code></h4>
+</div>
+</div>
+<div id="-----filter" class="section level3">
+<h3><span class="header-section-number">2.3.2</span> Фильтрация строк с помощью функции <code>filter()</code></h3>
+<div class="section level4">
+<h4><span class="header-section-number">2.3.2.1</span> Сравнения</h4>
+</div>
+<div id="-" class="section level4">
+<h4><span class="header-section-number">2.3.2.2</span> Логические операторы</h4>
+</div>
+<div id="-" class="section level4">
+<h4><span class="header-section-number">2.3.2.3</span> Отсутствующие значения</h4>
+</div>
+<div id="-5.2.4.1" class="section level4">
+<h4><span class="header-section-number">2.3.2.4</span> Упражнение 5.2.4.1</h4>
+</div>
+<div id="-5.2.4.2" class="section level4">
+<h4><span class="header-section-number">2.3.2.5</span> Упражнение 5.2.4.2</h4>
+</div>
+<div id="-5.2.4.3" class="section level4">
+<h4><span class="header-section-number">2.3.2.6</span> Упражнение 5.2.4.3</h4>
+</div>
+<div id="-5.2.4.4" class="section level4">
+<h4><span class="header-section-number">2.3.2.7</span> Упражнение 5.2.4.4</h4>
+</div>
+</div>
+<div id="-----arange" class="section level3">
+<h3><span class="header-section-number">2.3.3</span> Перестановка строк с помощью функции <code>arange()</code></h3>
+<div id="-5.3.1.1" class="section level4">
+<h4><span class="header-section-number">2.3.3.1</span> Упражнение 5.3.1.1</h4>
+</div>
+<div id="-5.3.1.2" class="section level4">
+<h4><span class="header-section-number">2.3.3.2</span> Упражнение 5.3.1.2</h4>
+</div>
+<div id="-5.3.1.3" class="section level4">
+<h4><span class="header-section-number">2.3.3.3</span> Упражнение 5.3.1.3</h4>
+</div>
+<div id="-5.3.1.4" class="section level4">
+<h4><span class="header-section-number">2.3.3.4</span> Упражнение 5.3.1.4</h4>
+</div>
+</div>
+<div id="-----select" class="section level3">
+<h3><span class="header-section-number">2.3.4</span> Выбор столбцов с помощью функции <code>select()</code></h3>
+<div id="-5.4.1.1" class="section level4">
+<h4><span class="header-section-number">2.3.4.1</span> Упражнение 5.4.1.1</h4>
+</div>
+<div id="-5.4.1.2" class="section level4">
+<h4><span class="header-section-number">2.3.4.2</span> Упражнение 5.4.1.2</h4>
+</div>
+<div id="-5.4.1.3" class="section level4">
+<h4><span class="header-section-number">2.3.4.3</span> Упражнение 5.4.1.3</h4>
+</div>
+<div id="-5.4.1.4" class="section level4">
+<h4><span class="header-section-number">2.3.4.4</span> Упражнение 5.4.1.4</h4>
+</div>
+</div>
+<div id="-----mutate" class="section level3">
+<h3><span class="header-section-number">2.3.5</span> Добавление столбцов с помощью функции <code>mutate()</code></h3>
+<div id="---" class="section level4">
+<h4><span class="header-section-number">2.3.5.1</span> Полезные функции создания объектов</h4>
+</div>
+<div id="-5.5.2.1" class="section level4">
+<h4><span class="header-section-number">2.3.5.2</span> Упражнение 5.5.2.1</h4>
+</div>
+<div id="-5.5.2.2" class="section level4">
+<h4><span class="header-section-number">2.3.5.3</span> Упражнение 5.5.2.2</h4>
+</div>
+<div id="-5.5.2.3" class="section level4">
+<h4><span class="header-section-number">2.3.5.4</span> Упражнение 5.5.2.3</h4>
+</div>
+<div id="-5.5.2.4" class="section level4">
+<h4><span class="header-section-number">2.3.5.5</span> Упражнение 5.5.2.4</h4>
+</div>
+<div id="-5.5.2.5" class="section level4">
+<h4><span class="header-section-number">2.3.5.6</span> Упражнение 5.5.2.5</h4>
+</div>
+<div id="-5.5.2.6" class="section level4">
+<h4><span class="header-section-number">2.3.5.7</span> Упражнение 5.5.2.6</h4>
+</div>
+</div>
+<div id="------summarize" class="section level3">
+<h3><span class="header-section-number">2.3.6</span> Получение групповых итогов с помощью функции <code>summarize()</code></h3>
+<div id="-----" class="section level4">
+<h4><span class="header-section-number">2.3.6.1</span> Объединение нескольких операций с помощью канала</h4>
+</div>
+<div id="--1" class="section level4">
+<h4><span class="header-section-number">2.3.6.2</span> Отсутствующие значения</h4>
+</div>
+<div class="section level4">
+<h4><span class="header-section-number">2.3.6.3</span> Счетчики</h4>
+</div>
+<div id="--" class="section level4">
+<h4><span class="header-section-number">2.3.6.4</span> Полезные итоговые функции</h4>
+</div>
+<div id="---" class="section level4">
+<h4><span class="header-section-number">2.3.6.5</span> Группирование по нескольким переменным</h4>
+</div>
+<div class="section level4">
+<h4><span class="header-section-number">2.3.6.6</span> Разгруппирование</h4>
+</div>
+<div id="-5.6.7.1" class="section level4">
+<h4><span class="header-section-number">2.3.6.7</span> Упражнение 5.6.7.1</h4>
+</div>
+<div id="-5.6.7.2" class="section level4">
+<h4><span class="header-section-number">2.3.6.8</span> Упражнение 5.6.7.2</h4>
+</div>
+<div id="-5.6.7.3" class="section level4">
+<h4><span class="header-section-number">2.3.6.9</span> Упражнение 5.6.7.3</h4>
+</div>
+<div id="-5.6.7.4" class="section level4">
+<h4><span class="header-section-number">2.3.6.10</span> Упражнение 5.6.7.4</h4>
+</div>
+<div id="-5.6.7.5" class="section level4">
+<h4><span class="header-section-number">2.3.6.11</span> Упражнение 5.6.7.5</h4>
+</div>
+<div id="-5.6.7.6" class="section level4">
+<h4><span class="header-section-number">2.3.6.12</span> Упражнение 5.6.7.6</h4>
+</div>
+<div id="-5.6.7.7" class="section level4">
+<h4><span class="header-section-number">2.3.6.13</span> Упражнение 5.6.7.7</h4>
+</div>
+</div>
+<div id="---" class="section level3">
+<h3><span class="header-section-number">2.3.7</span> Групповое видоизменение (и фильтрация)</h3>
+<div id="-5.7.1.1" class="section level4">
+<h4><span class="header-section-number">2.3.7.1</span> Упражнение 5.7.1.1</h4>
+</div>
+<div id="-5.7.1.2" class="section level4">
+<h4><span class="header-section-number">2.3.7.2</span> Упражнение 5.7.1.2</h4>
+</div>
+<div id="-5.7.1.3" class="section level4">
+<h4><span class="header-section-number">2.3.7.3</span> Упражнение 5.7.1.3</h4>
+</div>
+<div id="-5.7.1.4" class="section level4">
+<h4><span class="header-section-number">2.3.7.4</span> Упражнение 5.7.1.4</h4>
+</div>
+<div id="-5.7.1.5" class="section level4">
+<h4><span class="header-section-number">2.3.7.5</span> Упражнение 5.7.1.5</h4>
+</div>
+<div id="-5.7.1.6" class="section level4">
+<h4><span class="header-section-number">2.3.7.6</span> Упражнение 5.7.1.6</h4>
+</div>
+<div id="-5.7.1.7" class="section level4">
+<h4><span class="header-section-number">2.3.7.7</span> Упражнение 5.7.1.7</h4>
+<!--chapter:end:3_data_transformation.Rmd-->
+</div>
+</div>
+</div>
+<div id="---" class="section level2">
+<h2><span class="header-section-number">2.4</span> Организация рабочего процесса: скрипты</h2>
+<div id="-" class="section level3">
+<h3><span class="header-section-number">2.4.1</span> Выполнение кода</h3>
+</div>
+<div id="--rstudio" class="section level3">
+<h3><span class="header-section-number">2.4.2</span> Диагностические средства RStudio</h3>
+<div id="-6.3.1" class="section level4">
+<h4><span class="header-section-number">2.4.2.1</span> Упражнение 6.3.1</h4>
+</div>
+<div id="-6.3.2" class="section level4">
+<h4><span class="header-section-number">2.4.2.2</span> Упражнение 6.3.2</h4>
+<!--chapter:end:4_workflow_scripts.Rmd-->
+</div>
+</div>
+</div>
+</div>
+<div id="stocks-gathernazavanie_peremennoy-price--time" class="section level1">
+<h1><span class="header-section-number">3</span> stocks %&gt;% gather(nazavanie_peremennoy, price, -time)</h1>
+<p>Placeholder</p>
+<div id="--" class="section level2">
+<h2><span class="header-section-number">3.1</span> Предварительный анализ данных</h2>
+<div id="-3" class="section level3">
+<h3><span class="header-section-number">3.1.1</span> Введение</h3>
+<div id="-" class="section level4">
+<h4><span class="header-section-number">3.1.1.1</span> Необходимые ресурсы</h4>
+</div>
+</div>
+<div class="section level3">
+<h3><span class="header-section-number">3.1.2</span> Вопросы</h3>
+</div>
+<div class="section level3">
+<h3><span class="header-section-number">3.1.3</span> Вариация</h3>
+<div id="-" class="section level4">
+<h4><span class="header-section-number">3.1.3.1</span> Визуализация распределений</h4>
+</div>
+<div id="-" class="section level4">
+<h4><span class="header-section-number">3.1.3.2</span> Типичные значения</h4>
+</div>
+<div id="-" class="section level4">
+<h4><span class="header-section-number">3.1.3.3</span> Необычные значения</h4>
+</div>
+<div id="-7.3.4.1" class="section level4">
+<h4><span class="header-section-number">3.1.3.4</span> Упражнение 7.3.4.1</h4>
+</div>
+<div id="-7.3.4.2" class="section level4">
+<h4><span class="header-section-number">3.1.3.5</span> Упражнение 7.3.4.2</h4>
+</div>
+<div id="-7.3.4.3" class="section level4">
+<h4><span class="header-section-number">3.1.3.6</span> Упражнение 7.3.4.3</h4>
+</div>
+<div id="-7.3.4.4" class="section level4">
+<h4><span class="header-section-number">3.1.3.7</span> Упражнение 7.3.4.4</h4>
+</div>
+</div>
+<div id="--2" class="section level3">
+<h3><span class="header-section-number">3.1.4</span> Отсутствующие значения</h3>
+<div id="-7.3.5.1" class="section level4">
+<h4><span class="header-section-number">3.1.4.1</span> Упражнение 7.3.5.1</h4>
+</div>
+<div id="-7.3.5.2" class="section level4">
+<h4><span class="header-section-number">3.1.4.2</span> Упражнение 7.3.5.2</h4>
+</div>
+</div>
+<div class="section level3">
+<h3><span class="header-section-number">3.1.5</span> Ковариация</h3>
+<div id="---" class="section level4">
+<h4><span class="header-section-number">3.1.5.1</span> Категориальные и непрерывные переменные</h4>
+</div>
+<div id="-7.5.1.1.1" class="section level4">
+<h4><span class="header-section-number">3.1.5.2</span> Упражнение 7.5.1.1.1</h4>
+</div>
+<div id="-7.5.1.1.2" class="section level4">
+<h4><span class="header-section-number">3.1.5.3</span> Упражнение 7.5.1.1.2</h4>
+</div>
+<div id="-7.5.1.1.3" class="section level4">
+<h4><span class="header-section-number">3.1.5.4</span> Упражнение 7.5.1.1.3</h4>
+</div>
+<div id="-7.5.1.1.4" class="section level4">
+<h4><span class="header-section-number">3.1.5.5</span> Упражнение 7.5.1.1.4</h4>
+</div>
+<div id="-7.5.1.1.5" class="section level4">
+<h4><span class="header-section-number">3.1.5.6</span> Упражнение 7.5.1.1.5</h4>
+</div>
+<div id="-7.5.1.1.6" class="section level4">
+<h4><span class="header-section-number">3.1.5.7</span> Упражнение 7.5.1.1.6</h4>
+</div>
+<div id="--" class="section level4">
+<h4><span class="header-section-number">3.1.5.8</span> Две категориальные переменные</h4>
+</div>
+<div id="-7.5.2.1.1" class="section level4">
+<h4><span class="header-section-number">3.1.5.9</span> Упражнение 7.5.2.1.1</h4>
+</div>
+<div id="-7.5.2.1.2" class="section level4">
+<h4><span class="header-section-number">3.1.5.10</span> Упражнение 7.5.2.1.2</h4>
+</div>
+<div id="-7.5.2.1.2-1" class="section level4">
+<h4><span class="header-section-number">3.1.5.11</span> Упражнение 7.5.2.1.2</h4>
+</div>
+<div id="--" class="section level4">
+<h4><span class="header-section-number">3.1.5.12</span> Две непрерывные переменные</h4>
+</div>
+<div id="-7.5.3.1.1" class="section level4">
+<h4><span class="header-section-number">3.1.5.13</span> Упражнение 7.5.3.1.1</h4>
+</div>
+<div id="-7.5.3.1.2" class="section level4">
+<h4><span class="header-section-number">3.1.5.14</span> Упражнение 7.5.3.1.2</h4>
+</div>
+<div id="-7.5.3.1.3" class="section level4">
+<h4><span class="header-section-number">3.1.5.15</span> Упражнение 7.5.3.1.3</h4>
+</div>
+<div id="-7.5.3.1.4" class="section level4">
+<h4><span class="header-section-number">3.1.5.16</span> Упражнение 7.5.3.1.4</h4>
+</div>
+<div id="-7.5.3.1.5" class="section level4">
+<h4><span class="header-section-number">3.1.5.17</span> Упражнение 7.5.3.1.5</h4>
+</div>
+</div>
+<div id="----" class="section level3">
+<h3><span class="header-section-number">3.1.6</span> Шаблоны поведения переменных и модели</h3>
+</div>
+<div id="--ggplot" class="section level3">
+<h3><span class="header-section-number">3.1.7</span> Вызов функций <code>ggplot</code></h3>
+</div>
+<div id="-" class="section level3">
+<h3><span class="header-section-number">3.1.8</span> Дополнительная информация</h3>
+<!--chapter:end:5_exploratory_data_analysis.Rmd-->
+</div>
+</div>
+<div id="---" class="section level2">
+<h2><span class="header-section-number">3.2</span> Организация рабочего процесса: проекты</h2>
+<div id="---" class="section level3">
+<h3><span class="header-section-number">3.2.1</span> Что является вашим достоянием</h3>
+</div>
+<div id="---" class="section level3">
+<h3><span class="header-section-number">3.2.2</span> Где находится ваш анализ</h3>
+</div>
+<div id="--" class="section level3">
+<h3><span class="header-section-number">3.2.3</span> Пути и каталоги</h3>
+</div>
+<div id="-rstudio" class="section level3">
+<h3><span class="header-section-number">3.2.4</span> Проекты RStudio</h3>
+</div>
+<div class="section level3">
+<h3><span class="header-section-number">3.2.5</span> Резюме</h3>
+<!--chapter:end:6_workflow_projects.Rmd-->
+</div>
+</div>
+</div>
+<div id="-" class="section level1">
+<h1><span class="header-section-number">4</span> Подготовка данных</h1>
+<p>Placeholder</p>
+<div id="-tibble-----tibble" class="section level2">
+<h2><span class="header-section-number">4.1</span> Создание tibble-фреймов с помощью пакета <code>tibble</code></h2>
+<div id="-4" class="section level3">
+<h3><span class="header-section-number">4.1.1</span> Введение</h3>
+<div id="--1" class="section level4">
+<h4><span class="header-section-number">4.1.1.1</span> Необходимые ресурсы</h4>
+</div>
+</div>
+<div id="-tibble-" class="section level3">
+<h3><span class="header-section-number">4.1.2</span> Создание tibble-фреймов</h3>
+</div>
+<div id="-tibble----data.frame" class="section level3">
+<h3><span class="header-section-number">4.1.3</span> Сравнение tibble-фреймов с фреймами <code>data.frame</code></h3>
+<div id="--" class="section level4">
+<h4><span class="header-section-number">4.1.3.1</span> Вывод на печать</h4>
+</div>
+<div id="-" class="section level4">
+<h4><span class="header-section-number">4.1.3.2</span> Извлечение поднаборов</h4>
+</div>
+</div>
+<div id="----" class="section level3">
+<h3><span class="header-section-number">4.1.4</span> Взаимодействие с разработанным ранее кодом</h3>
+<div id="-10.6.1" class="section level4">
+<h4><span class="header-section-number">4.1.4.1</span> Упражнение 10.6.1</h4>
+</div>
+<div id="-10.6.2" class="section level4">
+<h4><span class="header-section-number">4.1.4.2</span> Упражнение 10.6.2</h4>
+</div>
+<div id="-10.6.3" class="section level4">
+<h4><span class="header-section-number">4.1.4.3</span> Упражнение 10.6.3</h4>
+</div>
+<div id="-10.6.4" class="section level4">
+<h4><span class="header-section-number">4.1.4.4</span> Упражнение 10.6.4</h4>
+</div>
+<div id="-10.6.5" class="section level4">
+<h4><span class="header-section-number">4.1.4.5</span> Упражнение 10.6.5</h4>
+</div>
+<div id="-10.6.6" class="section level4">
+<h4><span class="header-section-number">4.1.4.6</span> Упражнение 10.6.6</h4>
+<!--chapter:end:7_tibbles.Rmd-->
+</div>
+</div>
+</div>
+</div>
+<div id="read_delimfile-delim" class="section level1">
+<h1><span class="header-section-number">5</span> read_delim(file, delim = “|”)</h1>
+<p>Placeholder</p>
+<div id="-----reader" class="section level2">
+<h2><span class="header-section-number">5.1</span> Импорт данных с помощью пакета <code>reader</code></h2>
+<div id="-5" class="section level3">
+<h3><span class="header-section-number">5.1.1</span> Введение</h3>
+<div id="--2" class="section level4">
+<h4><span class="header-section-number">5.1.1.1</span> Необходимые ресурсы</h4>
+</div>
+</div>
+<div id="--" class="section level3">
+<h3><span class="header-section-number">5.1.2</span> Приступаем к работе</h3>
+<div id="----r" class="section level4">
+<h4><span class="header-section-number">5.1.2.1</span> Сравнение с базовыми возможностями R</h4>
+</div>
+<div id="-11.2.2.1" class="section level4">
+<h4><span class="header-section-number">5.1.2.2</span> Упражнение 11.2.2.1</h4>
+</div>
+<div id="-11.2.2.2" class="section level4">
+<h4><span class="header-section-number">5.1.2.3</span> Упражнение 11.2.2.2</h4>
+</div>
+<div id="-11.2.2.3" class="section level4">
+<h4><span class="header-section-number">5.1.2.4</span> Упражнение 11.2.2.3</h4>
+</div>
+<div id="-11.2.2.4" class="section level4">
+<h4><span class="header-section-number">5.1.2.5</span> Упражнение 11.2.2.4</h4>
+</div>
+<div id="-11.2.2.5" class="section level4">
+<h4><span class="header-section-number">5.1.2.6</span> Упражнение 11.2.2.5</h4>
+</div>
+</div>
+<div id="--" class="section level3">
+<h3><span class="header-section-number">5.1.3</span> Синтаксический анализ векторов</h3>
+<div id="-" class="section level4">
+<h4><span class="header-section-number">5.1.3.1</span> Парсинг чисел</h4>
+</div>
+<div id="-" class="section level4">
+<h4><span class="header-section-number">5.1.3.2</span> Парсинг строк</h4>
+</div>
+<div class="section level4">
+<h4><span class="header-section-number">5.1.3.3</span> Факторы</h4>
+</div>
+<div id="-------" class="section level4">
+<h4><span class="header-section-number">5.1.3.4</span> Календарные даты, календарные дата и время, время суток</h4>
+</div>
+<div id="-11.3.5.1" class="section level4">
+<h4><span class="header-section-number">5.1.3.5</span> Упражнение 11.3.5.1</h4>
+</div>
+<div id="-11.3.5.2" class="section level4">
+<h4><span class="header-section-number">5.1.3.6</span> Упражнение 11.3.5.2</h4>
+</div>
+<div id="-11.3.5.3" class="section level4">
+<h4><span class="header-section-number">5.1.3.7</span> Упражнение 11.3.5.3</h4>
+</div>
+<div id="-11.3.5.4" class="section level4">
+<h4><span class="header-section-number">5.1.3.8</span> Упражнение 11.3.5.4</h4>
+</div>
+<div id="-11.3.5.5" class="section level4">
+<h4><span class="header-section-number">5.1.3.9</span> Упражнение 11.3.5.5</h4>
+</div>
+<div id="-11.3.5.6" class="section level4">
+<h4><span class="header-section-number">5.1.3.10</span> Упражнение 11.3.5.6</h4>
+</div>
+<div id="-11.3.5.7" class="section level4">
+<h4><span class="header-section-number">5.1.3.11</span> Упражнение 11.3.5.7</h4>
+</div>
+</div>
+<div id="--" class="section level3">
+<h3><span class="header-section-number">5.1.4</span> Синтаксический анализ файлов</h3>
+<div class="section level4">
+<h4><span class="header-section-number">5.1.4.1</span> Стратегия</h4>
+</div>
+<div class="section level4">
+<h4><span class="header-section-number">5.1.4.2</span> Проблемы</h4>
+</div>
+<div id="-" class="section level4">
+<h4><span class="header-section-number">5.1.4.3</span> Другие страгтегии</h4>
+</div>
+</div>
+<div id="--" class="section level3">
+<h3><span class="header-section-number">5.1.5</span> Запись в файл</h3>
+</div>
+<div id="--" class="section level3">
+<h3><span class="header-section-number">5.1.6</span> Другие типы данных</h3>
+<!--chapter:end:8_data_import.Rmd-->
+</div>
+</div>
+<div id="-----tidyr" class="section level2">
+<h2><span class="header-section-number">5.2</span> Аккуратизация данных с помощью пакета <code>tidyr</code></h2>
+<div id="-6" class="section level3">
+<h3><span class="header-section-number">5.2.1</span> Введение</h3>
+<div id="--3" class="section level4">
+<h4><span class="header-section-number">5.2.1.1</span> Необходимые ресурсы</h4>
+</div>
+</div>
+<div id="-" class="section level3">
+<h3><span class="header-section-number">5.2.2</span> Аккуратные данные</h3>
+<div id="-12.2.1.1" class="section level4">
+<h4><span class="header-section-number">5.2.2.1</span> Упражнения 12.2.1.1</h4>
+</div>
+<div id="-12.2.1.2" class="section level4">
+<h4><span class="header-section-number">5.2.2.2</span> Упражнения 12.2.1.2</h4>
+</div>
+<div id="-12.2.1.3" class="section level4">
+<h4><span class="header-section-number">5.2.2.3</span> Упражнения 12.2.1.3</h4>
+</div>
+</div>
+<div id="---" class="section level3">
+<h3><span class="header-section-number">5.2.3</span> Рассредоточение и сведение столбцов</h3>
+<div id="--gather" class="section level4">
+<h4><span class="header-section-number">5.2.3.1</span> Сведение столбцов (gather)</h4>
+</div>
+<div id="--spreading" class="section level4">
+<h4><span class="header-section-number">5.2.3.2</span> Рассредоточение столбцов (spreading)</h4>
+<!--chapter:end:9_tidy_data.Rmd-->
+</div>
+</div>
+</div>
+</div>
+<!--bookdown:body:end-->
+            </section>
+
+          </div>
+        </div>
+      </div>
+<!--bookdown:link_prev-->
+<!--bookdown:link_next-->
+    </div>
+  </div>
+<!--bookdown:config-->
+
+</body>
+
+</html>
