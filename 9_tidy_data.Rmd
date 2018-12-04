@@ -747,3 +747,34 @@ select(who3, country, iso2, iso3) %>%
   filter(n() > 1)
 ```
 
+#### Упражнение 12.6.1.4
+<div class="question">
+For each country, year, and sex compute the total number of cases of TB. Make an informative visualization of the data.
+</div>
+
+Для начала я сделал точками.
+```{r}
+who_visual %>%
+  group_by(country, year, sex) %>%
+  filter(year >= 1995) %>%
+  summarise(cases = sum(value)) %>%
+  ggplot(aes(x = year, y = cases, color = sex)) +
+  geom_point()
+```
+
+но потом, сделал получше
+
+
+```{r}
+who5 %>%
+  group_by(country, year, sex) %>%
+  filter(year > 1995) %>%
+  summarise(cases = sum(cases)) %>%
+  unite(country_sex, country, sex, remove = FALSE) %>%
+  filter(between(cases, 50000, 800000)) %>%
+  ggplot(aes(x = year, y = cases, group = country_sex, colour = sex)) +
+  geom_line() + 
+  facet_wrap(.~country)
+```
+
+
