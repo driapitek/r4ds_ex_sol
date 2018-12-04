@@ -692,3 +692,58 @@ who %>%
 In this case study I set `na.rm = TRUE` just to make it easier to check that we had the correct values. Is this reasonable? Think about how missing values are represented in this dataset. Are there implicit missing values? What’s the difference between an NA and zero?
 </div>
 
+```{r}
+who1 %>%
+  filter(cases == 0) %>%
+  nrow()
+```
+
+В этом наборе данных `NA` означает отсутствие измерения на конкретный тест, а наличие нуля означает что тест проводился, и его результат отрицательный. Поэтому в данной ситуации было уместно убрать отсутствующие значения, а не заменять их нулями, так как мы не теряем информации о проведённых исследованиях.
+
+Чтобы продемоснтрировать разницу между нулём и отсутствующим значением я приведу картинку. Потому что лучше один раз увидеть, чем сто раз услышать. 
+
+![alt text](img/NA.jpg)
+
+#### Упражнение 12.6.1.2
+<div class="question">
+What happens if you neglect the `mutate()` step? (`mutate(key = stringr::str_replace(key, "newrel", "new_rel"))`)
+</div>
+
+Эта строчка кода приводит записи наблюдений к одинаковой форме. Без этой строчки один и тот же по своей природе параметр будет встречаться дважды в виде двух разных записей `"newrel"`и `"new_rel"`.
+
+Нельзя простро пропустить этот шаг в этом коде:
+
+```{r}
+who %>%
+  gather(key, value, new_sp_m014:newrel_f65, na.rm = TRUE) %>% 
+  mutate(key = stringr::str_replace(key, "newrel", "new_rel")) %>%
+  separate(key, c("new", "var", "sexage")) %>% 
+  select(-new, -iso2, -iso3) %>% 
+  separate(sexage, c("sex", "age"), sep = 1)
+```
+
+Потому что последующая логика разделения столбца `key` по параметрам, базируется на том, что группы разбивает разделитель `"_"`.
+
+
+#### Упражнение 12.6.1.3
+<div class="question">
+I claimed that `iso2` and `iso3` were redundant with country. Confirm this claim.
+</div>
+
+Первым способом я решил объединить все три столбца и посчитать количество раз которое они встречаются. Любое отклонение от одинаковой суммы указывало бы на то, что вероятно объединение может быть 
+
+```{r}
+who %>%
+  unite(key, country, iso2, iso3) %>%
+  select(key) %>%
+  count(key) %>%
+  arrange(n)
+```
+
+```{r}
+select(who3, country, iso2, iso3) %>%
+  distinct() %>%
+  group_by(country) %>%
+  filter(n() > 1)
+```
+
