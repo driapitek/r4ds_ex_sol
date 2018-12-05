@@ -1,0 +1,66 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+## Аккуратизация данных с помощью пакета `tidyr`
+
+### Введение
+
+Есть три семейства глаголов, предназначенных для выполнениях следуюзщий операций над реляционными данными:
+
+* видоизменение соединений
+
+* фильтрация соединений
+
+* операции над множествами
+
+#### Необходимые ресурсы
+
+```{r}
+library(tidyverse)
+library(nycflights13)
+```
+
+### Пакет `nycflights13`
+
+Этот пакет содержит четыре связанных tibble-frame их взаимосвязь хорошо продемонстрирована на рисунке
+
+![alt text](img/relational.png)
+
+#### Упражнение 13.2.1.1
+<div class="question">
+Imagine you wanted to draw (approximately) the route each plane flies from its origin to its destination. What variables would you need? What tables would you need to combine?
+</div>
+
+Для того чтобы построить маршрут перелёта, необходимо понимать точные данные о местах отправления и назначения. Информацию о перелётах из аэропорта в аэропорт можно получить из фрейма данных `flights` --- переменны `origin` и `dest`, для определения точек отправления и назначения. А информацию о городе в котором расположен конкретный аэропорт можно получить из фрейма данных `airports` --- переменные `lat` и `lon` для получения широты и долготы, т.е. координат аэропорта.
+
+#### Упражнение 13.2.1.2
+<div class="question">
+I forgot to draw the relationship between `weather` and `airports`. What is the relationship and how should it appear in the diagram?
+</div>
+
+На самом деле между ними косвенно указана связь через `flights`. Но если быть точным, то `airports$faa` это внешний ключ `weather$origin`
+
+#### Упражнение 13.2.1.3
+<div class="question">
+Weather only contains information for the origin (NYC) airports. If it contained weather records for all airports in the USA, what additional relation would it define with `flights`?
+</div>
+
+Если бы в `weather` содержались данные о погодных условиях во всех аэропортах, то 'необходимо было бы установить  это обеспечило бы погоду для `dest` каждого рейса. Соответственно необходимо было бы установить соответствие в таблицах между `dest`.
+
+#### Упражнение 13.2.1.4
+<div class="question">
+We know that some days of the year are “special”, and fewer people than usual fly on them. How might you represent that data as a data frame? What would be the primary keys of that table? How would it connect to the existing tables?
+</div>
+
+Можно добавить отдельную таблицу, например `special date`, в которой перечислить эти специальные даты. Первичным ключом была бы комбинация даты из `flights` вплоть до дня `year`, `month`, `day`.
+
+```{r}
+special_date <- tribble(
+  ~year, ~month, ~day, ~holiday,
+  2013, 01, 01, "New Years Day"
+)
+```
+
