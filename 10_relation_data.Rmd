@@ -101,3 +101,34 @@ flights %>%
 Add a surrogate key to `flights`.
 </div>
 
+Однозначно описать строку может её порядковый номер:
+
+```{r}
+flights %>% 
+  mutate(id = row_number())
+```
+
+Ещё лучше сначала упорядочить текущий набор данных и только затем присваивать идентификационный номер:
+
+```{r}
+flights %>%
+  arrange(year, month, day, sched_dep_time, carrier, flight) %>%
+  mutate(flight_id = row_number())
+```
+
+#### Упражнение 13.3.1.2
+<div class="question">
+Identify the keys in the following datasets
+
+1. `Lahman::Batting`
+
+1. `babynames::babynames`
+
+1. `nasaweather::atmos`
+
+1. `fueleconomy::vehicles`
+
+1. `ggplot2::diamonds`
+
+(You might need to install some packages and read some documentation.)
+</div>
