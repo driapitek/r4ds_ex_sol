@@ -257,3 +257,43 @@ dm1 <- dm_from_data_frames(list(Batting = Lahman::Batting,
 dm_create_graph(dm1, rankdir = "LR", columnArrows = TRUE)
 ```
 
+Теперь проделаем эту же процедуру для `Master`, `Managers`, `AwardsManagers`
+
+
+-   `Master`
+
+    -   Первичный: `playerID`
+
+-   `Managers`
+
+    -   Первичный: `yearID`, `teamID`, `inseason`
+
+    -   Внешний:
+
+        -   `playerID` = `Master$playerID` (many-to-1)
+
+-   `AwardsManagers`:
+
+    -   Первичный: `playerID`, `awardID`, `yearID`
+    
+    -   Внешний:
+    
+        -   `playerID` = `Master$playerID` (many-to-1)
+    
+```{r}
+dm2 <- dm_from_data_frames(list(Managers = Lahman::Managers,
+                                Master = Lahman::Master,
+                                AwardsManagers = Lahman::AwardsManagers)) %>%
+  dm_set_key("Managers", c("teamID", "yearID", "inseason")) %>%
+  dm_set_key("Master", "playerID") %>%
+  dm_set_key("AwardsManagers", c("yearID", "awardID", "playerID")) %>%
+  dm_add_references(
+    AwardsManagers$playerID == Master$playerID,
+    Managers$playerID == Master$playerID
+  )
+
+dm_create_graph(dm2, rankdir = "LR", columnArrows = TRUE)
+```
+
+
+Таблицы `Batting`, `Pitching` и `Fielding` имеют первичный ключ, состоящий из переменных `playerID`, `yearID` и `stint`. Все они имеют отношения 1-1 друг к другу, потому что `Batting`, `Pitching` и `Fielding` это названия игровых позиций.
