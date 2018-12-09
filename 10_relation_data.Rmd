@@ -297,3 +297,6 @@ dm_create_graph(dm2, rankdir = "LR", columnArrows = TRUE)
 
 
 Таблицы `Batting`, `Pitching` и `Fielding` имеют первичный ключ, состоящий из переменных `playerID`, `yearID` и `stint`. Все они имеют отношения 1-1 друг к другу, потому что `Batting`, `Pitching` и `Fielding` это названия игровых позиций.
+
+
+### Мутирующие соединения 
