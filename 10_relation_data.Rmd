@@ -21,6 +21,7 @@ editor_options:
 ```{r}
 library(tidyverse)
 library(nycflights13)
+library("datamodelr") # Пакет для моделирования схем баз данных
 ```
 
 ### Пакет `nycflights13`
@@ -132,3 +133,127 @@ Identify the keys in the following datasets
 
 (You might need to install some packages and read some documentation.)
 </div>
+
+1. Для меня совершенно не очевидный ответ, к которому я пришёл интуитивно:
+
+```{r}
+Lahman::Batting %>%
+  count(playerID, yearID, stint) %>%
+  filter(n > 1)
+```
+
+Таким образом, первичным ключом в этих данных будет связка параметров `playerID`, `yearID`, `stint`.
+Эти данные --- статистика по игре в бейсбол. Первые два параметра это как не трудно догадаться ID игрока, и года в котором он играл. Сначала я проверил на однозначность описания совокупность этих двух параметров. Но так как в течении года у игрока может изменяться положение/роль (параметр `stint`), то первичным ключом будет комбинация трёх параметров.
+
+Больше информации по этим данным содержится в оригинальном наборе данных <http://www.seanlahman.com/files/database/readme2012.txt>
+
+1. Для работы с эим набором данных необходимо скачать пакет `babynames`. В этом наборе данных содержится информация о количестве имён используемых в каждом году и их популярность.
+
+```{r}
+# install.packages("babynames")
+library(babynames)
+
+babynames::babynames %>%
+  count(year, sex, name) %>%
+  filter(nn > 1) # Обрати мнимание, что в исходном наборе данных уже есть параметр n, поэтому для подсчёта количества вхождений используеться переменная nn
+```
+
+Первичным ключом будет комбинация из трёх параметров --- имя, пол (потому что есть бисексуальные имена) и год в котором было использовано это имя.
+
+Больше информации по этому набору данных <https://github.com/hadley/babynames>
+
+1. Для работы с этим набором данных необходимо установить пакет `nasaweather`. Данные представляют собой географические и атмосферные измерения на очень грубой сетке 24 на 24, охватывающей Центральную Америку. Переменными являются: высота, температура (поверхность и воздух), озон, давление воздуха и облачный покров (низкий, средний и высокий). За исключением повышения, все переменные являются среднемесячными с наблюдениями за январь 1995 года по декабрь 2000 года. Эти данные были получены из Центра данных атмосферных наук NASA Langley Research Center
+
+```{r}
+# install.packages("nasaweather")
+library(nasaweather)
+```
+
+Таким образом, первичным ключом будет комбинация параметров --- ширина-долгота для идентификации местоположения, и месяц-год для идентификации события во времени. Другими словами:
+
+```{r}
+nasaweather::atmos %>%
+  count(lat, long, year, month) %>%
+  filter(n > 1)
+```
+
+Больше информации по этим данным содержится в оригинальном наборе данных <http://stat-computing.org/dataexpo/2006/>
+
+1. Для работы с этим набором данных необходимо установить пакет `fueleconomy`. Данные об экономии топлива являются результатом испытаний транспортных средств, проведенных в Национальной лаборатории Агентства по охране окружающей среды и выбросов топлива в Анн-Арборе, штат Мичиган, в 1985-2015. А также производителями транспортных средств под надзором EPA. Данные об экономии топлива из EPA, 1985-2015. Этот набор данных содержит выбранные переменные и удаляет транспортные средства с неполными данными (например, без данных трансмиссии)
+
+```{r}
+# install.packages("fueleconomy")
+library(fueleconomy)
+
+fueleconomy::vehicles %>%
+  count(id) %>%
+  filter(n > 1)
+```
+
+В изначальном наборе данных введён первичный ключ --- переменная `id`.
+
+Больше информации по этим данным содержится в оригинальном наборе данных <https://www.fueleconomy.gov/feg/download.shtml>
+
+1. В наборе данных `ggplot2::diamonds`  изначально нет первичного ключа. Его нельзя задать комбинацией параметров, потому что теоретически в природе может существовать два идентичных бриллианта как по размерам и физико-химическим свойствам, так и по цене, запращиваемой за эти бриллианты. Таким образом, для определения первичного ключа, нужно вводить новую переменную (суррогатный первичный ключ).
+
+#### Упражнение 13.3.1.3
+<div class="question">
+Draw a diagram illustrating the connections between the `Batting`, `Master`, and `Salaries` tables in the `Lahman` package. Draw another diagram that shows the relationship between `Master`, `Managers`, `AwardsManagers`.
+
+How would you characterise the relationship between the `Batting`, `Pitching`, and `Fielding` tables?
+</div>
+
+Чтобы фиксировать взаимоотношения данных в таблицах можно использовать множество разных ресурсов. Вероятно на специализированных ресурсах отношения и стрелочки будут выглядеть лучше, но мне помнравилась идея отображать отношения в той рабочей среде в которой проводится анализ.
+
+Для этого необходимо установить два пакета:
+
+```{r}
+install.packages("datamodelr")
+install.packages("DiagrammeR")
+```
+
+Второй пакет необходим для отображения работы первого.
+
+Подробно работа с пакетом описана в репозитории разработчика <https://github.com/bergant/datamodelr#model-diagram-of-interconnected-data-frames>
+
+Общий подход такой --- для начала определяем первичные ключи:
+
+-   `Master`
+
+    -   Первичный: `playerID`
+
+-   `Batting`
+
+    -   Первичный: `playerID`, `yearID`, `stint`
+
+    -   Внешний:
+
+        -   `playerID` = `Master$playerID` (many-to-1)
+
+-   `Salaries`
+
+    -   Primary keys: `yearID`, `teamID`, `playerID`
+
+    -   Foreign Keys
+
+        -   `playerID` = `Master$playerID` (many-to-1)
+
+После этого задаём их связи `Batting$playerID == Master$playerID`, `Salaries$playerID == Master$playerID`
+
+И на третьем шаге можно строить отношения:
+    
+```{r}
+dm1 <- dm_from_data_frames(list(Batting = Lahman::Batting,
+                                Master = Lahman::Master,
+                                Salaries = Lahman::Salaries)) %>%
+  dm_set_key("Batting", c("playerID", "yearID", "stint")) %>%
+  dm_set_key("Master", "playerID") %>%
+  dm_set_key("Salaries", c("yearID", "teamID", "playerID")) %>%
+  dm_add_references(
+    Batting$playerID == Master$playerID,
+    Salaries$playerID == Master$playerID
+  )
+
+dm_create_graph(dm1, rankdir = "LR", columnArrows = TRUE)
+```
+
