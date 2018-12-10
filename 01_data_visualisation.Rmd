@@ -876,10 +876,10 @@ What does `labs()` do? Read the documentation.
 ggplot(mpg) +
     geom_point(mapping = aes(displ, hwy, colour = drv)) +
     labs(color = "Новое название", 
-         x = "ося порося",
-         y = "ося лося",
+         x = "Ось абсцисс",
+         y = "Ось ординат",
          title = "Заголовок", 
-         subtitle = "под-заголовок", 
+         subtitle = "описание", 
          tag = "тэг")
 ```
 
