@@ -609,3 +609,11 @@ flights %>%
 <div class="question">
 What weather conditions make it more likely to see a delay?
 </div>
+
+```{r}
+flights_with_weather <- flights %>%
+  left_join(weather)
+
+View(flights_with_weather)
+```
+
