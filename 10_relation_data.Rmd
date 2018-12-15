@@ -610,10 +610,103 @@ flights %>%
 What weather conditions make it more likely to see a delay?
 </div>
 
+Задаём ключевые столбцы, по которым будет происходить соединение
+
 ```{r}
 flights_with_weather <- flights %>%
-  left_join(weather)
+    inner_join(weather, by = c("origin" = "origin",
+                            "year" = "year",
+                            "month" = "month",
+                            "day" = "day",
+                            "hour" = "hour"))
 
-View(flights_with_weather)
 ```
 
+Есть несколько параметров характеризующих погодные условия, разберём каждый. Для начала, возьмём температуру
+
+```{r}
+flights_with_weather %>%
+  group_by(temp) %>%
+  summarise(delay = mean(dep_delay, na.rm = TRUE)) %>%
+  ggplot(aes(temp, delay)) +
+  geom_point() +
+  geom_smooth()
+```
+
+На диаграмме рассеяния не наблюдается зависимость температуры от времени. Рассмотрим влияение влажности на задержки вылетов.
+
+```{r}
+flights_with_weather %>%
+  group_by(humid) %>%
+  summarise(delay = mean(dep_delay, na.rm = TRUE)) %>%
+  ggplot(aes(humid, delay)) +
+  geom_point() +
+  geom_smooth()
+```
+
+Есть небольшой рост времени задержки при относительно высокой влажности. Между 26 и 60 единицами влажности не наблюдается корреляции с временем задержки. Рассмотрим скорость ветра
+
+```{r}
+flights_with_weather %>%
+  group_by(wind_speed) %>%
+  summarise(delay = mean(dep_delay, na.rm = TRUE)) %>%
+  ggplot(aes(wind_speed, delay)) +
+  geom_point() +
+  geom_smooth()
+```
+
+При увеличении скорости ветра от 0 до 20 миль в час, наблюдается увеличениее времени задержки. Однако характер зависимости при высоких значениях скорости ветра (от 20 до 35 миль в час) носит нелинейный характер и уменьшается практически до уровня задержки при отсутсвии ветра.
+
+Рассмотрим порывы ветра
+
+```{r}
+flights_with_weather %>%
+  group_by(wind_gust) %>%
+  summarise(delay = mean(dep_delay, na.rm = TRUE)) %>%
+  ggplot(aes(wind_gust, delay)) +
+  geom_point() +
+  geom_smooth()
+```
+
+Есть небольшой рост времени задержки при увеличинии скорости порывов, однако это рост не значительный. При больших порывах (50-60 мил в час) не всегда увеличивается время задержки. Рассмотрим как влияют осадки на время задержки
+
+```{r}
+flights_with_weather %>%
+  group_by(precip) %>%
+  summarise(delay = mean(dep_delay, na.rm = TRUE)) %>%
+  ggplot(aes(precip, delay)) +
+  geom_point() +
+  geom_smooth()
+```
+
+Пожалуй, самая показательная зависимость, приближенная к линейной, с увеличением количества осадков, компании медлят с разрешением полёта. Рассмотрим как влияет атмосферное давление на задержки:
+
+```{r}
+flights_with_weather %>%
+  group_by(pressure) %>%
+  summarise(delay = mean(dep_delay, na.rm = TRUE)) %>%
+  ggplot(aes(pressure, delay)) +
+  geom_point() +
+  geom_smooth()
+```
+
+Увеличение давления, наоборот --- уменьшает время задержки вылета, хоть и не значительно.
+
+```{r}
+flights_with_weather %>%
+  group_by(visib) %>%
+  summarise(delay = mean(dep_delay, na.rm = TRUE)) %>%
+  ggplot(aes(visib, delay)) +
+  geom_point() +
+  geom_smooth()
+```
+
+ВИдимость практически не влияет на время задержки.
+
+Резюмируя: на время задержки вылета самолёта в большей степени влияют выпадаемые осадки (вероятно потому что необходимо расчищать взлётную полосу в зимнее время). Заметно на время задержки вылета влияет скорость и порывы ветра (вероятно потому что сложно взлетать при сильном ветре). Остальные представленные показатели погоды (температура, атмосферное давление, видимость) слабо увеличивают или вовсе уменьшают время задержки вылета.
+
+#### Упражнение 13.4.6.5
+
+<div class="question">
+What weather conditions make it more likely to see a delay?
+</div>
