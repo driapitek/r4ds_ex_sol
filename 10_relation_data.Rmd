@@ -22,6 +22,7 @@ editor_options:
 library(tidyverse)
 library(nycflights13)
 library("datamodelr") # Пакет для моделирования схем баз данных
+library(viridis)
 ```
 
 ### Пакет `nycflights13`
@@ -708,5 +709,37 @@ flights_with_weather %>%
 #### Упражнение 13.4.6.5
 
 <div class="question">
-What weather conditions make it more likely to see a delay?
+What happened on June 13 2013? Display the spatial pattern of delays, and then use Google to cross-reference with the weather.
 </div>
+
+Гуглим. Оказывается в этот день, точнее в дни 12-13 июня произошла [серия шторвом](https://en.wikipedia.org/wiki/June_12–13,_2013_derecho_series) на южном побережье. Вероятно это может вызвать задержки
+
+Сравним к примеру два дня --- день шторма и любой другой день
+
+```{r}
+flights %>%
+  filter(year == 2013, month == 6, day == 13) %>%
+  group_by(dest) %>%
+  summarise(delay = mean(arr_delay, na.rm = TRUE)) %>%
+  inner_join(airports, by = c("dest" = "faa")) %>%
+  ggplot(aes(y = lat, x = lon, size = delay, colour = delay)) +
+  borders("state") +
+  geom_point() +
+  coord_quickmap() +
+  scale_colour_viridis()
+```
+
+```{r}
+flights %>%
+  filter(year == 2013, month == 1, day == 13) %>%
+  group_by(dest) %>%
+  summarise(delay = mean(arr_delay, na.rm = TRUE)) %>%
+  inner_join(airports, by = c("dest" = "faa")) %>%
+  ggplot(aes(y = lat, x = lon, size = delay, colour = delay)) +
+  borders("state") +
+  geom_point() +
+  coord_quickmap() +
+  scale_colour_viridis()
+```
+
+Заметно существенное увеличение числа задержек прибытия самолётов в день штормов
