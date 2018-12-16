@@ -1,0 +1,18 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+## Аккуратизация данных с помощью пакета `tidyr`
+
+### Введение
+
+Основное внимание в этой главе будет уделено регулярным выражениям
+
+#### Необходимые ресурсы
+
+```{r}
+library(tidyverse)
+library(stringr)
+```

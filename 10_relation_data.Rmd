@@ -876,3 +876,182 @@ fueleconomy::common %>%
   arrange(model)
 ```
 
+#### Упражнение 13.5.1.4
+
+<div class="question">
+Find the 48 hours (over the course of the whole year) that have the worst delays. Cross-reference it with the weather data. Can you see any patterns?
+</div>
+
+Для начала сгруппируем все данные по месяцу и дню (без года, так как в исходных данных наблюдения только за 2013 год). Затем посчитаем суммарное время задержки за день
+
+```{r}
+flights %>%
+  group_by(month, day) %>%
+  summarise(delays_24 = sum(dep_delay, na.rm = TRUE) + sum(arr_delay, na.rm = TRUE)) %>%
+  arrange(desc(delays_24))
+```
+
+Но в условиях задачи, необходимо найти 48 часов, т.е. двое последующих суток. Для этого необходимо добавить суммирование с лагом
+
+```{r}
+worst_delays <- flights %>%
+  group_by(month, day) %>%
+  summarise(delays_24 = sum(dep_delay, na.rm = TRUE) + sum(arr_delay, na.rm = TRUE)) %>%
+  mutate(delays_48 = delays_24 + lead(delays_24))  %>%
+  arrange(desc(delays_48)) %>%
+  head(1)
+```
+
+Наихудшими 48 часами были 22-23 июля
+
+```{r}
+flights %>%
+  semi_join(worst_delays) %>%
+  left_join(weather) %>%
+  arrange(desc(dep_delay))
+
+```
+
+К сожалению, перепроверив все имеющиеся показатели погоды, мне не удалось найти явной зависимости погодных условий с задержками авиарейсов. Было не очень жарко, не очень много осадков, не самый сильный ветер, довольно хорошая видимость. [Данные](https://www.timeanddate.com/weather/usa/new-york/historic?month=7&year=2013)
+
+```{r}
+weather %>%
+  group_by(month, day) %>%
+  summarise(worst = mean(wind_gust, na.rm = TRUE)) %>%
+  arrange(desc(worst))
+```
+
+#### Упражнение 13.5.1.5
+
+<div class="question">
+What does `anti_join(flights, airports, by = c("dest" = "faa"))` tell you? 
+What does `anti_join(airports, flights, by = c("faa" = "dest"))` tell you?
+</div>
+
+Антиджоин указывает на несоответствие соединений. 
+
+Поэтому ответ на первый вопрос --- в выдаче программы будут полёты, у которых нет соответствия в таблице аэропортов по ключу "аэропорт направления".
+
+```{r}
+anti_join(flights, airports, by = c("dest" = "faa"))
+```
+
+Аэропорты, которые есть в таблице полётов, но которых нет в таблице `airports`
+
+```{r}
+flights %>%
+  anti_join(airports, by = c("dest" = "faa")) %>%
+  count(dest, sort = TRUE)
+```
+
+```{r}
+airports %>%
+  filter(faa == "SJU")
+```
+
+Ответ на второй вопрос, соответсвенно обратный --- в выдаче будут те аэропорты, которые есть в таблице `airports`, но которые не встречаются в таблице `flights`
+
+```{r}
+anti_join(airports, flights, by = c("faa" = "dest"))
+```
+
+```{r}
+flights %>%
+  filter(dest == "04G")
+```
+
+
+#### Упражнение 13.5.1.6
+
+<div class="question">
+You might expect that there’s an implicit relationship between plane and airline, because each plane is flown by a single airline. Confirm or reject this hypothesis using the tools you’ve learned above.
+</div>
+
+Для того чтобы проверить утверждение "между самолётами и компаниями существуют неявные отношения", нужно проверить есть ли самолёты, которые принадлежат несколким компаниям
+
+```{r}
+(not_one_carrier <- flights %>%
+  filter(!is.na(tailnum)) %>%
+  distinct(tailnum, carrier) %>%
+  count(tailnum, sort = TRUE) %>%
+  filter(n > 1))
+```
+
+Аккуратным представлением данных будет следующее
+
+```{r}
+(not_one_carrier <- flights %>%
+semi_join(not_one_carrier, by = "tailnum") %>%
+  select(tailnum, carrier) %>%
+  distinct() %>%
+  arrange(tailnum)) %>%
+  count(tailnum, carrier) %>%
+  left_join(airlines, by = "carrier") %>%
+  select(-carrier)
+```
+
+
+Чуть более наглядным будет представление:
+```{r}
+(not_one_carrier <- flights %>%
+semi_join(not_one_carrier, by = "tailnum") %>%
+  select(tailnum, carrier) %>%
+  distinct() %>%
+  arrange(tailnum)) %>%
+  count(tailnum, carrier) %>%
+  left_join(airlines, by = "carrier") %>%
+  select(-carrier) %>%
+  spread(name, n)
+```
+
+### Проблемы соединений
+
+Данные в этой главе были специально подготовлены для того чтоб ы при работе с ними возникало как можно меньше проблем. Реальные данные не такие.
+
+ЧТобы при работы с реальными данными возникало как можно меньше проблем, в отношении данных необходимо предпринимать следующие меры:
+
+1. Начинать нужно с идентификации переменных, образующих первичный ключ в каждой таблице. Это нужно делать *ПОНИМАЯ* данные, а не подбирая эмпирически уникальную комбинацию
+
+1. Необходимо убедиться что ни одна из переменных в первичном ключе не содержит пропущенных значений. Отсутствующие значения не могут однозначно определить наблюдение.
+
+1. Необходимо убедиться, что внешним ключам соответствуют первичные ключи в присоединяемой таблице. Обычно это проще всего проверить при помощи `anti_join`.
+
+Конечно же важно помнимать, что простой проверки по количеству строк не достаточно при объединении.
+
+### Операции над множествами
+
+Последний тип двухтабличных глаголов предназначен для выполнения операция над множествами. Все эти операции работают с целыми строками, сравнивая значения каждой переменной. 
+
+ПРиведённые ниже функции ожидают, что входные таблицы `х` и `у` имеют одни и те же переменные и обрабатывают наблюдения как множества.
+
+* `intrsect(x, y)` --- Возвращает только наблюдения, содержащие одновременно в `х` и `у`
+
+* `union(x, y)` --- Возвращает уникальные наблюдения, содержащие в `х` и `у`
+
+* `setdiff(x, y)` --- Возвращает наблюдения, содержащие только в `х`, но не в `у`
+
+Пусть имеются следующие простые данные:
+
+```{r}
+df1 <- tribble(
+  ~x, ~y,
+   1, 1,
+   2, 1
+)
+
+df2 <- tribble(
+  ~x, ~y,
+   1, 1,
+   1, 2
+)
+```
+
+ТОгда возможны следующие четыре операции
+
+```{r}
+intersect(df1, df2)
+union(df1, df2)     # Возваращает 3 наблюдения, а не 4
+setdiff(df1, df2)
+setdiff(df2, df1)
+```
+
