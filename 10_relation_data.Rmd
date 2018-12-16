@@ -831,3 +831,48 @@ flights %>%
 ```
 
 И действительно --- компании Envoy Air и American Airlines Inc. не подали информации о номерах самолётов.
+
+
+#### Упражнение 13.5.1.2
+
+<div class="question">
+Filter flights to only show flights with planes that have flown at least 100 flights.
+</div>
+
+Для начала отберём самолёты, которые выполнили не менее 100 полётов
+```{r}
+top100_planes <- flights %>%
+  count(tailnum, sort = TRUE) %>%
+  filter(n >= 100)
+top100_planes
+```
+
+
+Теперь отфильтруем исходную таблицу по полученным данным о количестве полётов
+
+```{r}
+semi_join(flights, top100_planes, by = "tailnum")
+```
+
+Стоит помнить о необходимости явно указывать ключ, по которому происходит группировка.
+
+#### Упражнение 13.5.1.3
+
+<div class="question">
+Combine `fueleconomy::vehicles` and `fueleconomy::common` to find only the records for the most common models.
+</div>
+
+```{r}
+fueleconomy::vehicles %>% semi_join(fueleconomy::common, by = c("make", "model"))
+```
+
+Объединение обязательно должно происходить по производителю и названию модели. А не только по какому-то одному из параметров. Так вполне вероятно, что несколько производителей могут дать своим автомобилям одинаковые названия моделей.
+
+```{r}
+fueleconomy::common %>% 
+  distinct(model, make) %>% 
+  group_by(model) %>%
+  filter(n() > 1) %>%
+  arrange(model)
+```
+
