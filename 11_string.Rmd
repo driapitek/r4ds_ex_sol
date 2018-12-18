@@ -219,3 +219,48 @@ str_sub(x, (str_length(x)+1)/2, (str_length(x)+2)/2)
 ```
 
 Если такой вариант не подходит и нужно только одно значение, то в зависимости от задачи нужно выбрать либо большее либо меньшее значение
+
+
+#### Упражнение 14.2.5.4
+<div class="question">
+What does `str_wrap()` do? When might you want to use it?
+</div>
+
+Функция `str_wrap()` переносит текст так, чтобы он умещался в пределах определенной ширины. Это полезно для переноса длинных строк текста для набора текста.
+
+```{r}
+x <- c("one, two, tree", "foo, bar")
+str_wrap(x, indent = 5)
+```
+
+#### Упражнение 14.2.5.5
+<div class="question">
+What does `str_trim()` do? What’s the opposite of `str_trim()`?
+</div>
+
+Функция`str_trim()` удаляет пробел из строки.
+
+```{r}
+str_trim(" abc ")
+str_trim(" abc ", side = "left")
+str_trim(" abc ", side = "right")
+```
+
+Противоположностью `str_trim()` является `str_pad()`, которая добавляет символы с каждой стороны.
+
+```{r}
+str_pad("abc", 5, side = "both")
+str_pad("abc", 4, side = "right")
+str_pad("abc", 4, side = "left")
+```
+
+#### Упражнение 14.2.5.6
+<div class="question">
+Write a function that turns (e.g.) a vector `c("a", "b", "c")` into the string `"a, b, and c"`. 
+Think carefully about what it should do if given a vector of length 0, 1, or 2.
+</div>
+
+```{r}
+foo <- c("a", "b", "c")
+```
+
