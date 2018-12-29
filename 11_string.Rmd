@@ -813,4 +813,46 @@ df %>%
   filter(str_detect(word, "x$")) # фильтрует заданный набор данных, оставляя только те слова, в которых на конце х
 ```
 
-`str_count()` сообщает сколько совпадений обнаружено в строк
+`str_count()` сообщает сколько совпадений обнаружено в строке
+
+```{r}
+x <- c("apple", "banana", "pear")
+str_count(x, "a")
+
+# сколько гласных в среднем приходится на одно слово
+mean(str_count(words, "[aeiou]"))
+```
+
+`str_count()` естественно использовать с `mutate()` 
+
+```{r}
+df %>%
+  mutate(
+    vowels = str_count(word, "[aeiou]"),
+    consonants = str_count(word, "[^aeiou]")
+  )
+```
+
+Интересная особенность --- совпадения никогда не перекрываются. Сколько раз в строке `"abababa"` встречается шаблон `"aba"`? Регулярное выражение скажет что он встречается два раза, а не три
+
+```{r}
+str_count("abababa", "aba")
+
+str_view_all("abababa", "aba")
+```
+
+Обратим внимание на последнюю функцию. В пакете `string` многие функции идут парами --- одна работает с одиночными совпадениями, другая со всеми.
+
+##### Упражнение 14.4.1.1.1
+<div class="question">
+For each of the following challenges, try solving it by using both a single regular expression, and a combination of multiple `str_detect()` calls.
+
+* Find all words that start or end with x.
+
+* Find all words that start with a vowel and end with a consonant.
+
+* Are there any words that contain at least one of each different vowel?
+
+* What word has the highest number of vowels? What word has the highest proportion of vowels? (Hint: what is the denominator?)
+</div>
+
