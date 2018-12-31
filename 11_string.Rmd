@@ -666,7 +666,7 @@ Solve the beginner regexp crosswords at <https://regexcrossword.com/challenges/b
 
 Продолжаем постигать науку регулярных выражений. Идет со скрипом.
 
-![alt text](img/crossword.png)
+Решения я выкладываю в [репозиторий](https://github.com/driapitek/regex-crossword-solver) на гитхабе
 
 
 ##### Группирование и обратные ссылки
@@ -856,3 +856,69 @@ For each of the following challenges, try solving it by using both a single regu
 * What word has the highest number of vowels? What word has the highest proportion of vowels? (Hint: what is the denominator?)
 </div>
 
+* В общем случае
+
+```{r}
+# все слова начинающиеся или заканчивающиеся на X
+str_view_all(words, "^x|x$", match = TRUE)
+
+df %>%
+  filter(str_detect(words, "^x|x$")) #  Указан порядковый номер слова
+```
+
+А теперь разберём
+
+```{r}
+# Одним регулярным выражением
+words[str_detect(words, "^x|x$")]
+
+# Двумя отдельными выражениями
+start_with_x <- str_detect(words, "^x")
+end_with_x <- str_detect(words, "x$")
+words[start_with_x | end_with_x]
+```
+
+* В общем случае. Ругелярное выражение такое --- ищи первым символом любую гласную, после этого может быть любой символ один или больше раз, а оканчиваться слово должно на любую негласную букву.
+
+```{r}
+# все слова начинающиеся на гласную, а заканчивающиеся на согласную
+str_view_all(words, "^[aeiou].*[^aeiou]$", match = TRUE)
+
+df %>%
+  filter(str_detect(words, "^[aeiou].*[^aeiou]$")) #  Указан порядковый номер слова
+```
+
+А теперь разобьём
+
+```{r}
+# Одним регулярным выражением
+words[str_detect(words, "^[aeiou].*[^aeiou]$")]
+
+# Двумя отдельными выражениями
+start_with_x <- str_detect(words, "^[aeiou]")
+end_with_x <- str_detect(words, "[^aeiou]$")
+words[start_with_x & end_with_x]
+```
+
+* В общем случае, cлова, в которых гласная содержится хотя бы один раз -- не придумал способ реализации. 
+
+```{r}
+# Сочетание нескольких регулярных выражений
+words[str_detect(words, "a") &
+      str_detect(words, "e") &
+      str_detect(words, "i") &
+      str_detect(words, "o") &
+      str_detect(words, "u")]
+```
+
+* Доля гласных это отношение количества гласных букв в слове, к длине всего слова. Я предполагаю, что самым длинным будет какое-то особое слово, в котором кол-во букв, совпадает с кол-вом гласных. 
+
+```{r}
+(vowels <- str_count(words, "[aeiou]")) # Считаем кол-во гласных в слове
+max(vowels) # Максимальное кол-во гласных в слове 5 штук
+words[which(vowels == max(vowels))] # Берём слова, с максимальным количеством гласных
+prop_vowels <- str_count(words, "[aeiou]") / str_length(words) # Считаем долю гласных букв от всего слова.
+words[which(prop_vowels == max(prop_vowels))] # Берём словам, с максимальной долей гласных
+```
+
+##### Извлечение совпадений
