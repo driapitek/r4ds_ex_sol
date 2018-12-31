@@ -922,3 +922,13 @@ words[which(prop_vowels == max(prop_vowels))] # Берём словам, с ма
 ```
 
 ##### Извлечение совпадений
+
+Для извлечение фактического текста совпадегния используется функция `str_extract()`. Для демонстрации воспользуемся текстом  [Harvard senteces](https://en.wikipedia.org/wiki/Harvard_sentences).
+
+Предложения, составляющие этот текст предоставляются пакетом `stringr::sentences`
+
+```{r}
+length(sentences)
+head(sentences)
+```
+
