@@ -401,6 +401,8 @@ What geom would you use to draw a line chart? A boxplot? A histogram? An area ch
 | boxplot    | `geom_boxplot`   |
 | histogram | `geom_histogram` |
 | area chart | `geom_area` |
+
+
 #### Упражнения 3.6.2 
 <div class="question">
 Run this code in your head and predict what the output will look like. Then, run the code in R and check your predictions.
