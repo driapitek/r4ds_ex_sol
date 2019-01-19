@@ -1535,12 +1535,78 @@ unlist(str_extract_all(sentences, boundary("word")))
 tibble(word = unlist(str_extract_all(sentences, boundary("word"))))
 ```
 
-Как видно, у нас
+Как видно, есть слова начинающиеся с заглавной буквы, по этой причине слова `The` и `the` будут считаться как два разных слова. Так не годится,  нужно перевести всё в один регистр. Для этого добавим ещё один столбец, в котором при помощи функции `str_to_lower()` переведём все символы высокого регистра в низкий.
 
 ```{r}
 tibble(word = unlist(str_extract_all(sentences, boundary("word")))) %>%
-  mutate(word = str_to_lower(word)) %>%
-  count(word, sort = TRUE) %>%
+  mutate(to_lower = str_to_lower(word))
+```
+
+И после этого осталось только посчитать количество раз, которое встречается каждое слово. Для этого воспользуемся функцией `count()`  с параметром `sort = TRUE` для сортировки по возрастанию. По условию задачи нам нужно пять самых часто встречаемых слов, поэтому возьмём `head(5)`.
+
+```{r}
+tibble(word = unlist(str_extract_all(sentences, boundary("word")))) %>%
+  mutate(to_lower = str_to_lower(word)) %>%
+  count(to_lower, sort = TRUE) %>%
   head(5)
 ```
 
+### Другие применения регулярных выражений
+
+В базовый состав R входят еще две функции, которы так же используют regex
+
+* `apropos()` --- выполняет поиск всех объектов, доступных в глобальном окружении. Эту фкнецию удобно использовать в тех случаях, когда вы не можете вспомнить точное имя какой-то функции.
+
+```{r}
+apropos("replace")
+```
+
+* `dir()`--- перечисляет все файлы, зранящиеся в каталоге. Аргемент `pattern` принимает регулярное выражение и возвращает имена лишь тех файлов, которые соответствуют шаблону. Например, можно найти все файлы R Markdown в текущем каталоге с помощью следующего кода
+
+```{r}
+head(dir(pattern = "\\.Rmd$"))
+```
+
+### Пакет `stringi`
+
+Пакет `stringr` построени поверх пакета `stringi`. В `stringr` всего 42 функции, в `stringi` аж 234. Вызов функции различается лишь префиксом `stri_` для `stringi`
+
+#### Упражнение 14.7.1.1
+<div class="question">
+Find the `stringi` functions that:
+
+1. Count the number of words.
+
+2. Find duplicated strings.
+
+3. Generate random text.
+</div>
+
+1. Подсчитывает количество слов:
+
+```{r}
+apropos("stri_count")
+```
+
+Это функция --- `stri_count_words()`
+
+2. Находит повторяющиеся строки:
+
+```{r}
+apropos("stri_repeat") # нет, не угадал
+apropos("stri_duplicate")
+```
+
+Это функция --- `stri_duplicated()`
+
+3. Генерирует случайный текст
+
+```{r}
+apropos("stri_rand")
+```
+
+Целых три функции:
+
+  * `stri_rand_lipsum()` генерирует lorem-ipsum текст
+  * `stri_rand_strings()` генерирует рандомную строку
+  * `stri_rand_shuffle()` случайным образом перемешивает кодовые точки (символы) в тексте.

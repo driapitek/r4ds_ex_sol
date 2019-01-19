@@ -18,7 +18,7 @@ library("Lahman")
 library("dplyr")
 ```
 
-Дополнительно, используются пакеты `install.packages(c("nycflights13", "gapminder", "Lahman"))`
+Дополнительно, используются пакеты `"nycflights13", "gapminder", "Lahman"`
 
 
 А это шпаргалка [cheat_sheet](https://github.com/rstudio/cheatsheets/blob/master/data-visualization-2.1.pdf)
@@ -927,9 +927,3 @@ ggplot(data = <DATA>) +
   <COORDINATE_FUNCTION> +
   <FACET_FUNCTION>
 ```
-
-
-
-
-
-
