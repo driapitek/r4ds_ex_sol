@@ -93,3 +93,77 @@ levels(f2)
 ```
 
 ### Опрос GSS
+
+В оставшейся части главы работаем с `forcats::gss_cat` это данные, предоставленные General Society Survey --- общенациональный социальный опрос США
+
+```{r}
+gss_cat
+```
+
+Информация о перменных по запросу хэлпа `?gss_cat`.
+
+Если факторы хранятся в тиббле-фрэйме, мы не сможем увидеть их, не предпринимая никаких мер. Один из способов использовать функцию `count()`. Другой --- более наглядный, использовать построение диаграмой.
+
+```{r}
+gss_cat %>% count(race)
+
+ggplot(gss_cat, aes(race)) +
+  geom_bar()
+```
+
+По умолчанию опускаются уровни, в которых не было ни одного значения, это не всегда полезно. Иногда нужно посмотреть и не встречающиеся значения. Для этого нужно принудлительно просить R показать таких перменные при помощи функции `scale_x_discrete()`
+
+```{r}
+ggplot(gss_cat, aes(race)) +
+  geom_bar() +
+  scale_x_discrete(drop = FALSE)
+```
+
+#### Упражнение 14.2.5.4
+<div class="question">
+Explore the distribution of `rincome` (reported income). What makes the default bar chart hard to understand? How could you improve the plot?
+</div>
+
+Всё потому что подписи по абсциссе смешались в кучу. 
+
+```{r}
+gss_cat %>%
+  count(rincome)
+
+rincome_plot <- ggplot(gss_cat, aes(rincome)) +
+  geom_bar()
+```
+
+Первым шагом можно повернуть оси
+
+```{r}
+rincome_plot +
+  coord_flip()
+```
+
+Или, как один из вариантов решения --- перевернуть подписи на 90 градусов
+
+```{r}
+rincome_plot + theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+Или на другой угол, при котором будут хорошо читаться подписи.
+
+```{r}
+rincome_plot + theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+Но мне всё же больше нравится вариант с поворотом оси.
+
+Далее видно, что из информативного представления о количестве зарплаты, выбиваются те кто либо не знают, не могут ответить, или не захотелили отвечать. Эта информация может быть статистически полезна, но прям хочется убрать тех кто указал "неприемлемую" зарплату
+
+```{r}
+gss_cat %>%
+  filter(!rincome %in% c("Not applicable")) %>%
+  ggplot(aes(rincome)) +
+  geom_bar() +
+  coord_flip() +
+  scale_y_continuous("Number of Respondents", labels = function(x) paste0(x/1000, "k")) +
+  scale_x_discrete("Respondent's Income")
+```
+
