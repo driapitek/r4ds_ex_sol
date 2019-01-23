@@ -119,7 +119,7 @@ ggplot(gss_cat, aes(race)) +
   scale_x_discrete(drop = FALSE)
 ```
 
-#### Упражнение 14.2.5.4
+#### Упражнение 15.3.1.1
 <div class="question">
 Explore the distribution of `rincome` (reported income). What makes the default bar chart hard to understand? How could you improve the plot?
 </div>
@@ -155,7 +155,7 @@ rincome_plot + theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 Но мне всё же больше нравится вариант с поворотом оси.
 
-Далее видно, что из информативного представления о количестве зарплаты, выбиваются те кто либо не знают, не могут ответить, или не захотелили отвечать. Эта информация может быть статистически полезна, но прям хочется убрать тех кто указал "неприемлемую" зарплату
+Далее видно, что из информативного представления о количестве зарплаты, выбиваются те кто либо не знают, не могут ответить, или не захотелили отвечать. Эта информация может быть статистически полезна, но прям хочется убрать тех кто указал "неприемлемую" зарплату. Кроме этого можно сократить записи тысячей на `k`, чтобы не сбивать с толку
 
 ```{r}
 gss_cat %>%
@@ -166,4 +166,192 @@ gss_cat %>%
   scale_y_continuous("Number of Respondents", labels = function(x) paste0(x/1000, "k")) +
   scale_x_discrete("Respondent's Income")
 ```
+
+Ещё хотелось бы сортировать в обратном порядке и заменить `Lt $1000` на `Less then $1000`, но об этом мы узнаем в следующей главе
+
+#### Упражнение 15.3.1.2
+<div class="question">
+What is the most common `relig` in this survey? What’s the most common `partyid`?
+</div>
+
+```{r}
+gss_cat %>%
+  ggplot(aes(relig)) +
+  geom_bar() +
+  coord_flip()
+```
+
+Очевидно, что протестанты встречаются чаще других. ПОсмотрим сколько это в числовом выражении:
+
+```{r}
+gss_cat %>%
+  count(relig) %>%
+  arrange(desc(n)) %>%
+  head(1)
+```
+
+Проделаем точно такую же операцию, но для переменной `partyid`
+
+```{r}
+gss_cat %>%
+  ggplot(aes(partyid)) +
+  geom_bar() +
+  coord_flip()
+```
+
+А так же `Independent` встречается чаще других. И в числовом выражении
+
+```{r}
+gss_cat %>%
+  count(partyid) %>%
+  arrange(desc(n)) %>%
+  head(1)
+```
+
+
+#### Упражнение 15.3.1.3
+<div class="question">
+Which `relig` does `denom` (denomination) apply to? How can you find out with a table? How can you find out with a visualisation?
+</div>
+
+Можно графически посмотреть вот так
+```{r}
+ggplot(gss_cat, aes(relig)) +
+  geom_bar(aes(fill = denom), position = "fill") +
+  scale_x_discrete(drop = FALSE) +
+  coord_flip()
+```
+
+Графически заметно, что в основном понятие конфессии применимо к протестантам и христианам. Реже встречаются в группе "Другие". Можно добавить фильтрацию и убрать параметр `drop`, тогда графически всё станет явно.
+
+```{r}
+gss_cat %>%
+  filter(!denom %in% c("Not applicable")) %>%
+ggplot(aes(relig)) +
+  geom_bar(aes(fill = denom), position = "fill") +
+  coord_flip()
+```
+
+В числовом виде это можно представить как --- убери всё что `Not applicable` в переменной `denom` и покажи всё содержимое `relig`
+
+```{r}
+gss_cat %>%
+  filter(!denom %in% c("Not applicable")) %>%
+  count(relig) %>%
+  arrange(desc(n))
+```
+
+#### Изменение порядка следования факторов
+
+Часто оказывается полезным изменить порядок следования факторов в визуализации. Допустим мы хотим изучить среднее количество часов, посвящённы просмотру телевизора представителями разных религий.
+
+```{r}
+relig_summary <- gss_cat %>%
+  group_by(relig) %>%
+  summarise(
+    age = mean(age, na.rm = TRUE),
+    tvhours = mean(tvhours, na.rm = TRUE),
+    n = n()
+  )
+
+ggplot(relig_summary, aes(tvhours, relig)) + geom_point()
+```
+
+Конечно тут сложно рассмотреть закономерности, потому что точки разбросаны хаотично. Для того чтобы поменять порядок, используется знакомая мне уже функция `fct_reorder()`, она принимает три аргумента:
+
+* `f` --- фактор, уровни которого надо поменять
+
+* `x` --- числовой вектор, которой нужно использовать для изменения порядка следования уровней.
+
+* `fun` --- необязательный аргумент, функция, которая используется если для кажджого значения фактора `f`, существует несколько значений числового вектора `x`. По умолчанию используется `median`
+
+Итак изменим порядок следования в зависимости от количества часов
+
+```{r}
+ggplot(relig_summary, aes(tvhours, fct_reorder(relig, tvhours))) +
+  geom_point()
+```
+
+Так-то лучше, теперь отчётливо видно что `Не знаю`-щие чаще смотрять, чем к примеру буддисты.
+
+Но лучше вместо `aes()` выводить перераспределение в отдельный шаг при помощим `mutate()`. Это облегчит чтение кода.
+
+```{r}
+relig_summary %>%
+  mutate(relig = fct_reorder(relig, tvhours)) %>%
+  ggplot(aes(tvhours, relig)) +
+    geom_point()
+```
+
+А теперь посмотрим, как меняется средний возраст от заявленного уровня дохода
+
+```{r}
+rincome_summary <- gss_cat %>%
+  group_by(rincome) %>%
+  summarise(
+    age = mean(age, na.rm = TRUE),
+    tvhours = mean(tvhours, na.rm = TRUE),
+    n = n()
+  )
+
+ggplot(rincome_summary, aes(age, fct_reorder(rincome, age))) + geom_point()
+```
+
+Стало только хуже, потому что изначально перменная с доходом уже была упорядочена.
+
+Оставьте функцию `fct_reorder()` для факторов, уровни котороых упорядочиваются произвольно.
+
+В то же время имеет смысл переместить уровень `"Не применимо"` в начало вместе с дргими специальными уровнями.
+Для этого можно использовать функцию `fct_relevel()`. В качестве аргументов она принимает фактор, и любое количество факторов которые нужно перместить в начало линии
+
+```{r}
+ggplot(rincome_summary, aes(age, fct_relevel(rincome, "Not applicable"))) +
+  geom_point()
+```
+
+Столь высокое значение для уровня `"Не применимо"` вероятно связано с пенсионным возрастом.
+
+Другой тип переупорядочивания уровней полезен в тех случаях, когда вы выделяете цветом линии на графике. Функция `fct_reorder2()`
+ переупорядочивает факторы по значениям `y`, связанным с наибольшими значениями `x`. Это облегчает чтения графика, посколько цвета линий выравниваются с легендой
+ 
+```{r}
+by_age <- gss_cat %>%
+  filter(!is.na(age)) %>%
+  count(age, marital) %>%
+  group_by(age) %>%
+  mutate(prop = n / sum(n))
+
+ggplot(by_age, aes(age, prop, colour = marital)) +
+  geom_line(na.rm = TRUE)
+
+ggplot(by_age, aes(age, prop, colour = fct_reorder2(marital, age, prop))) +
+  geom_line() +
+  labs(colour = "marital")
+```
+ 
+Наконец, в случае столбчатых диаграмм можно использовать `fct_infeq()` для упорядочивания уровней по возрастанию: это простейший тип переупорядочивания, посколько он не требует никаких дополнительных перменных.
+
+```{r}
+gss_cat %>%
+  mutate(marital = marital %>% 
+           fct_infreq()) %>%
+  ggplot(aes(marital)) +
+    geom_bar()
+```
+
+Можно отзеркалить упорядочивания при помощи функции `fct_rev()`
+
+```{r}
+gss_cat %>%
+  mutate(marital = marital %>% 
+           fct_infreq() %>%
+           fct_rev()) %>%
+  ggplot(aes(marital)) +
+    geom_bar()
+```
+
+#### Упражнение 15.4.1.1
+<div class="question">
+There are some suspiciously high numbers in `tvhours`. Is the mean a good summary?
+</div>
 
