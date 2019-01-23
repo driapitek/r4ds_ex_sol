@@ -355,3 +355,66 @@ gss_cat %>%
 There are some suspiciously high numbers in `tvhours`. Is the mean a good summary?
 </div>
 
+Пожалуй, просмотр телевизора 24 часа в сутки это перебор.
+
+```{r}
+gss_cat %>%
+  count(tvhours) %>%
+  arrange(desc(tvhours))
+```
+
+```{r}
+gss_cat %>%
+  ggplot(aes(tvhours)) +
+  geom_histogram(binwidth = 1, na.rm = TRUE)
+```
+
+В остальном данные не выглядят такими уж необычными.
+
+```{r}
+summary(gss_cat[["tvhours"]])
+```
+
+Среднее конечно чувствительнее к отскакивающим значениям, чем медиана, но всё зависит от того, что мы хотим изучить. 
+
+#### Упражнение 15.4.1.2
+<div class="question">
+For each factor in `gss_cat` identify whether the order of the levels is arbitrary or principled.
+</div>
+
+Рассмотрим категориальные перменные `marital`, `race`, `rincome`, `partyid`, `relig`, `denom`. 
+И пожалуй `tvhours` тоже можно отнести к категориальной перменной потому что она обозначает время.
+Пойдём по порядку. 
+
+```{r}
+gss_cat %>%
+  ggplot(aes(x = marital)) +
+  geom_bar()
+```
+
+Можно перерупорядочить значения по такой логике:
+
+* сначала переменные, характеризующие пребывание когда-либо в отношениях
+  
+  * еще в отношениях
+  
+    - женаты
+  
+    - живут раздельно
+  
+  * уже не в отношениях
+  
+    - разведены
+  
+    - овдовели
+* никогда не были женаты
+
+* нет ответа
+
+Другими словами:
+
+```{r}
+ggplot(gss_cat, aes(fct_relevel(marital,"Married", "Separated", "Divorced", "Widowed", "Never married"))) +
+  geom_bar() +
+  labs(x = "marital")
+```
