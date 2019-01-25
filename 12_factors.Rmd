@@ -418,3 +418,8 @@ ggplot(gss_cat, aes(fct_relevel(marital,"Married", "Separated", "Divorced", "Wid
   geom_bar() +
   labs(x = "marital")
 ```
+
+#### Упражнение 15.4.1.3
+<div class="question">
+Why did moving “Not applicable” to the front of the levels move it to the bottom of the plot?
+</div>
