@@ -15,6 +15,7 @@ editor_options:
 ```{r}
 library(tidyverse)
 library(forcats)
+library(stringr)
 ```
 
 ### Создание факторов
@@ -384,7 +385,8 @@ For each factor in `gss_cat` identify whether the order of the levels is arbitra
 
 Рассмотрим категориальные перменные `marital`, `race`, `rincome`, `partyid`, `relig`, `denom`. 
 И пожалуй `tvhours` тоже можно отнести к категориальной перменной потому что она обозначает время.
-Пойдём по порядку. 
+
+1. Пойдём по порядку и начнём с `marital`:
 
 ```{r}
 gss_cat %>%
@@ -411,7 +413,7 @@ gss_cat %>%
 
 * нет ответа
 
-Другими словами:
+Другими словами, я бы отсортировал всё вот таким образом:
 
 ```{r}
 ggplot(gss_cat, aes(fct_relevel(marital,"Married", "Separated", "Divorced", "Widowed", "Never married"))) +
@@ -419,7 +421,234 @@ ggplot(gss_cat, aes(fct_relevel(marital,"Married", "Separated", "Divorced", "Wid
   labs(x = "marital")
 ```
 
+2. Посмотрим на переменную `race`
+
+```{r}
+gss_cat %>%
+  ggplot(aes(x = race)) +
+  geom_bar()
+```
+
+В принципе всё хорошо, и можно не передвигать ничего, но можно специальную группу можно поменять местами.
+
+```{r}
+gss_cat %>%
+  mutate(race = race %>% fct_infreq()) %>%
+  ggplot(aes(x = race)) + 
+  geom_bar()
+```
+
+3. Посмотрим на переменную `rincome`
+
+```{r}
+gss_cat %>%
+  ggplot(aes(x = rincome)) +
+  geom_bar() +
+  coord_flip()
+```
+
+Эта перменная уже отсортирована, её не нужно сортировать дополнительно, разве что можно специальную группу передвинуть в конец
+
+```{r}
+ggplot(gss_cat, aes(fct_relevel(rincome, "Not applicable"))) +
+  geom_bar() + 
+  coord_flip()
+```
+
+4. Посмотрим на переменную `partyid`
+
+```{r}
+gss_cat %>%
+  ggplot(aes(x = partyid)) +
+  geom_bar() +
+  coord_flip()
+```
+
+Ничего страшного не случится, если мы отсортируем эту переменную.
+
+```{r}
+gss_cat %>%
+  mutate(partyid = partyid %>% fct_infreq() %>% fct_rev()) %>%
+  ggplot(aes(x = partyid)) +
+  geom_bar() +
+  coord_flip()
+```
+
+5. Посмотрим на переменную `denom`
+
+```{r}
+gss_cat %>%
+  ggplot(aes(x = denom)) +
+  geom_bar() +
+  coord_flip()
+```
+
+Можно отсотрировать.
+
+```{r}
+gss_cat %>%
+  mutate(denom = denom %>% fct_infreq() %>% fct_rev()) %>%
+  ggplot(aes(x = denom)) +
+  geom_bar() +
+  coord_flip()
+```
+
+5. Посмотрим на переменную `tvhours`
+
+```{r}
+gss_cat %>%
+  ggplot(aes(x = tvhours)) +
+  geom_bar()
+```
+
+В зависимости от задачи, эту переменную можно отсортировать, допустим чтобы посмотреть какое количество часов уделяют больше всего экранному времени. 
+Или можно оставить неизменно, если нам нужно будет посмотреть как меняется активность час от часа.
+
 #### Упражнение 15.4.1.3
 <div class="question">
 Why did moving “Not applicable” to the front of the levels move it to the bottom of the plot?
 </div>
+
+Потому что это дает уровню «Не применимо» целочисленное значение 1.
+
+### Изменение уровней факторов
+
+Более мощным приёмом является изменение значений уровней, а не изменение следования. 
+Это позволяет сделать более понятными подписи для публикаций и свертывать уровни создавая уровни более высокго порядка для отображения. 
+Для этого можно использовать инструмент `fct_recode()`. 
+Она позволяет перекодировать, т.е. изменять значения каддого уровня. Возьмём например `gss_cat$partyid`
+
+```{r}
+gss_cat %>% count(partyid)
+```
+
+СОдержащаяся в названиях уровней информация сжата и непоследовательна. Давайте немного расширим их и используем параллельную конструкцию 
+
+```{r}
+gss_cat %>%
+  mutate(partyid = fct_recode(partyid,
+    "Republican, strong"    = "Strong republican",
+    "Republican, weak"      = "Not str republican",
+    "Independent, near rep" = "Ind,near rep",
+    "Independent, near dem" = "Ind,near dem",
+    "Democrat, weak"        = "Not str democrat",
+    "Democrat, strong"      = "Strong democrat"
+  )) %>%
+  count(partyid)
+```
+
+Как видно из кода выше, функция оставляет нетронутыми уровни, которые не были указаны в параметрах. Функция так же предупредит, если сослаться на несуществующий уровень.
+
+МОжно создавать группы, приписывая несколько преждних уровней одному и тому же новому уровгю
+
+```{r}
+gss_cat %>%
+  mutate(partyid = fct_recode(partyid,
+    "Republican, strong"    = "Strong republican",
+    "Republican, weak"      = "Not str republican",
+    "Independent, near rep" = "Ind,near rep",
+    "Independent, near dem" = "Ind,near dem",
+    "Democrat, weak"        = "Not str democrat",
+    "Democrat, strong"      = "Strong democrat",
+    "Other"                 = "No answer",
+    "Other"                 = "Don't know",
+    "Other"                 = "Other party"
+  )) %>%
+  count(partyid)
+```
+
+Как и при любой другой группировке, нужно быть остородным, группируя вместе категории, которые являются различными, мы будем получать результаты, которые будут вводить в заблуждение.
+
+Если планируется свернуть значительное количество уровней, функция `fct_collapse()` --- полезное решение. Для каждой новой переменной можно предоставить вектор прежних уровней.
+
+```{r}
+gss_cat %>%
+  mutate(partyid = fct_collapse(partyid,
+    other = c("No answer", "Don't know", "Other party"),
+    rep = c("Strong republican", "Not str republican"),
+    ind = c("Ind,near rep", "Independent", "Ind,near dem"),
+    dem = c("Not str democrat", "Strong democrat")
+  )) %>%
+  count(partyid)
+```
+
+Иногда может понадобится объединить все небольшие группы, для того чтобы упростить график или таблицу. Это работа функции `fct_lump()`
+
+```{r}
+gss_cat %>%
+  mutate(relig = fct_lump(relig)) %>%
+  count(relig)
+```
+
+Такое свёртование избыточно, благо поведением функции можно управлять. 
+
+```{r}
+gss_cat %>%
+  mutate(relig = fct_lump(relig, n = 10)) %>%
+  count(relig, sort = TRUE) %>%
+  print(n = Inf)
+```
+
+#### Упражнение 15.5.1.1
+<div class="question">
+How have the proportions of people identifying as Democrat, Republican, and Independent changed over time?
+</div>
+
+Объединим переменную, как это делалось в главе
+```{r}
+gss_cat %>%
+  mutate(partyid = fct_collapse(partyid,
+    other = c("No answer", "Don't know", "Other party"),
+    republican = c("Strong republican", "Not str republican"),
+    independent = c("Ind,near rep", "Independent", "Ind,near dem"),
+    democrat = c("Not str democrat", "Strong democrat")
+  )) %>%
+    count(year, partyid) %>%
+  group_by(year) %>%
+  mutate(portion = n / sum(n)) %>%
+  ggplot(aes(year, portion, color = fct_reorder2(partyid, year, portion))) +
+  geom_point() +
+  geom_line() +
+  labs(y = "count",
+       color = "Party")
+```
+
+#### Упражнение 15.5.1.2
+<div class="question">
+How could you collapse `rincome` into a small set of categories?
+</div>
+
+```{r}
+gss_cat %>%
+  ggplot(aes(x = rincome)) +
+  geom_bar() +
+  coord_flip()
+```
+
+Мелкий доход рассмотрен по тысячам, чуть больший рассмотрен по пять тысяч. 
+Я бы свернул всё что меньше пяти тысяч в одну группу. От пяти до 10 в другую. 
+И ввёл одну специальную группу для обозначения всех кто не рассказал про свой доход.
+
+```{r}
+gss_cat %>%
+  mutate(
+    rincome =
+      fct_collapse(
+        rincome,
+        `Unknown` = c("No answer", "Don't know", "Refused", "Not applicable"),
+        `Loss then $5000` = c("Lt $1000", str_c(
+          "$", c("1000", "3000", "4000"),
+          " to ", c("2999", "3999", "4999")
+        )),
+        `$5000 - 10000` = str_c(
+          "$", c("5000", "6000", "7000", "8000"),
+          " to ", c("5999", "6999", "7999", "9999")
+        )
+      )
+  ) %>%
+  ggplot(aes(x = rincome)) +
+  geom_bar() +
+  coord_flip()
+```
+
+
