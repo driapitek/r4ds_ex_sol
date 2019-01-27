@@ -326,3 +326,93 @@ flights_dt %>%
   ggplot(aes(dep_hour, color = month)) +
   geom_freqpoly(aes(y = ..density..), binwidth = 60 * 60)
 ```
+
+#### Упражнение 16.3.4.2
+<div class="question">
+Compare `dep_time`, `sched_dep_time` and `dep_delay`. Are they consistent? Explain your findings.
+</div>
+
+
+```{r}
+flights_dt %>%
+  mutate(residual = (dep_time - sched_dep_time) / 60) %>% 
+  filter(residual != dep_delay) %>%
+  select(residual, dep_time, sched_dep_time, dep_delay)
+```
+
+Существуют расхождения. 
+Похоже, в данных есть ошибки. 
+Это рейсы, в которых фактическое время отправления на следующий день относительно запланированного времени отправления. 
+Мы забыли учесть это при создании даты и времени с помощью функции `make_datetime_100()` в 16.2.2 из отдельных компонентов.
+Код должен был бы проверить, если время отправления меньше запланированного времени отправления плюс задержка отправления (в минутах). В качестве альтернативы, простое добавление задержки отправления к запланированному времени отправления является более надежным способом построения времени отправления, поскольку оно автоматически учитывает переход на следующий день.
+
+#### Упражнение 16.3.4.3
+<div class="question">
+Compare `air_time` with the duration between the departure and arrival. 
+Explain your findings. 
+(Hint: consider the location of the airport.)
+</div>
+
+```{r}
+flights_dt %>%
+  mutate(residual = as.numeric(arr_time - dep_time),
+         diff = residual - air_time) %>% 
+  select(origin, dest, residual, air_time, diff, arr_time, dep_time) %>% 
+  group_by(diff) %>%
+  count(diff) %>%
+  filter(!is.na(diff)) %>%
+  ggplot(aes(diff, n)) +
+  geom_jitter(alpha = 0.25, width = 0, height = 0.2) +
+  scale_x_log10()
+```
+
+Большая часть точек лежит в области отклонения. Вероятно, это связано с переводом времени.
+
+
+#### Упражнение 16.3.4.4
+<div class="question">
+How does the average delay time change over the course of a day? Should you use `dep_time` or `sched_dep_time`? Why?
+</div>
+
+Будем брать запланированное время вылета. 
+Потому что это заявленная характеристика вылета, и на неё можно ореентироваться. 
+КРоме того использование `dep_time` всегда смещает задержки на более поздний день. 
+```{r}
+flights_dt %>%
+  mutate(sched_dep_hour = hour(sched_dep_time)) %>%
+  group_by(sched_dep_hour) %>%View()
+  summarise(dep_delay = mean(dep_delay)) %>% 
+  ggplot(aes(y = dep_delay, x = sched_dep_hour)) +
+  geom_point() +
+  geom_smooth()
+```
+
+Как видно на графике,  самые большие задержки плавно возрастают в течении дня, и за пару часов до полуночи, немного спадают. При этом пик образуется в районе 19 часов.
+
+#### Упражнение 16.3.4.5
+<div class="question">
+On what day of the week should you leave if you want to minimise the chance of a delay?
+</div>
+
+Чтобы ответить на этот вопрос, нужно посчитать среднее время задержки в каждом дне недели
+
+
+```{r}
+flights_dt %>% 
+  mutate(wday = wday(sched_dep_time, label = TRUE)) %>%
+  group_by(wday) %>%
+  summarise(mean_wday_arr_delay = mean(arr_delay, na.rm = TRUE),
+            mean_wday_dep_delay = mean(dep_delay, na.rm = TRUE)) %>%
+  ggplot(aes(mean_wday_dep_delay, mean_wday_arr_delay)) +
+    geom_point() +
+    geom_text(aes(label = wday), vjust = 1, hjust = 1, check_overlap = TRUE) +
+  labs(x = "Среднее время задержки вылета, минут",
+       y = "Среднее время задержки прилёта, минут")
+```
+
+Очевидно, я бы выбрал для полёта субботу
+
+#### Упражнение 16.3.4.6
+<div class="question">
+On what day of the week should you leave if you want to minimise the chance of a delay?
+</div>
