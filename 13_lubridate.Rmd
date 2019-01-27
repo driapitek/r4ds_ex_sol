@@ -300,3 +300,29 @@ flights_dt %>%
 
 Задание для более крупных компонентов даты постоянного значения --- удобная методика, позволяющая исследовать закономерности, связанные с меньшими компонентами.
 
+#### Упражнение 16.3.4.1
+<div class="question">
+How does the distribution of flight times within a day change over the course of the year?
+</div>
+
+Давайте попробуем построить помесячный график.
+
+```{r}
+flights_dt %>%
+  filter(!is.na(dep_time)) %>%
+  mutate(dep_hour = update(dep_time, yday = 1),
+         month = factor(month(dep_time))) %>% 
+  ggplot(aes(dep_hour, color = month)) +
+  geom_freqpoly(binwidth = 60 * 60)
+```
+
+Чтобы убрать отклонения заметные отклонения между месяцами из-за разного количества дней в месяце, нужно отнормировать построение
+
+```{r}
+flights_dt %>%
+  filter(!is.na(dep_time)) %>%
+  mutate(dep_hour = update(dep_time, yday = 1),
+         month = factor(month(dep_time))) %>% 
+  ggplot(aes(dep_hour, color = month)) +
+  geom_freqpoly(aes(y = ..density..), binwidth = 60 * 60)
+```
