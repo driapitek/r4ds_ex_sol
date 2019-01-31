@@ -137,3 +137,17 @@ rescale01(x)
 ```
 
 Это важная составляющая принципа --- НЕ ПОВТОРЯЙСЯ ("Do not repeat yourself", DRY). Чем больше повторений, тем сложнее держать в голове все места, которые будут нуждаться в обновлении.
+
+
+#### Упражнение 19.2.1.1
+<div class="question">
+Why is `TRUE` not a parameter to `rescale01()`? What would happen if `x` contained a single missing value, and `na.rm` was `FALSE`?
+</div>
+
+```{r}
+rescale01 <- function(x) {
+  rng <- range(x, na.rm = TRUE, finite = TRUE)
+  (x - rng[1]) / (rng[2] - rng[1])
+}
+```
+
