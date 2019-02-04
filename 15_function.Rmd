@@ -144,10 +144,177 @@ rescale01(x)
 Why is `TRUE` not a parameter to `rescale01()`? What would happen if `x` contained a single missing value, and `na.rm` was `FALSE`?
 </div>
 
+
+Напомню функцию `rescale01()`
+
 ```{r}
 rescale01 <- function(x) {
   rng <- range(x, na.rm = TRUE, finite = TRUE)
   (x - rng[1]) / (rng[2] - rng[1])
+}
+```
+
+`TRUE` не является параметром функции, поскольку он не указан в круглых скобках после слова тэга `function`
+
+Если `x` содержит единственное пропущенное значение и `na.rm = FALSE`, то эта функция по-прежнему возвращает не пропущенное значение.
+
+```{r}
+rescale01_alt <- function(x, na.rm = FALSE) {
+  rng <- range(x, na.rm = na.rm, finite = TRUE)
+  (x - rng[1]) / (rng[2] - rng[1])
+}
+rescale01_alt(c(NA, 1:5), na.rm = FALSE)
+
+rescale01_alt(c(NA, 1:5), na.rm = TRUE)
+```
+
+Опция `finite = TRUE` у параметра `range()` удалит все неконечные элементы, а NA - неконечный элемент.
+
+Однако, если и `finite = FALSE` и `na.rm = FALSE`, то эта функция будет возвращать вектор значений `NA`. 
+Напомним, арифметические операции со значениями NA возвращают NA.
+
+```{r}
+rescale01_alt2 <- function(x, na.rm = FALSE, finite = FALSE) {
+  rng <- range(x, na.rm = na.rm, finite = finite)
+  (x - rng[1]) / (rng[2] - rng[1])
+}
+rescale01_alt2(c(NA, 1:5), na.rm = FALSE, finite = FALSE)
+```
+
+#### Упражнение 19.2.1.2
+<div class="question">
+In the second variant of `rescale01()`, infinite values are left unchanged. Rewrite `rescale01()` so that `-Inf` is mapped to 0, and `Inf` is mapped to 1.
+</div>
+
+Для решения хочется использовать конструкцию если `y == -Inf`, то верни 0, если `y == Inf` то верни 1.
+Но так как с работой с условиями я ещё не знаком, то внесу эти в явном виде.
+
+```{r}
+rescale01 <- function(x) {
+  rng <- range(x, na.rm = TRUE, finite = TRUE)
+  y <- (x - rng[1]) / (rng[2] - rng[1])
+  y[y == -Inf] <- 0
+  y[y == Inf] <- 1
+  y
+}
+
+rescale01(c(0:3, -Inf, Inf, NA))
+```
+
+#### Упражнение 19.2.1.3
+<div class="question">
+Practice turning the following code snippets into functions. Think about what each function does. What would you call it? How many arguments does it need? Can you rewrite it to be more expressive or less duplicative?
+</div>
+
+```{r}
+x <- c(0:10)
+
+mean(is.na(x))
+
+x / sum(x, na.rm = TRUE)
+
+sd(x, na.rm = TRUE) / mean(x, na.rm = TRUE)
+```
+
+
+1. Эта функция подсчитывает делит количество пропущенных значений на общее количество значений. 
+Другими словами --- функция возвращает долю пропущенных значений.
+
+```{r}
+t <- c(NA, NA, NA, NA, 1:6)
+i <- c(NA, NA, NA, 1:7)
+
+is.na(x)
+mean(is.na(x))
+```
+
+Я бы назвал эту функцию missing_value_rate, или ещё лучше --- `NA_rate`
+
+```{r}
+NA_rate <- function(x) {
+  mean(is.na(x))
+}
+
+NA_rate(t)
+NA_rate(i)
+```
+
+2. Эта функция нормирует выборку относительно единицы или другими словами возвращает вес каждого значения в векторе, при этом пропущенные значения не берутся в расчёт.
+
+```{r}
+x <- c(2, 10000)
+x
+x / sum(x, na.rm = TRUE)
+```
+
+Я бы назвал эту функцию `weight_to_one` поскольку она показывает вес каждого значения относительно единицы
+
+```{r}
+weight_to_one <- function(x) {
+  x / sum(x, na.rm = TRUE)
+}
+
+weight_to_one(x)
+```
+
+Будет выглядеть хорошо, ну по крайне мере однообразно с базовыми функциями, если вынести `na.rm` (по аналогии с `mean` и `median`) со значением по умолчанию `FALSE` как параметр функции. То есть указать его в круглых скобочках после слова `function()`
+
+```{r}
+weight_to_one <- function(x, na.rm = FALSE) {
+  x / sum(x)
+}
+
+weight_to_one(x)
+```
+
+3. Стандартное отклонение делённое на среднеарифметическое --- это [коэффициент вариации](http://statistica.ru/glossary/general/koeffitsient-variatsii/). 
+Поэтому я назову эту функцию `coefficient_of_variation`.
+
+```{r}
+gti <- c(1:1000)
+
+coefficient_of_variation <- function(x) {
+  sd(x, na.rm = TRUE) / mean(x, na.rm = TRUE)
+}
+
+coefficient_of_variation(gti)
+```
+
+Будет ещё лучше, если я, как в предыдущем примере, вынесу `na.rm = FALSE` в параметр функции. Тогда можно будет управлять выводом функции, не изменяя её код.
+
+```{r}
+coefficient_of_variation <- function(x, na.rm = FALSE) {
+  sd(x, na.rm = na.rm) / mean(x, na.rm = na.rm)
+}
+```
+
+#### Упражнение 19.2.1.4
+<div class="question">
+Follow <http://nicercode.github.io/intro/writing-functions.html> to write your own functions to compute the variance and skew of a numeric vector.
+</div>
+Первая функция, которую многие люди, похоже, должны написать, --- это вычислить стандартную ошибку среднего для некоторой переменной, потому что, как ни странно, эта функция не поставляется с базовым пакетом R. Она вычисляется следующим образом $\sqrt{\mathrm{var}(x)/n}$
+
+```{r}
+x <- c(1:169)
+x
+
+var(x)
+```
+
+`var` --- подсчитывает дисперсию (`variance`). Это то что нам нужно написать самим. Но для начала мы напишем функцию для определения стандартной ошибки:
+
+```{r}
+standart.error <- function(x) {
+  sqrt(var(x)/length(x))
+}
+```
+
+
+```{r}
+variance <- function(x) {
+    n <- length(x)
+    m <- mean(x)
+    (1/(n - 1)) * sum((x - m)^2)
 }
 ```
 
