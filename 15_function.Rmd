@@ -422,3 +422,44 @@ both_na(t, y)
 
 Вуаля
 
+#### Упражнение 19.2.1.6
+<div class="question">
+What do the following functions do? Why are they useful even though they are so short?
+
+```{r}
+is_directory <- function(x) file.info(x)$isdir
+is_readable <- function(x) file.access(x, 4) == 0
+```
+</div>
+
+Функция `is_directory()` проверяет, является ли путь в `x` каталогом. 
+Функция `is_readable()` проверяет, является ли путь в `x` доступный для чтения. 
+Что означает, что файл существует и у пользователя есть разрешение на его открытие. 
+Эти функции полезны даже при том, что они короткие, потому что их имена значительно упрощают работу кода.
+
+
+#### Упражнение 19.2.1.6
+<div class="question">
+Read the complete lyrics to “Little Bunny Foo Foo”. There’s a lot of duplication in this song. Extend the initial piping example to recreate the complete song, and use functions to reduce the duplication.
+</div>
+
+Пожалуй я скипну это упражнение и вернусь к нему однажды
+
+
+### Функции создаются для компьютеров и людей
+
+Делай читабельные функции с внятным названием
+
+Будь последовательным --- используй один стиль именования функций.
+
+Семейство аналогичных функций называй согласованно.
+
+Избегай перекрывания имен функций и переменных.
+
+Комментируй свой код отвечая на вопрос `зачем?`. Избегай комментов отвечающих на вопрос `что?` и `как?`
+
+Делай понятный код.
+
+Подумай о добавлении промежуточных переменных.
+
+
