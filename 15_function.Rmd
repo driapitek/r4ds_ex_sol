@@ -568,3 +568,14 @@ f3(c(1:4), "cv")
 
 Эту функцию можно назвать `расширение()` или `recycle()`
 
+#### Упражнение 19.3.1.2
+<div class="question">
+Take a function that you’ve written recently and spend 5 minutes brainstorming a better name for it and its arguments.
+</div>
+
+Вернусь сюда когда начну писать свои функции
+
+#### Упражнение 19.3.1.3
+<div class="question">
+Compare and contrast `rnorm()` and `MASS::mvrnorm()`. How could you make them more consistent?
+</div>
