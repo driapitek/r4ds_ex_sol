@@ -14,6 +14,11 @@ editor_options:
 
 Здесь работаем с базовым функционалом, дополнительные пакеты, не потребуются
 
+```{r}
+library(lubridate)
+```
+
+
 ### Когда следует писать функции
 
 Когда есть необходимость повторять фрагмент кода более чем два раза.
@@ -809,3 +814,138 @@ ifelse(y < 20, "Too high", "Too low")
 ifelse(y < 0, "Too high", "Too low")
 ```
 
+#### Упражнение 19.4.4.2
+<div class="question">
+Write a greeting function that says “good morning”, “good afternoon”, or “good evening”, depending on the time of day. (Hint: use a time argument that defaults to `lubridate::now()`. That will make it easier to test your function.)
+</div>
+
+Итак функция должна работать следующим образом.
+Если текущее время меньше либо равно 12:00 --- то выведи «good morning»,
+Если текущее время меньше либо равно 18:00 --- то выведи «good afternoon»,
+Для всего оставшегося времени выведи «good evening».
+
+
+```{r}
+greeting <- function(time = now()) {
+  hour <- hour(time)
+  if (hour <= 12) {
+    print("good morning")
+  } else if (hour <= 18) {
+    print("good afternoon")
+  } else {
+    print("good evening")
+  }
+}
+
+greeting(now())
+
+hour(ymd_h("2017-01-08:05"))
+
+greeting((ymd_h("2017-01-08:05")))
+```
+
+#### Упражнение 19.4.4.3
+<div class="question">
+Implement a `fizzbuzz` function. It takes a single number as input. If the number is divisible by three, it returns “fizz”. If it’s divisible by five it returns “buzz”. If it’s divisible by three and five, it returns “fizzbuzz”. Otherwise, it returns the number. Make sure you first write working code before you create the function.
+</div>
+
+Если остаток от деления на 3 равен нулю и остаток от деления на 5 равен нулю верни «fizzbuzz»,
+Если остаток от деления на 3 равен нулю, то верни «fizz»,
+Если остаток от деления на 5 равен нулю, то верни «buzz»,
+В любом другом случае верни само число
+
+```{r}
+fizzbuzz <- function(x) {
+  if (x %% 3 == 0 && x %% 5 == 0) {
+    print("fizzbuzz")
+  } else if (x %% 3 == 0) {
+    print("fizz")
+  } else if (x %% 5 == 0) {
+    print("buzz")
+  } else {
+    print(x)
+  }
+}
+```
+
+```{r}
+fizzbuzz(6)
+fizzbuzz(5)
+fizzbuzz(15)
+fizzbuzz(4)
+```
+
+#### Упражнение 19.4.4.4
+<div class="question">
+How could you use `cut()` to simplify this set of nested if-else statements?
+
+How would you change the call to `cut()` if I’d used `<` instead of `<=`? What is the other chief advantage of `cut()` for this problem? (Hint: what happens if you have many values in temp?)
+</div>
+
+```{r}
+temp <- seq(-20, 40, by = 5)
+temp
+```
+
+```{r}
+if (temp <= 0) {
+  "freezing"
+} else if (temp <= 10) {
+  "cold"
+} else if (temp <= 20) {
+  "cool"
+} else if (temp <= 30) {
+  "warm"
+} else {
+  "hot"
+}
+```
+
+Функция `cut()` делит диапазон `x` на интервалы и кодирует значения в `x` в зависимости от того, на какой интервал они попадают. Крайний левый интервал соответствует первому уровню, следующий левый - второму уровню и так далее.
+
+У функции есть аргумент `breaks` --- числовой вектор из двух или более уникальных точек разреза, либо одно число (больше или равное 2), дающее число интервалов, на которые должен быть вырезан x. Число интервалов 
+
+У функции есть логический аргумент `right`, по умолчанию заданный `right = TRUE` указывающий, должны ли интервалы быть закрыты справа (и открыты слева) или наоборот.
+
+```{r}
+Z <- stats::rnorm(10000)
+table(cut(Z, breaks = -6:6))
+```
+
+```{r}
+aaa <- c(1,2,3,4,5,2,3,4,5,6,7)
+table(cut(aaa, 11))
+```
+
+Если посмотреть на скобочки, когда параметр `right = TRUE`, то они являются включающим множеством т.е. неравенством `<=` что подходит для первого условия нашей задачи. Тогда для оптимизации функции нужно проделать следующее:
+
+1. Указать диапазоны --- от минус бесконечности, 0, 10, 20, 30, до плюс бесконечности.
+
+2. Указать параметр --- `right = TRUE`,
+
+3. Указать подписи --- "freezing", "cold", "cool", "warm", "hot" в параметре `labels()`
+
+Итого получаем:
+
+```{r}
+temp
+table(cut(temp, c(-Inf, 0, 10, 20, 30, Inf),
+  right = TRUE,
+  labels = c("freezing", "cold", "cool", "warm", "hot")
+))
+```
+
+Если неравенство станет строгим, то есть сменится `<=` на `<`, тогда нам нужно будет поменять параметр на противоположное значение `right = FALSE`
+
+```{r}
+table(cut(temp, c(-Inf, 0, 10, 20, 30, Inf),
+  right = FALSE,
+  labels = c("freezing", "cold", "cool", "warm", "hot")
+))
+```
+
+Двумя преимуществами использования `cut()` является:
+
+1. `cut()` работает с векторами, тогда как, `if` работает только с одним значением, 
+
+1. для изменения условия сравнения нужно было только изменить аргумент `right`, в то время как в инструкции `if`  пришлось бы изменить четыре оператора.
