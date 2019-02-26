@@ -16,6 +16,8 @@ editor_options:
 
 ```{r}
 library(lubridate)
+library(magrittr)
+library(stringr)
 ```
 
 
@@ -1214,3 +1216,118 @@ sum(x, na.rm = TRUE)
 Вычисление аргументов откладывается до тех пор, пока в этом не возникнет необходимости.
 
 Отсюда следует, что те аргументы, которые не используются в функции, никогда не вычисляются.
+
+#### Упражнение 19.5.5.1
+<div class="question">
+What does `commas(letters, collapse = "-")` do? Why?
+</div>
+
+Для начала напомню функцию которую мы прописали в параграфе "многоточие"
+
+```{r}
+commas <- function(...) stringr::str_c(..., collapse = ", ")
+commas(letters[1:10])
+```
+
+
+```{r}
+commas(letters, collapse = "-")
+```
+
+Когда функция `commas()` свертывание задается способом указанном выше, она выдает ошибку.
+
+Это связано с тем, что когда аргумент `collapse` передается `commas()`, он передается в `str_c()` как часть `...`. Другими словами, предыдущий код эквивалентен
+
+```{r}
+str_c(letters, collapse = "-", collapse = ", ")
+```
+
+Тем не менее, ошибочно давать один и тот же именованный аргумент функции дважды.
+Почитай хэлп к `?stringr::str_c` --- `collapse` аргумент для `str_c`.
+
+Один из способов разрешить пользователю переопределять разделитель в  `commas()` --- это добавить аргумент свертывания в функцию.
+
+```{r}
+commas <- function(..., collapse = ", ") {
+  stringr::str_c(..., collapse = collapse)
+}
+commas(letters, collapse = "-")
+```
+
+Это может запутать. Поэтому имеет смысл назвать аргумент `collapse` в `commas()` как-нибудь по-другому например `furl`, или ещё каким-нибудь словом синонимом.
+
+```{r}
+commas <- function(..., furl = ", ") {
+  stringr::str_c(..., collapse = furl)
+}
+commas(letters, furl = "-")
+```
+
+#### Упражнение 19.5.5.2
+<div class="question">
+It’d be nice if you could supply multiple characters to the `pad` argument, e.g. `rule("Title", pad = "-+")`. 
+Why doesn’t this currently work? 
+How could you fix it?
+</div>
+
+Функция `rule` добивает до конца консоли заданные в `pad` символы. По умолчанию мы задали один символ `-`
+
+```{r}
+rule <- function(..., pad = "-") {
+  title <- paste0(...)
+  width <- getOption("width") - nchar(title) - 5
+  cat(title, " ", stringr::str_dup(pad, width), "\n", sep = "")
+}
+rule("Important output")
+```
+
+Разберём всё по порядку.
+
+Функция `getOption("width")` --- возвращает текущую длину консоли
+
+```{r}
+getOption("width")
+```
+
+Отсюда получается, что выражение `getOption("width") - nchar(title) - 5` возвращает длинну текущего окна консоли минус длинну передаваемого заголовка и минус 5
+
+Функция `cat()` --- это конкатенация.
+
+```{r}
+cat("1", 2, "doggy")
+```
+
+Функция `stringr::str_dup()` повторяет вектор строк заданное количество раз.
+
+
+```{r}
+fruit <- c("apple", "pear", "banana")
+stringr::str_dup(fruit, 2)
+```
+
+
+Итого функция `rule()` дублирует `pad` количество раз, равное желаемой ширине, минус длина `title` и пять дополнительных символов. Это подразумевает, что `pad` --- это всего лишь один символ. Если бы `pad` был двухсимвольным, результат будет почти вдвое длиннее.
+
+```{r}
+rule("Important output", pad = "+-")
+rule("Important output", pad = "+-Ж")
+rule("Important output", pad = "+-01")
+```
+
+Чтобы функция работала с несколькими символами в `pad`, одним из подходов можно укоротить количество выводимых символов.
+
+```{r}
+rule <- function(..., pad = "-") {
+  title <- paste0(...)
+  width <- getOption("width") - nchar(title) - 5
+  gap <- stringr::str_dup(
+    pad,
+    ceiling(width / stringr::str_length(title))
+  )
+  cat(title, " ", gap, "\n", sep = "")
+}
+
+rule("Valuable output", pad = "-+38")
+```
+
+Это решение в пределе не совершенно, поскольку при увеличении количества символов, разделитель будет переходить на другую строку. Этого можно избежать усекая строку. Но это уже отладка функции. Вернусь к этой проблеме немного попозже.
