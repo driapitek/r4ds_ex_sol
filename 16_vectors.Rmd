@@ -16,6 +16,7 @@ editor_options:
 
 ```{r}
 library(tidyverse)
+library(pryr)
 ```
 
 ### Основные сведения о векторах
@@ -124,15 +125,10 @@ c(-1, 0, 1) / 0
 
 #### Символьный тип
 
-
-
-
-Разберись с пурир!
-
-
 Самый сложный, поскольку каждый элемент --- строка, а строка может содержать произвольное количество данных.
 
-R использует глобальный пул строк.
+R использует глобальный пул строк --- каждая уникальная строка сохраняется в памяти всего один раз. И всякий раз когда оа используется, фактически используется указательна представление строка.
+Это позволяет снизить расход памяти при дублировании строк, в чем можно непосредственно убедиться с помощью функции `pryr::object_size()`
 
 ```{r}
 x <- "This is a reasonably long string."
@@ -142,3 +138,149 @@ y <- rep(x, 1000)
 pryr::object_size(y)
 ```
 
+Переменная `y` не занимает в 1000 раз больше памяти по сравнению с `x`, поскольку каждый элемент `y` всего лишь указатель на одну и ту же строчку. Указатель занимает 8 байт, поэтому для 1000 указателей на строку, занимающую 136 байт, требуется память объёмом 8 * 1000 + 136 = 8,13 Кбайт.
+
+#### Отсутствующие значения
+
+Для каждого типа атомарных векторов предусмотрено своё отсутствующее значение.
+
+```{r}
+NA            # logical
+
+NA_integer_   # integer
+
+NA_real_      # double
+
+NA_character_ # character
+```
+
+#### Упражнение 20.3.5.1
+<div class="question">
+Describe the difference between `is.finite(x)` and `!is.infinite(x)`.
+</div>
+
+```{r}
+x <- c(0, 1, NA, NaN, Inf, -Inf)
+is.finite(x)
+
+!is.infinite(x)
+```
+
+Функция `is.finite()` считает, что не пропущенные числовые `(0, 1)` значения являются конечными, а пропущенные `(NA)`, не число `(NaN)` и положительная-отрицательная бесконечность `(Inf, -Inf)` не являются конечными. 
+Функция `is.infinite()` ведет себя немного по-другому. Она считает, что `Inf` и `-Inf` бесконечны, а все остальное, включая не пропущенные числа, `NA` и `NaN`, не бесконечно.
+
+#### Упражнение 20.3.5.2
+<div class="question">
+Read the source code for `dplyr::near()` (Hint: to see the source code, drop the ()). How does it work?
+</div>
+
+```{r}
+dplyr::near
+```
+
+Вместо проверки на точное равенство, функция `dplyr::near()` проверяет, что два числа находятся в пределах определенного допуска, `tol`. По умолчанию для допуска установлен квадратный корень из `.Machine$double.eps`, который является наименьшим числом с плавающей запятой, которое может представить компьютер.
+
+```{r}
+.Machine$double.eps
+```
+
+#### Упражнение 20.3.5.3
+<div class="question">
+A logical vector can take 3 possible values. How many possible values can an integer vector take? How many possible values can a double take? Use google to do some research.
+</div>
+
+Для целочисленных векторов, R использует a 32-битное представление. Это означает что вектор может быть представлен $2^{32}$ различными значениями с целыми числами. Одно из этих значений отложено для `NA_integer_`. Из справки для целых чисел.
+
+> Note that current implementations of R use 32-bit integers for integer vectors,
+> so the range of representable integers is restricted to about +/-2*10^9: doubles
+> can hold much larger integers exactly.
+
+Диапазон значений целых чисел, которые R может представлять в целочисленном векторе, равен $\pm 2^{31} - 1$,
+
+```{r}
+.Machine$integer.max
+```
+
+Самое большое целое число это $2^{31} - 1$ меньше чем $2^{32}$ потому что 1 bit используется для записи ($+$, $-$) и одно значение используется для записи `NA_integer_`.
+
+Если вы попытаетесь представить целое число больше этого значения, R вернет значения `NA`.
+
+```{r warning}
+.Machine$integer.max + 1L
+```
+
+Тем не менее, вы можете представить это значение (точно) с помощью числового вектора, затратив примерно в два раза больше памяти.
+
+```{r}
+as.numeric(.Machine$integer.max) + 1
+```
+
+Тоже самое верно для самого большого отрицательного числа
+
+```{r}
+-.Machine$integer.max - 1L
+```
+
+Для вещественных векторов R использует 64-битное представление. Это означает, что они могут держать
+до $2^{64}$ значений точно. Однако некоторые из этих значений присваиваются специальным значениям.
+такие как `-Inf`,` Inf`, `NA_real_` и` NaN`. Из справки для `double`:
+
+> All R platforms are required to work with values conforming to the IEC 60559
+> (also known as IEEE 754) standard. This basically works with a precision of
+> 53 bits, and represents to that precision a range of absolute values from
+> about 2e-308 to 2e+308. It also has special values `NaN` (many of them),
+> plus and minus infinity
+> and plus and minus zero (although R acts as if these are the same). There are
+> also denormal(ized) (or subnormal) numbers with absolute values above or below
+> the range given above but represented to less precision.
+
+Детали представления с плавающей точкой и арифметики сложны, выходят за рамки этого вопроса и лучше обсуждаются в ссылках, представленных ниже.
+Вещественное число может представлять числа в диапазоне около $\pm 2 \times 10 ^ {308} $, что
+предоставляется в
+
+```{r}
+.Machine$double.xmax
+```
+
+Многие другие подробности реализации двойных векторов приведены в переменной `.Machine` (и ее документации).
+
+```{r}
+.Machine$double.base
+```
+
+количество бит, используемых для значимого (мантисса),
+
+```{r}
+.Machine$double.digits
+```
+
+количество битов, использованных в показателе степени,
+
+```{r}
+.Machine$double.exponent
+```
+
+и самые маленькие положительные и отрицательные числа не равные нулю,
+
+```{r}
+.Machine$double.eps
+.Machine$double.neg.eps
+```
+
+-   Computerphile, "[Floating Point Numbers](https://www.youtube.com/watch?v=PZRI1IfStY0)"
+-   <https://en.wikipedia.org/wiki/IEEE_754>
+-   <https://en.wikipedia.org/wiki/Double-precision_floating-point_format>
+-   "[Floating Point Numbers: Why floating-point numbers are needed](https://floating-point-gui.de/formats/fp/)"
+-   Fabien Sanglard, "[Floating Point Numbers: Visually Explained](http://fabiensanglard.net/floating_point_visually_explained/)"
+-   James Howard, "[How Many Floating Point Numbers are There?](https://jameshoward.us/2015/09/09/how-many-floating-point-numbers-are-there/)"
+-   GeeksforGeeks, "[Floating Point Representation Basics](https://www.geeksforgeeks.org/floating-point-representation-basics/)"
+-   Chris Hecker, "[Lets Go to the (Floating) Point](http://chrishecker.com/images/f/fb/Gdmfp.pdf)", *Game Developer*
+-   Chua Hock-Chuan, [A Tutorial on Data Representation Integers, Floating-point Numbers, and Characters](http://www.ntu.edu.sg/home/ehchua/programming/java/datarepresentation.html)
+-   John D. Cook, "[Anatomy of a floating point number](https://www.johndcook.com/blog/2009/04/06/anatomy-of-a-floating-point-number/)"
+-   John D. Cook, "[Five Tips for Floating Point Programming](https://www.codeproject.com/Articles/29637/Five-Tips-for-Floating-Point-Programming)"
+
+
+#### Упражнение 20.3.5.4
+<div class="question">
+Brainstorm at least four functions that allow you to convert a double to an integer. How do they differ? Be precise.
+</div>
