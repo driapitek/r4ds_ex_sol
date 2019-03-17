@@ -663,3 +663,102 @@ purrr::set_names(1:4, c("a", "b"))
 setNames(1:4, c("a", "b"))
 ```
 
+#### Упражнение 20.4.6.4
+
+<div class="question">
+Create functions that take a vector as input and returns:
+
+1. The last value. Should you use `[` or `[[`?
+
+2. The elements at even numbered positions.
+
+3. Every element except the last value.
+
+4. Only even numbers (and no missing values).
+</div>
+
+1. Возвращаем последнее значение в векторе. Это просто --- достаточно использовать конструкцию `[]`
+
+```{r}
+last_value <- function(x) {
+  x[length(x)]
+}
+```
+
+2. Элементы на чётных позициях
+
+```{r}
+even_indices <- function(x) {
+  if (length(x)) {
+    x[seq_along(x) %% 2 == 0]
+  } else {
+    x
+  }
+}
+```
+
+
+3. Все элементы, кроме последнего значения
+
+```{r}
+without_last_value <- function(x) {
+  x[-length(x)]
+}
+without_last_value(x)
+```
+
+
+4. Только чётные числа
+
+```{r}
+even_numbers <- function(x) {
+  x[x %% 2 == 0]
+}
+even_numbers(x)
+```
+
+#### Упражнение 20.4.6.5
+
+<div class="question">
+Why is `x[-which(x > 0)]` not the same as `x[x <= 0]`?
+</div>
+
+
+```{r}
+x <- c(-5:5, NA, Inf, -Inf, NaN)
+x[-which(x > 0)]
+x[x <= 0]
+```
+
+Как нетрудно заметить, в случае нечсилого значения выражение `x[x <= 0]` возвращает `NA`.
+
+Любая реляционная операция, которая включает в себя `NA`, возвращает `NA`. `NA <= 0`? Мы не знаем, потому что это зависит от неизвестного значения `NA`, поэтому ответ - `NA`. Этот же аргумент применим к `NaN`. Спрашивать, `NaN <= 0` не имеет никакого смысла, потому что нельзя сравнить число с «Не числом».
+
+Это упражнение напоминаниеи, что всегда нужно проверять ваш код. 
+Несмотря на то, что эти два выражения выглядят эквивалентными, на практике они разные. 
+И когда вы делаете тестовый код, учитывайте как он работает с типичными значениями, так и со специальными значениями и крайними случаями, такими как вектор со значениями `NA` или `NaN` или `Inf`, или пустой вектор. 
+Руководствуемся правилом --- если имеет место неожиданное поведение, вероятнее всего, оно произойдет.
+
+#### Упражнение 20.4.6.6
+
+<div class="question">
+What happens when you subset with a positive integer that’s bigger than the length of the vector? 
+What happens when you subset with a name that doesn’t exist?
+</div>
+
+Давайте проверим
+
+```{r}
+x <- c(a = 10, b = 20)
+```
+
+
+```{r}
+x[7]
+x[4:6]
+x[1:5]
+x["c"]
+x[c("c", "d", "e")]
+x[c("a", "d", "b")]
+```
+
