@@ -128,3 +128,33 @@ ncol(nycflights13::flights)
 class(nycflights13::flights[[1]])
 ```
 
+3. Тут тоже не сложно
+
+```{r}
+iris
+length(unique(iris$Sepal.Length))
+
+length(unique(iris[[2]]))
+
+
+output <- vector("double", ncol(iris))
+names(output) <- names(iris)
+for (i in seq_along(iris)) {
+  output[[i]] <- length(unique(iris[[i]]))
+}
+output
+```
+
+4. 
+
+```{r}
+rnorm(10, mean = -10)
+
+mu <- c(-10, 10, 0, 100)
+output <- vector("list", length(mu))
+for (i in seq_along(mu)) {
+  output[[i]] <- rnorm(10, mean = i)
+}
+output
+```
+
