@@ -158,3 +158,130 @@ for (i in seq_along(mu)) {
 output
 ```
 
+#### Упражнение 21.2.1.2
+
+<div class="question">
+Eliminate the for loop in each of the following examples by taking advantage of an existing function that works with vectors:
+</div>
+
+1. Цикл `for` в данном примере объединяет все элементы вектора `letters`. Функция `str_c()` содержит внутри себя аргумент `collapse`, который выполняет эту же функцию. 
+
+```{r}
+out <- ""
+for (x in letters) {
+  out <- stringr::str_c(out, x)
+}
+out
+
+str_c(letters, collapse = "")
+```
+
+2. Этот цикл считает стандартное отклонение $sd = \frac{\sum{(x_i - \bar{x}})^2}{n-1}$. 
+Но ведь для этого есть функция `sd()`
+
+```{r}
+x <- sample(100)
+sd <- 0
+for (i in seq_along(x)) {
+  sd <- sd + (x[i] - mean(x)) ^ 2
+}
+sd <- sqrt(sd / (length(x) - 1))
+
+sd(x)
+```
+
+3. Эта функция считает скользящую (или кумулятивную) сумму --- считает сумму для каждого последующего элемента.
+Для этих целей есть внутренняя функция `cumsum()`
+
+```{r}
+x <- runif(100)
+out <- vector("numeric", length(x))
+out[1] <- x[1]
+for (i in 2:length(x)) {
+  out[i] <- out[i - 1] + x[i]
+}
+
+cumsum(x)
+```
+
+#### Упражнение 21.2.1.3
+
+<div class="question">
+Combine your function writing and for loop skills:
+
+Write a for loop that `prints()` the lyrics to the children’s song “Alice the camel”.
+
+Convert the nursery rhyme “ten in the bed” to a function. Generalise it to any number of people in any sleeping structure.
+
+Convert the song “99 bottles of beer on the wall” to a function. Generalise to any number of any vessel containing any liquid on any surface.
+</div>
+
+* Задание 1 --- песенка доступна по адресу <http://www.metrolyrics.com/alice-the-camel-lyrics-children.html>
+
+Смысл такой, что по очереди от числа 5 до нуля у верблюда исчезают горбы и когда горбов нет, верблюд превращается в лошадь.
+
+Реализовать можно и без команды `print()`. Я подошёл лениво к реализации --- моё решение не учитывает общий случай (когда горбов больше чем 5), но где вы видели верблюда с таким количеством горбов?
+Но зато решение учитывает правила орфографии для единственного числа.
+
+```{r}
+count <- c("five", "four", "three", "two", "one", "no")
+
+for (i in seq_along(count)) {
+  if (i <= 4) {
+    cat(str_c("Alice the camel has ", rep(count[i], 3), " humps.",
+    collapse = "\n"
+  ), "\nSo go, Alice, go.\n", "\n")
+  }
+  if (i == 5) {
+    cat(str_c("Alice the camel has ", rep(count[i], 3), " hump.",
+    collapse = "\n"
+  ), "\nSo go, Alice, go.\n", "\n")
+  }
+  if (i == 6) {
+   cat(str_c("Alice the camel has ", rep(count[i], 3), " humps.",
+    collapse = "\n"
+  ), "\nNow Alice is a horse.", "\n") 
+  }
+}
+```
+
+* Задание 2 --- песенка доступна по адресу <https://www.kididdles.com/lyrics/t003.html>
+
+От заданного числа до нуля происходит счёт
+
+There were ten in a bed\n
+And the little one said\n
+"Roll over, roll over"\n
+So they all rolled over\n
+And one fell out\n
+
+на последнем элементе текст меняется на
+
+There was one in a bed\n
+And the little one said\n
+"Good night!"\n
+
+Для создания функции т.е. общего случая нужно иметь вектор всех названий числительных. 
+Либо заменить числительные на число. Я в этой реализации опять сделаю ленивую версию в которой просто отработаю навык создания цикла `for`
+
+```{r}
+numbers <- c(
+  "ten", "nine", "eight", "seven", "six", "five",
+  "four", "three", "two", "one"
+)
+
+for (i in seq_along(numbers)) {
+  if(length(numbers) - i >= 0 ) {
+  cat("There were", numbers[i], "in a bed", "\nAnd the little one said
+\"Roll over, roll over\"
+So they all rolled over
+And one fell out
+\n")
+  } else {
+  "There was one in a bed
+And the little one said
+\"Good night!\""
+}
+}
+```
+
