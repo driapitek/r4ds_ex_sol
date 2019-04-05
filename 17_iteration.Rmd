@@ -271,17 +271,75 @@ numbers <- c(
 )
 
 for (i in seq_along(numbers)) {
-  if(length(numbers) - i >= 0 ) {
+  if(length(numbers) - i == 0 ) {
+    cat("There were", numbers[i], "in a bed", "\nAnd the little one said
+\"Good night!\"\n
+\n")
+  } else {
   cat("There were", numbers[i], "in a bed", "\nAnd the little one said
 \"Roll over, roll over\"
 So they all rolled over
 And one fell out
 \n")
-  } else {
-  "There was one in a bed
-And the little one said
-\"Good night!\""
+  } 
 }
+```
+
+* Задание 3 --- песенка доступна по адресу <https://en.wikipedia.org/wiki/99_Bottles_of_Beer>
+
+```{r}
+# Сначала я реализую функцию считалку, которая будет сокращать количество бутылок.
+bottles <- function(i) {
+  if (i > 2) {
+    bottles <- str_c(i - 1, " bottles")
+  } else if (i == 2) {
+    bottles <- "1 bottle"
+  } else {
+    bottles <- "no more bottles"
+  }
+  bottles
+}
+
+# Теперь можно и песенку сделать. Введём параметры по умолчанию --- если ничего не указать, кроме числа, будет стандартная песенка, но параметры можно менять. Задавать жижку, и поверхность.
+
+song <- function(i, liquid = "beer", surface = "wall") {
+for (i in seq(i, 1, -1)) {
+  cat(bottles(i)," of ", liquid, " on the ", surface, ", ", bottles(i), " o f", liquid,".\n
+Take one down, pass it around, ", bottles(i), " of ", liquid, " on the ", surface, ".\n", sep = "")
+}  
+}
+
+song(10, "wine", "table")
+```
+
+#### Упражнение 21.2.1.3
+
+<div class="question">
+
+It’s common to see for loops that don’t preallocate the output and instead increase the length of a vector at each step:
+
+```{r}
+output <- vector("integer", 0)
+x <- 1:10
+for (i in seq_along(x)) {
+  output <- c(output, lengths(x[[i]]))
+}
+output
+length(output)
+```
+
+How does this affect performance? Design and execute an experiment.
+</div>
+
+ДОДЕЛАТЬ
+
+```{r}
+add_to_vector <- function(n) {
+  output <- vector("integer", 0)
+  for (i in seq_len(n)) {
+    output <- c(output, i)
+  }
+  output
 }
 ```
 
