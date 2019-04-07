@@ -624,3 +624,227 @@ for (var in names(trans)) {
 Это применяет функцию к столбцу `mtcars` с тем же именем
 
 `trans[["disp"]](mtcars[["disp"]])`
+
+
+### Циклы `for` и функционалы
+
+Есть мощная штука --- выносить функции в функции. Пример
+
+```{r}
+col_summary <- function(df, fun) {
+  out <- vector("double", length(df))
+  for (i in seq_along(df)) {
+    out[[i]] <- fun(df[[i]])
+  }
+  out
+}
+
+col_summary(df, mean)
+col_summary(df, sd)
+col_summary(df, median)
+```
+
+#### Упражнение 21.3.6.1
+
+<div class="question">
+Read the documentation for `apply()`. 
+In the 2nd case, what two for-loops does it generalize.
+</div>
+
+С функциями этого семейства мы уже знакомы
+
+Для объекта с двумя измерениями, такого как матрица или фрейм данных, метод `apply()` заменяет зацикливание строк или столбцов матрицы или фрейма данных. Функция `apply()` используется аналогично `apply(X, MARGIN, FUN, ...)`, где `X` - это матрица или массив, `FUN` - это функция, которую нужно применить, и `...` дополнительные аргументы, передаваемые в `FUN`.
+
+Когда `MARGIN = 1`, функция применяется к каждой строке. Например, в следующем примере вычисляется среднее значение строки матрицы.
+
+```{r}
+X <- matrix(rnorm(15), nrow = 5)
+apply(X, 1, mean)
+```
+
+Это эквивалентно циклу:
+
+```{r}
+X_row_means <- vector("numeric", length = nrow(X))
+for (i in seq_len(nrow(X))) {
+  X_row_means[[i]] <- mean(X[i, ])
+}
+X_row_means
+```
+
+Когда `MARGIN = 2`, `apply()` эквивалентно циклу `for` для столбцов.
+
+```{r}
+X <- matrix(rnorm(15), nrow = 5)
+X
+apply(X, 2, mean)
+```
+
+```{r}
+X_col_means <- vector("numeric", length = ncol(X))
+for (i in seq_len(ncol(X))) {
+  X_col_means[[i]] <- mean(X[i, ])
+}
+X_col_means
+```
+
+
+#### Упражнение 21.3.6.1
+
+<div class="question">
+Adapt `col_summary()` so that it only applies to numeric columns. You might want to start with an `is_numeric()` function that returns a logical vector that has a `TRUE` corresponding to each numeric column.
+</div>
+
+Напомню функцию
+
+```{r}
+col_summary <- function(df, fun) {
+  out <- vector("double", length(df))
+  for (i in seq_along(df)) {
+    out[i] <- fun(df[[i]])
+  }
+  out
+}
+```
+
+Теперь переделаем
+
+```{r}
+col_summary2 <- function(df, fun) {
+  # создаём пустой вектор, который будет хранить каждый числовой столбец
+  numeric_cols <- vector("logical", length(df))
+  # проверяем, является ли каждый столбец числовым
+  for (i in seq_along(df)) {
+    numeric_cols[[i]] <- is.numeric(df[[i]])
+  }
+  # находим индексы числовых столбцов
+  idxs <- which(numeric_cols)
+  # находим количество числовых столбцов
+  n <- sum(numeric_cols)
+  # создаем вектор для хранения результатов
+  out <- vector("double", n)
+  # применять функцию только к числовым векторам
+  for (i in seq_along(idxs)) {
+    out[[i]] <- fun(df[[idxs[[i]]]])
+  }
+  # даём имена векторам
+  names(out) <- names(df)[idxs]
+  out
+}
+
+df <- tibble(
+  X1 = c(1, 2, 3),
+  X2 = c("A", "B", "C"),
+  X3 = c(0, -1, 5),
+  X4 = c(TRUE, FALSE, TRUE)
+)
+df
+
+col_summary2(df, mean)
+
+```
+
+### Функции семейства `map`
+
+Конечно не стоит отказываться от циклов совсем --- главное решить задачу. А уж потом работать над тем, как бы ускорить работу, или сделать код более удобочитаемым.
+
+Для повышения удобочитаемости в пакете `purrr` есть семейство функций `map`, которые создают
+
+* `map()` --- list.
+
+* `map_lgl()` --- logical vector.
+
+* `map_int()` --- integer vector.
+
+* `map_dbl()` --- double vector.
+
+* `map_chr()` --- character vector.
+
+вот например как они работают
+
+```{r}
+df <- tibble(
+  a = rnorm(10),
+  b = rnorm(10),
+  c = rnorm(10),
+  d = rnorm(10)
+)
+
+map_dbl(df, mean)
+
+map_dbl(df, median)
+
+map_dbl(df, sd)
+```
+
+Это семейство помогает сфокусироваться на выполнении операции, а не на вспомогатеольных действиях по обслуживанию цикла и сохранению результата. Это ещё более понятно при использовании каналов-конвееров `%>%`
+
+```{r}
+df %>% map_dbl(mean)
+
+df %>% map_dbl(median)
+
+df %>% map_dbl(sd)
+```
+
+Что нужно о них знать
+
+1. Реализованы на языке С
+
+2. Второй аргумент `.f` может быть функцией, формулой, символьным или целочисленным значением
+
+3. Для передачи особых настроек есть аргумент многоточие `...`
+
+4. Они отображают имена
+
+```{r}
+z <- list(x = 1:3, y = 4:5)
+
+map_int(z, length)
+```
+
+#### Сокращения
+
+Ниже представлен пример, разбивающий набор данных на три части, и применяющий одну и ту же модель к каждой из них
+
+```{r}
+models <- mtcars %>% 
+  split(.$cyl) %>% 
+  map(function(df) lm(mpg ~ wt, data = df))
+
+# еще короче
+models <- mtcars %>% 
+  split(.$cyl) %>% 
+  map(~lm(mpg ~ wt, data = .))
+```
+
+Но самый топчик, это извлечение именнованных компонентов 
+```{r}
+models %>% 
+  map(summary) %>% 
+  map_dbl(~.$r.squared)
+
+# еще короче
+models %>% 
+  map(summary) %>% 
+  map_dbl("r.squared")
+```
+
+#### Базовые возможности
+
+Они есть, их можно будет поискать. Но пока не придумал зачем, если есть более понятные и простые альтернативы
+
+#### Упражнение 21.5.3.1
+
+<div class="question">
+Write code that uses one of the map functions to:
+
+1. Compute the mean of every column in mtcars.
+
+2. Determine the type of each column in nycflights13::flights.
+
+3. Compute the number of unique values in each column of iris.
+
+4. Generate 10 random normals for each of $\mu = -10, 0, 10, 100$
+</div>
+
