@@ -1278,4 +1278,104 @@ x %>% accumulate(`+`)
 
 ```
 
-#### Упражнение
+#### Упражнение 21.9.3.1
+
+<div class="question">
+Implement your own version of `every()` using a for loop. Compare it with `purrr::every()`. 
+What does purrr’s version do that your version doesn’t?
+</div>
+
+Подглядим как работает функция `every()`
+
+```{r}
+every
+```
+
+Ага, мы для каждого элемента проверяем является ли истиной результат применения функции к этому элементу.
+Если результат не_ложь, то возвращаем истину, если результат не_истина возвращаем ложь.
+
+Если есть ЛОЖЬ, мы знаем, что не все из них были ИСТИННЫМИ
+если ничего не было ЛОЖЬ, то ИСТИНА
+
+```{r}
+y <- list(0:10, 5.5)
+x <- 1:10
+every(y, is.numeric)
+every(y, is.integer)
+every(x, is.integer)
+
+is.numeric(1)
+is.numeric(2)
+
+every1 <- function(value, fun, ...){
+  for (i in value) {
+    if(!fun(i, ...)){
+      return(FALSE)
+    }
+  }
+  return(TRUE)
+}
+
+every1(x, is.numeric)
+```
+
+Функция `purrr::every()` делает причудливые вещи с аргументом функции предиката `fun`, например, берет логический вектор вместо функции или может проверить часть строки, если элементы `fun` являются списками.
+
+
+#### Упражнение 21.9.3.2
+
+<div class="question">
+Create an enhanced `col_summary()` that applies a summary function to every numeric column in a data frame.
+</div>
+
+```{r}
+col_sum2 <- function(df, f, ...) {
+  map(keep(df, is.numeric), f, ...)
+}
+```
+
+
+#### Упражнение 21.9.3.3
+
+<div class="question">
+A possible base R equivalent of col_summary() is:
+
+```{r}
+col_sum3 <- function(df, f) {
+  is_num <- sapply(df, is.numeric)
+  df_num <- df[, is_num]
+  sapply(df_num, f)
+}
+```
+
+But it has a number of bugs as illustrated with the following inputs:
+
+```{r}
+df <- tibble(
+  x = 1:3,
+  y = 3:1,
+  z = c("a", "b", "c")
+)
+
+# OK
+col_sum3(df, mean)
+# Has problems: don't always return numeric vector
+col_sum3(df[1:2], mean)
+col_sum3(df[1], mean)
+col_sum3(df[0], mean)
+```
+
+What causes these bugs?
+</div>
+
+Причиной этих ошибок является поведение `sapply()`. Функция `sapply()` не гарантирует тип вектора, который она возвращает, и будет возвращать разные типы векторов в зависимости от ее входных данных. Если столбцы не выбраны, вместо возврата пустого числового вектора возвращается пустой список. Это вызывает ошибку, так как мы не можем использовать список с `[`.
+
+```{r}
+sapply(df[0], is.numeric)
+
+sapply(df[1], is.numeric)
+
+sapply(df[1:2], is.numeric)
+```
+
+Функция `sapply()` пытается помочь, упрощая результаты, но такое поведение может быть контрпродуктивным. Можно использовать функцию `sapply()` в интерактивном режиме, но избегайте программирования с ней.
