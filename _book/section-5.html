@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Глава 5 Моделирование | Решение упражнений из книги R Science</title>
+  <meta name="description" content="Здесь будут публиковаться решения заданий из книги">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+
+  <meta property="og:title" content="Глава 5 Моделирование | Решение упражнений из книги R Science" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Здесь будут публиковаться решения заданий из книги" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Глава 5 Моделирование | Решение упражнений из книги R Science" />
+  
+  <meta name="twitter:description" content="Здесь будут публиковаться решения заданий из книги" />
+  
+
+<meta name="author" content="Stas Masuta">
+
+
+<meta name="date" content="2019-05-09">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="section-4.html">
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="http://r4ds.had.co.nz/index.html">Оригинал книги</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Введение</a></li>
+<li class="chapter" data-level="2" data-path="-.html"><a href="-.html"><i class="fa fa-check"></i><b>2</b> Предварительный анализ</a><ul>
+<li class="chapter" data-level="2.1" data-path="-.html"><a href="-.html#----ggplot2"><i class="fa fa-check"></i><b>2.1</b> Визуализация данных с помощью <code>ggplot2</code></a><ul>
+<li class="chapter" data-level="2.1.1" data-path="-.html"><a href="-.html#-1"><i class="fa fa-check"></i><b>2.1.1</b> Введение</a></li>
+<li class="chapter" data-level="2.1.2" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>2.1.2</b> Первые шаги</a></li>
+<li class="chapter" data-level="2.1.3" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>2.1.3</b> Эстетика визуализации</a></li>
+<li class="chapter" data-level="2.1.4" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>2.1.4</b> Распространённые ошибки</a></li>
+<li class="chapter" data-level="2.1.5" data-path="-.html"><a href="-.html#section-2.1.5"><i class="fa fa-check"></i><b>2.1.5</b> Панели</a></li>
+<li class="chapter" data-level="2.1.6" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>2.1.6</b> Геометрические объекты</a></li>
+<li class="chapter" data-level="2.1.7" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>2.1.7</b> Статистические преобразования</a></li>
+<li class="chapter" data-level="2.1.8" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>2.1.8</b> Позиционные настройки</a></li>
+<li class="chapter" data-level="2.1.9" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>2.1.9</b> Системы координат</a></li>
+<li class="chapter" data-level="2.1.10" data-path="-.html"><a href="-.html#--"><i class="fa fa-check"></i><b>2.1.10</b> Многослойная грамматика графики</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="-.html"><a href="-.html#--"><i class="fa fa-check"></i><b>2.2</b> Рабочий процесс: основы</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="-.html"><a href="-.html#--"><i class="fa fa-check"></i><b>2.2.1</b> Основы написания кода</a></li>
+<li class="chapter" data-level="2.2.2" data-path="-.html"><a href="-.html#---"><i class="fa fa-check"></i><b>2.2.2</b> Что представляют собой имена</a></li>
+<li class="chapter" data-level="2.2.3" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>2.2.3</b> Вызов функций</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="-.html"><a href="-.html#-----dplyr"><i class="fa fa-check"></i><b>2.3</b> Преобразование данных с помощью пакета <code>dplyr</code></a><ul>
+<li class="chapter" data-level="2.3.1" data-path="-.html"><a href="-.html#-2"><i class="fa fa-check"></i><b>2.3.1</b> Введение</a></li>
+<li class="chapter" data-level="2.3.2" data-path="-.html"><a href="-.html#-----filter"><i class="fa fa-check"></i><b>2.3.2</b> Фильтрация строк с помощью функции <code>filter()</code></a></li>
+<li class="chapter" data-level="2.3.3" data-path="-.html"><a href="-.html#-----arange"><i class="fa fa-check"></i><b>2.3.3</b> Перестановка строк с помощью функции <code>arange()</code></a></li>
+<li class="chapter" data-level="2.3.4" data-path="-.html"><a href="-.html#-----select"><i class="fa fa-check"></i><b>2.3.4</b> Выбор столбцов с помощью функции <code>select()</code></a></li>
+<li class="chapter" data-level="2.3.5" data-path="-.html"><a href="-.html#-----mutate"><i class="fa fa-check"></i><b>2.3.5</b> Добавление столбцов с помощью функции <code>mutate()</code></a></li>
+<li class="chapter" data-level="2.3.6" data-path="-.html"><a href="-.html#------summarize"><i class="fa fa-check"></i><b>2.3.6</b> Получение групповых итогов с помощью функции <code>summarize()</code></a></li>
+<li class="chapter" data-level="2.3.7" data-path="-.html"><a href="-.html#---"><i class="fa fa-check"></i><b>2.3.7</b> Групповое видоизменение (и фильтрация)</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="-.html"><a href="-.html#---"><i class="fa fa-check"></i><b>2.4</b> Организация рабочего процесса: скрипты</a><ul>
+<li class="chapter" data-level="2.4.1" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>2.4.1</b> Выполнение кода</a></li>
+<li class="chapter" data-level="2.4.2" data-path="-.html"><a href="-.html#--rstudio"><i class="fa fa-check"></i><b>2.4.2</b> Диагностические средства RStudio</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="-.html"><a href="-.html#--"><i class="fa fa-check"></i><b>2.5</b> Предварительный анализ данных</a><ul>
+<li class="chapter" data-level="2.5.1" data-path="-.html"><a href="-.html#-3"><i class="fa fa-check"></i><b>2.5.1</b> Введение</a></li>
+<li class="chapter" data-level="2.5.2" data-path="-.html"><a href="-.html#section-2.5.2"><i class="fa fa-check"></i><b>2.5.2</b> Вопросы</a></li>
+<li class="chapter" data-level="2.5.3" data-path="-.html"><a href="-.html#section-2.5.3"><i class="fa fa-check"></i><b>2.5.3</b> Вариация</a></li>
+<li class="chapter" data-level="2.5.4" data-path="-.html"><a href="-.html#--2"><i class="fa fa-check"></i><b>2.5.4</b> Отсутствующие значения</a></li>
+<li class="chapter" data-level="2.5.5" data-path="-.html"><a href="-.html#section-2.5.5"><i class="fa fa-check"></i><b>2.5.5</b> Ковариация</a></li>
+<li class="chapter" data-level="2.5.6" data-path="-.html"><a href="-.html#----"><i class="fa fa-check"></i><b>2.5.6</b> Шаблоны поведения переменных и модели</a></li>
+<li class="chapter" data-level="2.5.7" data-path="-.html"><a href="-.html#--ggplot"><i class="fa fa-check"></i><b>2.5.7</b> Вызов функций <code>ggplot</code></a></li>
+<li class="chapter" data-level="2.5.8" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>2.5.8</b> Дополнительная информация</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="-.html"><a href="-.html#---"><i class="fa fa-check"></i><b>2.6</b> Организация рабочего процесса: проекты</a><ul>
+<li class="chapter" data-level="2.6.1" data-path="-.html"><a href="-.html#---"><i class="fa fa-check"></i><b>2.6.1</b> Что является вашим достоянием</a></li>
+<li class="chapter" data-level="2.6.2" data-path="-.html"><a href="-.html#---"><i class="fa fa-check"></i><b>2.6.2</b> Где находится ваш анализ</a></li>
+<li class="chapter" data-level="2.6.3" data-path="-.html"><a href="-.html#--"><i class="fa fa-check"></i><b>2.6.3</b> Пути и каталоги</a></li>
+<li class="chapter" data-level="2.6.4" data-path="-.html"><a href="-.html#-rstudio"><i class="fa fa-check"></i><b>2.6.4</b> Проекты RStudio</a></li>
+<li class="chapter" data-level="2.6.5" data-path="-.html"><a href="-.html#section-2.6.5"><i class="fa fa-check"></i><b>2.6.5</b> Резюме</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>3</b> Подготовка данных</a><ul>
+<li class="chapter" data-level="3.1" data-path="-.html"><a href="-.html#-tibble-----tibble"><i class="fa fa-check"></i><b>3.1</b> Создание tibble-фреймов с помощью пакета <code>tibble</code></a><ul>
+<li class="chapter" data-level="3.1.1" data-path="-.html"><a href="-.html#-4"><i class="fa fa-check"></i><b>3.1.1</b> Введение</a></li>
+<li class="chapter" data-level="3.1.2" data-path="-.html"><a href="-.html#-tibble-"><i class="fa fa-check"></i><b>3.1.2</b> Создание tibble-фреймов</a></li>
+<li class="chapter" data-level="3.1.3" data-path="-.html"><a href="-.html#-tibble----data.frame"><i class="fa fa-check"></i><b>3.1.3</b> Сравнение tibble-фреймов с фреймами <code>data.frame</code></a></li>
+<li class="chapter" data-level="3.1.4" data-path="-.html"><a href="-.html#----"><i class="fa fa-check"></i><b>3.1.4</b> Взаимодействие с разработанным ранее кодом</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="-.html"><a href="-.html#-----reader"><i class="fa fa-check"></i><b>3.2</b> Импорт данных с помощью пакета <code>reader</code></a><ul>
+<li class="chapter" data-level="3.2.1" data-path="-.html"><a href="-.html#-5"><i class="fa fa-check"></i><b>3.2.1</b> Введение</a></li>
+<li class="chapter" data-level="3.2.2" data-path="-.html"><a href="-.html#--"><i class="fa fa-check"></i><b>3.2.2</b> Приступаем к работе</a></li>
+<li class="chapter" data-level="3.2.3" data-path="-.html"><a href="-.html#--"><i class="fa fa-check"></i><b>3.2.3</b> Синтаксический анализ векторов</a></li>
+<li class="chapter" data-level="3.2.4" data-path="-.html"><a href="-.html#--"><i class="fa fa-check"></i><b>3.2.4</b> Синтаксический анализ файлов</a></li>
+<li class="chapter" data-level="3.2.5" data-path="-.html"><a href="-.html#--"><i class="fa fa-check"></i><b>3.2.5</b> Запись в файл</a></li>
+<li class="chapter" data-level="3.2.6" data-path="-.html"><a href="-.html#--"><i class="fa fa-check"></i><b>3.2.6</b> Другие типы данных</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="-.html"><a href="-.html#-----tidyr"><i class="fa fa-check"></i><b>3.3</b> Аккуратизация данных с помощью пакета <code>tidyr</code></a><ul>
+<li class="chapter" data-level="3.3.1" data-path="-.html"><a href="-.html#-6"><i class="fa fa-check"></i><b>3.3.1</b> Введение</a></li>
+<li class="chapter" data-level="3.3.2" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>3.3.2</b> Аккуратные данные</a></li>
+<li class="chapter" data-level="3.3.3" data-path="-.html"><a href="-.html#---"><i class="fa fa-check"></i><b>3.3.3</b> Рассредоточение и сведение столбцов</a></li>
+<li class="chapter" data-level="3.3.4" data-path="-.html"><a href="-.html#---"><i class="fa fa-check"></i><b>3.3.4</b> Разделение и объединение столбцов</a></li>
+<li class="chapter" data-level="3.3.5" data-path="-.html"><a href="-.html#--3"><i class="fa fa-check"></i><b>3.3.5</b> Отсутствующие значения</a></li>
+<li class="chapter" data-level="3.3.6" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>3.3.6</b> Учебный пример</a></li>
+<li class="chapter" data-level="3.3.7" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>3.3.7</b> Неаккуратные данные</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="-.html"><a href="-.html#-----tidyr-1"><i class="fa fa-check"></i><b>3.4</b> Аккуратизация данных с помощью пакета <code>tidyr</code></a><ul>
+<li class="chapter" data-level="3.4.1" data-path="-.html"><a href="-.html#-7"><i class="fa fa-check"></i><b>3.4.1</b> Введение</a></li>
+<li class="chapter" data-level="3.4.2" data-path="-.html"><a href="-.html#-nycflights13-1"><i class="fa fa-check"></i><b>3.4.2</b> Пакет <code>nycflights13</code></a></li>
+<li class="chapter" data-level="3.4.3" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>3.4.3</b> Мутирующие соединения</a></li>
+<li class="chapter" data-level="3.4.4" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>3.4.4</b> Фильтрующие соединения</a></li>
+<li class="chapter" data-level="3.4.5" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>3.4.5</b> Проблемы соединений</a></li>
+<li class="chapter" data-level="3.4.6" data-path="-.html"><a href="-.html#--"><i class="fa fa-check"></i><b>3.4.6</b> Операции над множествами</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="-.html"><a href="-.html#-----tidyr-2"><i class="fa fa-check"></i><b>3.5</b> Аккуратизация данных с помощью пакета <code>tidyr</code></a><ul>
+<li class="chapter" data-level="3.5.1" data-path="-.html"><a href="-.html#-8"><i class="fa fa-check"></i><b>3.5.1</b> Введение</a></li>
+<li class="chapter" data-level="3.5.2" data-path="-.html"><a href="-.html#---"><i class="fa fa-check"></i><b>3.5.2</b> Основы работы со строками</a></li>
+<li class="chapter" data-level="3.5.3" data-path="-.html"><a href="-.html#------"><i class="fa fa-check"></i><b>3.5.3</b> Поиск соответствия шаблонам с помощью регулярных выражений</a></li>
+<li class="chapter" data-level="3.5.4" data-path="-.html"><a href="-.html#section-3.5.4"><i class="fa fa-check"></i><b>3.5.4</b> Инструментарий</a></li>
+<li class="chapter" data-level="3.5.5" data-path="-.html"><a href="-.html#--"><i class="fa fa-check"></i><b>3.5.5</b> Другие типы шаблонов</a></li>
+<li class="chapter" data-level="3.5.6" data-path="-.html"><a href="-.html#---"><i class="fa fa-check"></i><b>3.5.6</b> Другие применения регулярных выражений</a></li>
+<li class="chapter" data-level="3.5.7" data-path="-.html"><a href="-.html#-stringi"><i class="fa fa-check"></i><b>3.5.7</b> Пакет <code>stringi</code></a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="-.html"><a href="-.html#------forcats"><i class="fa fa-check"></i><b>3.6</b> Работа с факторами с помощью пакета <code>forcats</code></a><ul>
+<li class="chapter" data-level="3.6.1" data-path="-.html"><a href="-.html#-9"><i class="fa fa-check"></i><b>3.6.1</b> Введение</a></li>
+<li class="chapter" data-level="3.6.2" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>3.6.2</b> Создание факторов</a></li>
+<li class="chapter" data-level="3.6.3" data-path="-.html"><a href="-.html#-gss"><i class="fa fa-check"></i><b>3.6.3</b> Опрос GSS</a></li>
+<li class="chapter" data-level="3.6.4" data-path="-.html"><a href="-.html#--"><i class="fa fa-check"></i><b>3.6.4</b> Изменение уровней факторов</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="-.html"><a href="-.html#--------lubridate"><i class="fa fa-check"></i><b>3.7</b> Работа с датами и временем с помощью пакета <code>lubridate</code></a><ul>
+<li class="chapter" data-level="3.7.1" data-path="-.html"><a href="-.html#-10"><i class="fa fa-check"></i><b>3.7.1</b> Введение</a></li>
+<li class="chapter" data-level="3.7.2" data-path="-.html"><a href="-.html#-----"><i class="fa fa-check"></i><b>3.7.2</b> Создание перменных описывающих дату и время</a></li>
+<li class="chapter" data-level="3.7.3" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>3.7.3</b> Компоненты даты/времени</a></li>
+<li class="chapter" data-level="3.7.4" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>3.7.4</b> Временные промежутки</a></li>
+<li class="chapter" data-level="3.7.5" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>3.7.5</b> Часовые пояса</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="section-4.html"><a href="section-4.html"><i class="fa fa-check"></i><b>4</b> Программирование</a><ul>
+<li class="chapter" data-level="4.1" data-path="section-4.html"><a href="section-4.html#-11"><i class="fa fa-check"></i><b>4.1</b> Введение</a></li>
+<li class="chapter" data-level="4.2" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>4.2</b> Узнайте больше</a></li>
+<li class="chapter" data-level="4.3" data-path="section-4.html"><a href="section-4.html#------magrittr"><i class="fa fa-check"></i><b>4.3</b> Работа с каналами с помощью пакета <code>magrittr</code></a><ul>
+<li class="chapter" data-level="4.3.1" data-path="section-4.html"><a href="section-4.html#-12"><i class="fa fa-check"></i><b>4.3.1</b> Введение</a></li>
+<li class="chapter" data-level="4.3.2" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>4.3.2</b> Альтернативы каналам</a></li>
+<li class="chapter" data-level="4.3.3" data-path="-.html"><a href="-.html#----"><i class="fa fa-check"></i><b>4.3.3</b> Когда канал не следует использовать</a></li>
+<li class="chapter" data-level="4.3.4" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>4.3.4</b> Другие инструменты</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="section-4.html"><a href="section-4.html#section-4.4"><i class="fa fa-check"></i><b>4.4</b> Функции</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="section-4.html"><a href="section-4.html#-13"><i class="fa fa-check"></i><b>4.4.1</b> Введение</a></li>
+<li class="chapter" data-level="4.4.2" data-path="-.html"><a href="-.html#---"><i class="fa fa-check"></i><b>4.4.2</b> Когда следует писать функции</a></li>
+<li class="chapter" data-level="4.4.3" data-path="-.html"><a href="-.html#-----"><i class="fa fa-check"></i><b>4.4.3</b> Функции создаются для компьютеров и людей</a></li>
+<li class="chapter" data-level="4.4.4" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>4.4.4</b> Условное выполнение</a></li>
+<li class="chapter" data-level="4.4.5" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>4.4.5</b> Аргументы функций</a></li>
+<li class="chapter" data-level="4.4.6" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>4.4.6</b> Возвращаемые значения</a></li>
+<li class="chapter" data-level="4.4.7" data-path="section-4.html"><a href="section-4.html#section-4.4.7"><i class="fa fa-check"></i><b>4.4.7</b> Окружение</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="section-4.html"><a href="section-4.html#section-4.5"><i class="fa fa-check"></i><b>4.5</b> Векторы</a><ul>
+<li class="chapter" data-level="4.5.1" data-path="section-4.html"><a href="section-4.html#-14"><i class="fa fa-check"></i><b>4.5.1</b> Введение</a></li>
+<li class="chapter" data-level="4.5.2" data-path="-.html"><a href="-.html#---"><i class="fa fa-check"></i><b>4.5.2</b> Основные сведения о векторах</a></li>
+<li class="chapter" data-level="4.5.3" data-path="-.html"><a href="-.html#---"><i class="fa fa-check"></i><b>4.5.3</b> Важные типы атомарных векторов</a></li>
+<li class="chapter" data-level="4.5.4" data-path="-.html"><a href="-.html#--"><i class="fa fa-check"></i><b>4.5.4</b> Использование атомарных векторов</a></li>
+<li class="chapter" data-level="4.5.5" data-path="-.html"><a href="-.html#--"><i class="fa fa-check"></i><b>4.5.5</b> Рекурсивные векторы (списки)</a></li>
+<li class="chapter" data-level="4.5.6" data-path="section-4.html"><a href="section-4.html#section-4.5.6"><i class="fa fa-check"></i><b>4.5.6</b> Атрибуты</a></li>
+<li class="chapter" data-level="4.5.7" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>4.5.7</b> Расширенные векторы</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="section-4.html"><a href="section-4.html#----purrr"><i class="fa fa-check"></i><b>4.6</b> Итерирование с помощью пакета <code>purrr</code></a><ul>
+<li class="chapter" data-level="4.6.1" data-path="section-4.html"><a href="section-4.html#-15"><i class="fa fa-check"></i><b>4.6.1</b> Введение</a></li>
+<li class="chapter" data-level="4.6.2" data-path="section-4.html"><a href="section-4.html#-for"><i class="fa fa-check"></i><b>4.6.2</b> Циклы <code>for</code></a></li>
+<li class="chapter" data-level="4.6.3" data-path="section-4.html"><a href="section-4.html#--for"><i class="fa fa-check"></i><b>4.6.3</b> Варианты цикла <code>for</code></a></li>
+<li class="chapter" data-level="4.6.4" data-path="section-4.html"><a href="section-4.html#-for--"><i class="fa fa-check"></i><b>4.6.4</b> Циклы <code>for</code> и функционалы</a></li>
+<li class="chapter" data-level="4.6.5" data-path="section-4.html"><a href="section-4.html#--map"><i class="fa fa-check"></i><b>4.6.5</b> Функции семейства <code>map</code></a></li>
+<li class="chapter" data-level="4.6.6" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>4.6.6</b> Обработка ошибок</a></li>
+<li class="chapter" data-level="4.6.7" data-path="section-4.html"><a href="section-4.html#--map----"><i class="fa fa-check"></i><b>4.6.7</b> Функции семейства <code>map</code> с несоколькими входными переменными</a></li>
+<li class="chapter" data-level="4.6.8" data-path="section-4.html"><a href="section-4.html#--walk"><i class="fa fa-check"></i><b>4.6.8</b> Функции семейства <code>walk</code></a></li>
+<li class="chapter" data-level="4.6.9" data-path="section-4.html"><a href="section-4.html#---for"><i class="fa fa-check"></i><b>4.6.9</b> Другие шаблоны циклов <code>for</code></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="section-5.html"><a href="section-5.html"><i class="fa fa-check"></i><b>5</b> Моделирование</a><ul>
+<li class="chapter" data-level="5.0.1" data-path="-.html"><a href="-.html#----"><i class="fa fa-check"></i><b>5.0.1</b> Выдвижение гипотез и их подтверждение</a></li>
+<li class="chapter" data-level="5.1" data-path="section-5.html"><a href="section-5.html#-----modelr"><i class="fa fa-check"></i><b>5.1</b> Базовое моделирование при помощи пакета <code>modelr</code></a><ul>
+<li class="chapter" data-level="5.1.1" data-path="section-5.html"><a href="section-5.html#-16"><i class="fa fa-check"></i><b>5.1.1</b> Введение</a></li>
+<li class="chapter" data-level="5.1.2" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>5.1.2</b> Простая модель</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Сделано с помощью bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Решение упражнений из книги R Science</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="section-5" class="section level1">
+<h1><span class="header-section-number">Глава 5</span> Моделирование</h1>
+<p>Знакомимся с Exploratory data analysis (EDA) — разведочный анализ данных.</p>
+<p>Цель моделирования — получение простых суммарных (сводных) характеристик набора данных.</p>
+<p>Здесь разбриаем предсказательные модели анализа данных. Есть ещё много разных, например data discovery, но их здесь не рассматриваем</p>
+<p>Базовые принципы корректного статистического вывода:</p>
+<ul>
+<li><p>Каждое наблюдение можно использовать либо для разведочного анализа, либо для подтверждения гипотезы. Но не для того и другого одновременно</p></li>
+<li><p>В целях разведочного анализа допускается многократное использование наблюдения, но в целях подтверждения гипотез — только однократное. Использование одного и того же наблюдения более одного раза равносильно преходу от подтверждения гипотезы к разведочному анализу.</p></li>
+</ul>
+<p>Данные используемые для подтверждения гипотезы не должны зависеть от данных на основании которых эта гипотеза была выдвинута.</p>
+<div id="----" class="section level3">
+<h3><span class="header-section-number">5.0.1</span> Выдвижение гипотез и их подтверждение</h3>
+<p>Один из подходов к анализу, направленному на подтверждение гипотезы, заключается в разбиении данных на три части ещё до того, как присутпить к анализу</p>
+<ul>
+<li><p><span class="math inline">\(60%\)</span> — training set. С этим набором можноделать всё что пожелается.</p></li>
+<li><p><span class="math inline">\(20%\)</span> — query set. Набор для сравнения моделей или вариантов визуализации вручную, но их не разрешается использовать в качестве части автоматизированного процесса.</p></li>
+<li><p><span class="math inline">\(20%\)</span> — test set. Эти данные можно использовать только один раз для тестирования окончательной модели.</p></li>
+</ul>
+</div>
+<div id="-----modelr" class="section level2">
+<h2><span class="header-section-number">5.1</span> Базовое моделирование при помощи пакета <code>modelr</code></h2>
+<div id="-16" class="section level3">
+<h3><span class="header-section-number">5.1.1</span> Введение</h3>
+<p>Цель моделирования — определение суммарных характеристик набора данных.</p>
+<p>Моделирование включает два аспекта</p>
+<ol style="list-style-type: decimal">
+<li><p>Прежде всего необходимо определить семейство моделей. Они определяют типичную закономерность, например линейную или квадратичную зависимость. Семейство моделей описывается уравнением наподобие <code>y = a_1 * x + a_2</code> or <code>y = a_1 * x ^ a_2</code>. Где <code>x</code> и <code>y</code> — известные переменные, а <code>a_1</code> и <code>a_2</code> варьируемые параметры.</p></li>
+<li><p>Далее вы генерируете подходяющую модель, выбирая ту из семейства моделей, которая больше всего соответствует данным. В результате этого обобщенного уравнения семейства моделей конкретизируется принимая вид наподобие <code>y = 3 * x + 7</code></p></li>
+</ol>
+<p>Целью моделирования является не установление окончательной истины, а нахождение простого, но тем не менее полезного приближения</p>
+<div id="--7" class="section level4">
+<h4><span class="header-section-number">5.1.1.1</span> Необходимые ресурсы</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)</code></pre>
+<pre><code>## ── Attaching packages ───────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──</code></pre>
+<pre><code>## ✔ ggplot2 3.1.0       ✔ purrr   0.3.0  
+## ✔ tibble  2.0.1       ✔ dplyr   0.8.0.1
+## ✔ tidyr   0.8.2       ✔ stringr 1.4.0  
+## ✔ readr   1.3.1       ✔ forcats 0.4.0</code></pre>
+<pre><code>## ── Conflicts ──────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(modelr)
+<span class="kw">options</span>(<span class="dt">na.action =</span> na.warn)</code></pre>
+</div>
+</div>
+<div id="-" class="section level3">
+<h3><span class="header-section-number">5.1.2</span> Простая модель</h3>
+<p>Демонстрационный набор данный <code>sim1</code> содержит две непрерывные переменные <code>x</code> и <code>y</code>. Отложим их на графике, чтобы увидеть, как они связаны между собой</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(sim1, <span class="kw">aes</span>(x, y)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>()</code></pre>
+<p><img src="r4ds-ex-sol_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>между переменными наблюдается сильная взаимосвязь. Коэффициент корреляции</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cor</span>(sim1<span class="op">$</span>x, sim1<span class="op">$</span>y)</code></pre>
+<pre><code>## [1] 0.9405384</code></pre>
+<p>Опишем эту взаимосвязь с помощью модели и выразим ее в явном виде.</p>
+<p>Наша задача — предоставить базовую форму модели. В данном случае мы используем линейное соотношение между переменными <code>y = a_0 + a_1 * x</code>.
+Начнем с получения общего представления о том, как выглядят модели этого семейства. Путём случайной генерации некоторых из них и наложения их на данные.</p>
+<p>В нашем случае можно использовать <code>geom_abline</code> — она принимает наклон (slope), и y-пересечение (intercept).</p>
+<pre class="sourceCode r"><code class="sourceCode r">models &lt;-<span class="st"> </span><span class="kw">tibble</span>(
+  <span class="dt">a1 =</span> <span class="kw">runif</span>(<span class="dv">250</span>, <span class="dv">-20</span>, <span class="dv">40</span>),
+  <span class="dt">a2 =</span> <span class="kw">runif</span>(<span class="dv">250</span>, <span class="dv">-5</span>, <span class="dv">5</span>)
+)
+
+<span class="kw">ggplot</span>(sim1, <span class="kw">aes</span>(x, y)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_abline</span>(
+    <span class="kw">aes</span>(<span class="dt">intercept =</span> a1, <span class="dt">slope =</span> a2), 
+    <span class="dt">data =</span> models, <span class="dt">alpha =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">4</span>
+  ) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>()</code></pre>
+<p><img src="r4ds-ex-sol_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>Большинство из построенных моделей совсем неудачны. Нам нужен метод обеспечивающий количественную оценку расстояния между данными и моделью.</p>
+<p>Это расстояние — разность между значением предоставляемым моделью — прогноз, и фактическим значением <code>y</code> согласно данным <code>data</code> — результат.</p>
+<p><a href="img/model.png"></a></p>
+<p>Для вычисления расстояния мы прежде всего превратим семейство моделей в функцию.
+В качестве аргументов, эта функция принимает параметры модели и данные, а в качестве выходного результата предоставляет значения, предсказанные моделью</p>
+<pre class="sourceCode r"><code class="sourceCode r">model1 &lt;-<span class="st"> </span><span class="cf">function</span>(a, data) {
+  a[<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>data<span class="op">$</span>x <span class="op">*</span><span class="st"> </span>a[<span class="dv">2</span>]
+}
+
+<span class="kw">model1</span>(<span class="kw">c</span>(<span class="dv">7</span>, <span class="fl">1.5</span>), sim1)</code></pre>
+<pre><code>##  [1]  8.5  8.5  8.5 10.0 10.0 10.0 11.5 11.5 11.5 13.0 13.0 13.0 14.5 14.5
+## [15] 14.5 16.0 16.0 16.0 17.5 17.5 17.5 19.0 19.0 19.0 20.5 20.5 20.5 22.0
+## [29] 22.0 22.0</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">sim1</code></pre>
+<pre><code>## # A tibble: 30 x 2
+##        x     y
+##    &lt;int&gt; &lt;dbl&gt;
+##  1     1  4.20
+##  2     1  7.51
+##  3     1  2.13
+##  4     2  8.99
+##  5     2 10.2 
+##  6     2 11.3 
+##  7     3  7.36
+##  8     3 10.5 
+##  9     3 10.5 
+## 10     4 12.4 
+## # … with 20 more rows</code></pre>
+<p>Чтобы найти минимальное расстояние при помощи среднеквадратического отклонения.</p>
+<pre class="sourceCode r"><code class="sourceCode r">measure_distance &lt;-<span class="st"> </span><span class="cf">function</span>(mod, data) {
+  diff &lt;-<span class="st"> </span>data<span class="op">$</span>y <span class="op">-</span><span class="st"> </span><span class="kw">model1</span>(mod, data)
+  <span class="kw">sqrt</span>(<span class="kw">mean</span>(diff <span class="op">^</span><span class="st"> </span><span class="dv">2</span>))
+}
+<span class="kw">measure_distance</span>(<span class="kw">c</span>(<span class="dv">7</span>, <span class="fl">1.5</span>), sim1)</code></pre>
+<pre><code>## [1] 2.665212</code></pre>
+<p>Теперь используем пакет <code>purrr</code> для того чтобы вычислить это расстояние для всех ранее определённых моделей. Нам нужна вспомогательная функция, поскольку наша функция вычисляющая расстояние лжидает модель в качестве числового вектора с длиной 2</p>
+<pre class="sourceCode r"><code class="sourceCode r">sim1_dist &lt;-<span class="st"> </span><span class="cf">function</span>(a1, a2) {
+  <span class="kw">measure_distance</span>(<span class="kw">c</span>(a1, a2), sim1)
+}
+
+models &lt;-<span class="st"> </span>models <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">dist =</span> purrr<span class="op">::</span><span class="kw">map2_dbl</span>(a1, a2, sim1_dist))
+models</code></pre>
+<pre><code>## # A tibble: 250 x 3
+##        a1     a2  dist
+##     &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+##  1  38.5  -0.571 21.3 
+##  2  10.8   3.58  15.8 
+##  3 -11.4   3.42   9.28
+##  4  26.7   2.27  23.8 
+##  5  26.8  -1.90  11.6 
+##  6  32.7   3.15  34.7 
+##  7  -1.18 -0.383 20.2 
+##  8  32.1   1.83  26.7 
+##  9  -4.41  2.38   7.22
+## 10 -10.5  -3.22  46.3 
+## # … with 240 more rows</code></pre>
+<p>Выделим лучшие модели</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(sim1, <span class="kw">aes</span>(x, y)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size =</span> <span class="dv">2</span>, <span class="dt">color =</span> <span class="st">&quot;grey30&quot;</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_abline</span>(
+    <span class="kw">aes</span>(<span class="dt">intercept =</span> a1, <span class="dt">slope =</span> a2, <span class="dt">color =</span> <span class="op">-</span>dist), 
+    <span class="dt">data =</span> <span class="kw">filter</span>(models, <span class="kw">rank</span>(dist) <span class="op">&lt;=</span><span class="st"> </span><span class="dv">10</span>)
+  )</code></pre>
+<p><img src="r4ds-ex-sol_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>Мы можем рассматривать эти модели как наблюдения и визуализировать их с помощью точечной диаграмы с осями <code>a1</code> и <code>a2</code>, опять таки расцветив их в соответстсвии со значениями <code>-dist</code>. При этом мы увидим множество моделей одновременно.
+Выделим 10 лучшиъ моделей кржочками</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(models, <span class="kw">aes</span>(a1, a2)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> <span class="kw">filter</span>(models, <span class="kw">rank</span>(dist) <span class="op">&lt;=</span><span class="st"> </span><span class="dv">10</span>), <span class="dt">size =</span> <span class="dv">4</span>, <span class="dt">colour =</span> <span class="st">&quot;red&quot;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">colour =</span> <span class="op">-</span>dist))</code></pre>
+<p><img src="r4ds-ex-sol_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>Можно так же построить сетку поиска! Где точки расположены не хаотично, а упорядоченно</p>
+<pre class="sourceCode r"><code class="sourceCode r">grid &lt;-<span class="st"> </span><span class="kw">expand.grid</span>(
+  <span class="dt">a1 =</span> <span class="kw">seq</span>(<span class="op">-</span><span class="dv">2</span>, <span class="dv">10</span>, <span class="dt">length =</span> <span class="dv">25</span>),
+  <span class="dt">a2 =</span> <span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">2</span>, <span class="dt">length =</span> <span class="dv">25</span>)
+  ) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">dist =</span> purrr<span class="op">::</span><span class="kw">map2_dbl</span>(a1, a2, sim1_dist))
+
+grid <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(a1, a2)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> <span class="kw">filter</span>(grid, <span class="kw">rank</span>(dist) <span class="op">&lt;=</span><span class="st"> </span><span class="dv">10</span>), <span class="dt">size =</span> <span class="dv">4</span>, <span class="dt">colour =</span> <span class="st">&quot;red&quot;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">colour =</span> <span class="op">-</span>dist)) </code></pre>
+<p><img src="r4ds-ex-sol_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>Если наложить эти 10 наилучших моделей на исходные данные, то они будут выглядеть довольно прилично</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(sim1, <span class="kw">aes</span>(x, y)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size =</span> <span class="dv">2</span>, <span class="dt">colour =</span> <span class="st">&quot;grey30&quot;</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_abline</span>(
+    <span class="kw">aes</span>(<span class="dt">intercept =</span> a1, <span class="dt">slope =</span> a2, <span class="dt">colour =</span> <span class="op">-</span>dist), 
+    <span class="dt">data =</span> <span class="kw">filter</span>(grid, <span class="kw">rank</span>(dist) <span class="op">&lt;=</span><span class="st"> </span><span class="dv">10</span>)
+  )</code></pre>
+<p><img src="r4ds-ex-sol_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p>но конечно самый простой способ это воспользоваться функцией <code>lm()</code> для построения линейных моделей</p>
+<pre class="sourceCode r"><code class="sourceCode r">sim_mod &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x, sim1)
+<span class="kw">coef</span>(sim_mod)</code></pre>
+<pre><code>## (Intercept)           x 
+##    4.220822    2.051533</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(sim1, <span class="kw">aes</span>(x, y)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size =</span> <span class="dv">2</span>, <span class="dt">colour =</span> <span class="st">&quot;grey30&quot;</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_abline</span>(<span class="dt">intercept =</span> <span class="kw">coef</span>(sim_mod)[<span class="dv">1</span>], <span class="dt">slope =</span> <span class="kw">coef</span>(sim_mod)[<span class="dv">2</span>])</code></pre>
+<p><img src="r4ds-ex-sol_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<div id="-23.2.1.1" class="section level4">
+<h4><span class="header-section-number">5.1.2.1</span> Упражнение 23.2.1.1</h4>
+<div class="question">
+<p>One downside of the linear model is that it is sensitive to unusual values because the distance incorporates a squared term. Fit a linear model to the simulated data below, and visualise the results. Rerun a few times to generate different simulated datasets. What do you notice about the model?</p>
+<pre class="sourceCode r"><code class="sourceCode r">sim1a &lt;-<span class="st"> </span><span class="kw">tibble</span>(
+  <span class="dt">x =</span> <span class="kw">rep</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="dt">each =</span> <span class="dv">3</span>),
+  <span class="dt">y =</span> x <span class="op">*</span><span class="st"> </span><span class="fl">1.5</span> <span class="op">+</span><span class="st"> </span><span class="dv">6</span> <span class="op">+</span><span class="st"> </span><span class="kw">rt</span>(<span class="kw">length</span>(x), <span class="dt">df =</span> <span class="dv">2</span>)
+)</code></pre>
+</div>
+<p>Линейные модели неустойчивы к выбросам — известный факт.</p>
+<p>Попробуем это на одиночной модели</p>
+<pre class="sourceCode r"><code class="sourceCode r">sim1a_mod &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x, sim1a)
+
+<span class="kw">ggplot</span>(sim1a, <span class="kw">aes</span>(x, y)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size =</span> <span class="dv">2</span>, <span class="dt">color =</span> <span class="st">&quot;grey30&quot;</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_abline</span>(<span class="dt">intercept =</span> <span class="kw">coef</span>(sim1a_mod)[<span class="dv">1</span>], <span class="dt">slope =</span> <span class="kw">coef</span>(sim1a_mod)[<span class="dv">2</span>], <span class="dt">color =</span> <span class="st">&quot;red&quot;</span>)</code></pre>
+<p><img src="r4ds-ex-sol_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p>Сделаем функцию, которая бы генерировала несколько распределений сразу</p>
+<pre class="sourceCode r"><code class="sourceCode r">simt &lt;-<span class="st"> </span><span class="cf">function</span>(i) {
+  <span class="kw">tibble</span>(
+    <span class="dt">x =</span> <span class="kw">rep</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="dt">each =</span> <span class="dv">3</span>),
+    <span class="dt">y =</span> x <span class="op">*</span><span class="st"> </span><span class="fl">1.5</span> <span class="op">+</span><span class="st"> </span><span class="dv">6</span> <span class="op">+</span><span class="st"> </span><span class="kw">rt</span>(<span class="kw">length</span>(x), <span class="dt">df =</span> <span class="dv">2</span>),
+    <span class="dt">id =</span> i
+  )
+}
+
+sims &lt;-<span class="st"> </span><span class="kw">map_df</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">15</span>, simt)
+
+<span class="kw">ggplot</span>(sims, <span class="kw">aes</span>(x, y)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="dt">color =</span> <span class="st">&quot;red&quot;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>id, <span class="dt">ncol =</span> <span class="dv">5</span>)</code></pre>
+<p><img src="r4ds-ex-sol_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p>Что если проделать всё тоже самое с нормальным распределением</p>
+<pre class="sourceCode r"><code class="sourceCode r">sim_norm &lt;-<span class="st"> </span><span class="cf">function</span>(i) {
+  <span class="kw">tibble</span>(
+    <span class="dt">x =</span> <span class="kw">rep</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="dt">each =</span> <span class="dv">3</span>),
+    <span class="dt">y =</span> x <span class="op">*</span><span class="st"> </span><span class="fl">1.5</span> <span class="op">+</span><span class="st"> </span><span class="dv">6</span> <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(<span class="kw">length</span>(x)),
+    <span class="dt">.id =</span> i
+  )
+}
+
+simdf_norm &lt;-<span class="st"> </span><span class="kw">map_df</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">12</span>, sim_norm)
+
+<span class="kw">ggplot</span>(simdf_norm, <span class="kw">aes</span>(<span class="dt">x =</span> x, <span class="dt">y =</span> y)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="dt">colour =</span> <span class="st">&quot;red&quot;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>.id, <span class="dt">ncol =</span> <span class="dv">4</span>)</code></pre>
+<p><img src="r4ds-ex-sol_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p>Здесь не большие выбросы, а склоны больше похожи.</p>
+<p>Причина в том, что t-распределение Стьюдента, из которого мы выбираем с помощью <code>rt()</code>, имеет более тяжелые хвосты, чем нормальное распределение <code>rnorm()</code>. Это означает, что t-распределение Стьюдента присваивает большую вероятность значениям дальше от центра распределения.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tibble</span>(
+  <span class="dt">x =</span> <span class="kw">seq</span>(<span class="op">-</span><span class="dv">5</span>, <span class="dv">5</span>, <span class="dt">length.out =</span> <span class="dv">100</span>),
+  <span class="dt">normal =</span> <span class="kw">dnorm</span>(x),
+  <span class="dt">student_t =</span> <span class="kw">dt</span>(x, <span class="dt">df =</span> <span class="dv">2</span>)
+) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gather</span>(distribution, density, <span class="op">-</span>x) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> x, <span class="dt">y =</span> density, <span class="dt">colour =</span> distribution)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_line</span>()</code></pre>
+<p><img src="r4ds-ex-sol_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p>Для нормального распределения со средним <code>0</code> и стандартным отклонением <code>1</code> — вероятность того, что оно больше 2, составляет</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pnorm</span>(<span class="dv">2</span>, <span class="dt">lower.tail =</span> <span class="ot">FALSE</span>)</code></pre>
+<pre><code>## [1] 0.02275013</code></pre>
+<p>В то время как в распределении Стьюдента, с числом степеней свободы = 2,</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pt</span>(<span class="dv">2</span>, <span class="dt">df =</span> <span class="dv">2</span>, <span class="dt">lower.tail =</span> <span class="ot">FALSE</span>)</code></pre>
+<pre><code>## [1] 0.09175171</code></pre>
+</div>
+<div id="-23.2.1.2" class="section level4">
+<h4><span class="header-section-number">5.1.2.2</span> Упражнение 23.2.1.2</h4>
+<div class="question">
+<p>One way to make linear models more robust is to use a different distance measure. For example, instead of root-mean-squared distance, you could use mean-absolute distance:</p>
+<pre class="sourceCode r"><code class="sourceCode r">measure_distance &lt;-<span class="st"> </span><span class="cf">function</span>(mod, data) {
+  diff &lt;-<span class="st"> </span>data<span class="op">$</span>y <span class="op">-</span><span class="st"> </span><span class="kw">model1</span>(mod, data)
+  <span class="kw">mean</span>(<span class="kw">abs</span>(diff))
+}</code></pre>
+<p>Use <code>optim()</code> to fit this model to the simulated data above and compare it to the linear model.</p>
+</div>
+<p>Чтобы вышеуказанная функция работала, нам нужно определить функцию <code>make_prediction()</code>, которая принимает числовой вектор длины два (пересечение и наклон) и возвращает предсказания,</p>
+<pre class="sourceCode r"><code class="sourceCode r">make_prediction &lt;-<span class="st"> </span><span class="cf">function</span>(mod, data) {
+  mod[<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>mod[<span class="dv">2</span>] <span class="op">*</span><span class="st"> </span>data<span class="op">$</span>x
+}</code></pre>
+<p>Используя данные <code>sim1a</code>, лучшие параметры наименьшего абсолютного отклонения:</p>
+<pre class="sourceCode r"><code class="sourceCode r">best &lt;-<span class="st"> </span><span class="kw">optim</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>), measure_distance, <span class="dt">data =</span> sim1a)
+best<span class="op">$</span>par</code></pre>
+<pre><code>## [1] 5.220502 1.583292</code></pre>
+<p>Используя данные <code>sim1a</code>, параметры целевой функции минимизации наименьших квадратов:</p>
+<pre class="sourceCode r"><code class="sourceCode r">measure_distance_ls &lt;-<span class="st"> </span><span class="cf">function</span>(mod, data) {
+  diff &lt;-<span class="st"> </span>data<span class="op">$</span>y <span class="op">-</span><span class="st"> </span>(mod[<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>mod[<span class="dv">2</span>] <span class="op">*</span><span class="st"> </span>data<span class="op">$</span>x)
+  <span class="kw">sqrt</span>(<span class="kw">mean</span>(diff<span class="op">^</span><span class="dv">2</span>))
+}
+
+best &lt;-<span class="st"> </span><span class="kw">optim</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>), measure_distance_ls, <span class="dt">data =</span> sim1a)
+best<span class="op">$</span>par</code></pre>
+<pre><code>## [1] 5.541866 1.517604</code></pre>
+<p>На практике предлагают не использовать <code>optim()</code> для соответствия этой модели, а вместо этого использовать существующую реализацию.
+Функции <code>rlm()</code> и <code>lqs()</code> в <code>MASS</code> подходят для надежных и устойчивых линейных моделей.</p>
+</div>
+<div id="-23.2.1.3" class="section level4">
+<h4><span class="header-section-number">5.1.2.3</span> Упражнение 23.2.1.3</h4>
+<div class="question">
+<p>One challenge with performing numerical optimisation is that it’s only guaranteed to find one local optimum. What’s the problem with optimising a three parameter model like this?</p>
+<pre class="sourceCode r"><code class="sourceCode r">model3 &lt;-<span class="st"> </span><span class="cf">function</span>(a, data) {
+  a[<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>data<span class="op">$</span>x <span class="op">*</span><span class="st"> </span>a[<span class="dv">2</span>] <span class="op">+</span><span class="st"> </span>a[<span class="dv">3</span>]
+}</code></pre>
+</div>
+<p>Проблема в том, что для любых значений <code>a[1] = a1</code> и <code>a[3] = a3</code>, любых других значений <code>a[1]</code> и <code>a[3]</code>, где <code>a[1] + a[3] == (a1 + а3)</code> будет иметь такую же посадку.</p>
+<pre class="sourceCode r"><code class="sourceCode r">measure_distance_<span class="dv">3</span> &lt;-<span class="st"> </span><span class="cf">function</span>(a, data) {
+  diff &lt;-<span class="st"> </span>data<span class="op">$</span>y <span class="op">-</span><span class="st"> </span><span class="kw">model3</span>(a, data)
+  <span class="kw">sqrt</span>(<span class="kw">mean</span>(diff<span class="op">^</span><span class="dv">2</span>))
+}</code></pre>
+<p>В зависимости от наших отправных точек, мы можем найти различные оптимальные значения:</p>
+<pre class="sourceCode r"><code class="sourceCode r">best3a &lt;-<span class="st"> </span><span class="kw">optim</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>), measure_distance_<span class="dv">3</span>, <span class="dt">data =</span> sim1)
+best3a<span class="op">$</span>par</code></pre>
+<pre><code>## [1] 3.3672228 2.0515737 0.8528513</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">best3b &lt;-<span class="st"> </span><span class="kw">optim</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>), measure_distance_<span class="dv">3</span>, <span class="dt">data =</span> sim1)
+best3b<span class="op">$</span>par</code></pre>
+<pre><code>## [1] -3.469885  2.051509  7.690289</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">best3c &lt;-<span class="st"> </span><span class="kw">optim</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">5</span>), measure_distance_<span class="dv">3</span>, <span class="dt">data =</span> sim1)
+best3c<span class="op">$</span>par</code></pre>
+<pre><code>## [1] -1.124446  2.051520  5.345616</code></pre>
+<p>На самом деле существует бесконечное количество оптимальных значений для этой модели.</p>
+
+</div>
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="section-4.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["r4ds-ex-sol.pdf", "r4ds-ex-sol.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
