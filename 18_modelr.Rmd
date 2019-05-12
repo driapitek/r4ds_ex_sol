@@ -873,7 +873,55 @@ ggplot(sim5, aes(x, resid, color = model)) +
 
 #### Упражнение 23.4.5.1
 <div class="question">
-What happens if you repeat the analysis of `sim2` using a model without an intercept. What happens to the model equation? What happens to the predictions?
+What happens if you repeat the analysis of `sim2` using a model without an intercept. 
+What happens to the model equation? 
+What happens to the predictions?
 </div>
 
+Чтобы запустить модель без y-пересечения, добавьте -1 или + 0 к правой части формулы:
+
+```{r}
+mod2a <- lm(y ~ x - 1, data = sim2)
+
+mod2 <- lm(y ~ x, data = sim2)
+```
+
+Предсказания точно такие же в моделях с и без y-пересечения:
+
+```{r}
+grid <- sim2 %>%
+  data_grid(x) %>%
+  spread_predictions(mod2, mod2a)
+grid
+```
+
+
+#### Упражнение 23.4.5.2
+<div class="question">
+Use `model_matrix()` to explore the equations generated for the models I fit to `sim3` and `sim4`. 
+Why is `*` a good shorthand for interaction?
+</div>
+
+Для `x1 * x2`, когда `x2` является *категориальной* переменной, создаются индикаторные переменные `x2b`, `x2c`, `x2d` и переменные `x1:x2b`, `x1:x2c` и `x1:x2d`, которые являются произведениями переменных `x1` и `x2`:
+
+
+```{r}
+x3 <- model_matrix(y ~ x1 * x2, data = sim3)
+x3
+```
+
+Мы можем подтвердить, что переменные `x1:x2b` являются произведением `x1` и `x2b`
+
+```{r}
+all(x3[["x1:x2b"]] == (x3[["x1"]] * x3[["x2b"]]))
+```
+
+Для `x1 * x2`, где `x1` и `x2` являются *непрерывными* переменными, `model_matrix()` создает переменные `x1`, `x2` и `x1:x2`:
+
+```{r}
+x4 <- model_matrix(y ~ x1 * x2, data = sim4)
+x4
+```
+
+Звездочка `*` является хорошим сокращением для взаимодействия, поскольку взаимодействие между `x1` и `x2` включает в себя слагаемые для `x1`, `x2` и произведение `x1` и `x2`.
 
