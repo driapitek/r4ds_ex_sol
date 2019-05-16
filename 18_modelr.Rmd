@@ -925,3 +925,155 @@ x4
 
 Звездочка `*` является хорошим сокращением для взаимодействия, поскольку взаимодействие между `x1` и `x2` включает в себя слагаемые для `x1`, `x2` и произведение `x1` и `x2`.
 
+
+#### Упражнение 23.4.5.3
+<div class="question">
+Using the basic principles, convert the formulas in the following two models into functions. (Hint: start by converting the categorical variable into 0-1 variables.)
+
+```{r}
+mod1 <- lm(y ~ x1 + x2, data = sim3)
+mod2 <- lm(y ~ x1 * x2, data = sim3)
+```
+</div>
+
+Задача состоит в том, чтобы преобразовать формулы в моделях в функции. Я предполагаю, что функция обрабатывает только преобразование правой части формулы в матрицу модели. Функции будут принимать один аргумент - фрейм данных со столбцами `x1` и `x2` и возвращать фрейм данных. Другими словами, функции будут частными случаями функции `model_matrix()`.
+
+Рассмотрим правую часть первой формулы  `~ x1 + x2`. Во фрейме данных `sim3` столбец `x1` представляет собой целое число, а переменная `x2` представляет собой множитель с четырьмя уровнями.
+
+```{r}
+levels(sim3$x2)
+```
+
+Поскольку `x1` является числовым, оно не изменяется. Поскольку `x2` является фактором, он заменяется столбцами переменных индикатора для всех уровней, кроме одного. Сначала я рассмотрю особый случай, когда `x2` принимает только уровни `x2` в `sim3`. В этом случае `«a»` считается опорным уровнем и опускается, и создаются новые столбцы для `«b»`, `«c»` и `«d»`.
+
+```{r}
+model_matrix_mod1 <- function(.data) {
+  mutate(.data,
+    x2b = as.numeric(x2 == "b"),
+    x2c = as.numeric(x2 == "c"),
+    x2d = as.numeric(x2 == "d"),
+    `(Intercept)` = 1
+  ) %>%
+    select(`(Intercept)`, x1, x2b, x2c, x2d)
+}
+
+model_matrix_mod1(sim3)
+```
+
+Более общая функция для `~ x1 + x2` не будет жестко кодировать конкретные уровни в `x2`.
+
+```{r}
+model_matrix_mod1b <- function(.data) {
+  # уровни x2
+  lvls <- levels(.data$x2)
+  # отбросим первый уровень
+  # this assumes that there are at least two levels
+  lvls <- lvls[2:length(lvls)]
+  # create an indicator variable for each level of x2
+  for (lvl in lvls) {
+    # new column name x2 + level name
+    varname <- str_c("x2", lvl)
+    # add indicator variable for lvl
+    .data[[varname]] <- as.numeric(.data$x2 == lvl)
+  }
+  # generate the list of variables to keep
+  x2_variables <- str_c("x2", lvls)
+  # Add an intercept
+  .data[["(Intercept)"]] <- 1
+  # keep x1 and x2 indicator variables
+  select(.data, `(Intercept)`, x1, one_of(x2_variables))
+}
+
+model_matrix_mod1b(sim3)
+
+```
+
+Рассмотрим правую часть первой формулы `~ x1 * x2`. Фрейм выходных данных будет состоять из `x1`, столбцов с переменными индикатора для каждого уровня (кроме контрольного уровня) `x2` и столбцов с переменными индикатора `x2`, умноженными на `x1.`
+
+Как и в предыдущей формуле, сначала я напишу функцию, которая жестко кодирует уровни `x2`.
+
+```{r}
+model_matrix_mod2 <- function(.data) {
+  mutate(.data,
+    `(Intercept)` = 1,
+    x2b = as.numeric(x2 == "b"),
+    x2c = as.numeric(x2 == "c"),
+    x2d = as.numeric(x2 == "d"),
+    `x1:x2b` = x1 * x2b,
+    `x1:x2c` = x1 * x2c,
+    `x1:x2d` = x1 * x2d
+  ) %>%
+    select(`(Intercept)`, x1, x2b, x2c, x2d, `x1:x2b`, `x1:x2c`, `x1:x2d`)
+}
+
+model_matrix_mod2(sim3)
+```
+
+Для более общей функции, которая будет обрабатывать произвольные уровни в `x2`, я расширю функцию `model_matrix_mod1b()`, которую я написал ранее.
+
+```{r}
+model_matrix_mod2b <- function(.data) {
+  # get dataset with x1 and x2 indicator variables
+  out <- model_matrix_mod1b(.data)
+  # get names of the x2 indicator columns
+  x2cols <- str_subset(colnames(out), "^x2")
+  # create interactions between x1 and the x2 indicator columns
+  for (varname in x2cols) {
+    # name of the interaction variable
+    newvar <- str_c("x1:", varname)
+    out[[newvar]] <- out$x1 * out[[varname]]
+  }
+  out
+}
+
+model_matrix_mod2b(sim3)
+```
+
+Эти функции могут быть дополнительно обобщены, чтобы `x1` и `x2` могли быть либо числовыми, либо факторами. Однако, обобщив намного больше, мы скоро начнем переопределять все функции `matrix_model()`.
+
+#### Упражнение 23.4.5.3
+<div class="question">
+For `sim4`, which of `mod1` and `mod2` is better? 
+I think `mod2` does a slightly better job at removing patterns, but it’s pretty subtle. Can you come up with a plot to support my claim?
+</div>
+
+Оценим модели `mod1` и `mod2` на `sim4`,
+
+```{r}
+mod1 <- lm(y ~ x1 + x2, data = sim4)
+mod2 <- lm(y ~ x1 * x2, data = sim4)
+```
+
+Добавим остатки
+
+```{r}
+sim4_mods <- gather_residuals(sim4, mod1, mod2)
+```
+
+Построим график частот для остатков обеих моделей
+
+```{r}
+ggplot(sim4_mods, aes(x = resid, colour = model)) +
+  geom_freqpoly(binwidth = 0.5) +
+  geom_rug()
+```
+
+ПОстроим абсолютные значения остатков
+
+```{r}
+ggplot(sim4_mods, aes(x = abs(resid), colour = model)) +
+  geom_freqpoly(binwidth = 0.5) +
+  geom_rug()
+```
+
+не показывает большой разницы в остатках между моделями. Тем не менее, у mod2, по-видимому, меньше остатков в хвостах распределения между 2,5 и 5 (хотя самые крайние остатки относятся к mod2.
+
+Это подтверждается проверкой стандартного отклонения от остатков этих моделей,
+
+```{r}
+sim4_mods %>%
+  group_by(model) %>%
+  summarise(resid = sd(resid))
+```
+
+Стандартное отклонение остатков mod2, меньше, чем отклонение mod1
