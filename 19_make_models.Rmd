@@ -165,4 +165,20 @@ diamonds2 %>%
 
 В данном случае мы не находим ничего необычного, но вероятно стоило потратить какое-то время на выяснение того, не указывает ли это на возможноые проблемы с нашей моделью или на наличие ошибок в данных. В случае существования ошибок в данных это могло бы обернуться счастливыой возможностью купить бриллианты по неоправданно заниженной цене. Сила в данных
 
+#### Упражнение 24.2.3.1
+<div class="question">
+In the plot of `lcarat` vs. `lprice`, there are some bright vertical strips. What do they represent?
+</div>
 
+
+```{r}
+ggplot(diamonds2, aes(lcarat, lprice)) + 
+  geom_point()
+```
+
+Распределение алмазов имеет больше алмазов в круглых или дружественных для человека числах (дроби).
+
+#### Упражнение 24.2.3.2
+<div class="question">
+If `log(price) = a_0 + a_1 * log(carat)`, what does that say about the relationship between price and carat?
+</div>
