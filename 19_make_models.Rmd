@@ -130,7 +130,7 @@ ggplot(diamonds2, aes(clarity, lresid)) + geom_boxplot()
 mod_diamond2 <- lm(lprice ~ lcarat + color + cut + clarity, data = diamonds2)
 ```
 
-Теперь модель включает 4 предиктора и её труднее визуализировать. К счастью, к настоящему моменту все они независимы, а это означает что мы модем отобразить их по отдельности на 3 графиках.
+Теперь модель включает 4 предиктора и её труднее визуализировать. К счастью, к настоящему моменту все они независимы, а это означает что мы можем отобразить их по отдельности на 3 графиках.
 
 ```{r}
 grid <- diamonds2 %>% 
@@ -178,7 +178,65 @@ ggplot(diamonds2, aes(lcarat, lprice)) +
 
 Распределение алмазов имеет больше алмазов в круглых или дружественных для человека числах (дроби).
 
+
 #### Упражнение 24.2.3.2
 <div class="question">
 If `log(price) = a_0 + a_1 * log(carat)`, what does that say about the relationship between price and carat?
 </div>
+
+Переведём исходное выражение в привычную математическую запись. Цену `price` я запишу как $y$, а караты `carat` как $x$
+
+$$\log_b y = a_0 + a_1\log_b x$$
+
+Сравним между собой отношение двух исходных выражений. Мы хотим понять, как изменяется отношение $y$ при изменении $x$. 
+
+$$\log_b y_1 = a_0 + a_1\log_b x_1$$
+$$\log_b y_2 = a_0 + a_1\log_b x_2$$
+$$\log_b (y_2) - \log_b (y_1) = (a_0 + a_1\log_b x_2) - (a_0 + a_1\log_b x_1)$$
+$$\log_b(\frac{y_2}{y_1}) = \log_b(\frac{x_2}{x_1})^{a_1}$$
+
+$$\frac{y_2}{y_1} = (\frac{x_2}{x_1})^{a_1}$$
+
+Собственно это и будет решением.
+
+#### Упражнение 24.2.3.3
+<div class="question">
+Extract the diamonds that have very high and very low residuals. Is there anything unusual about these diamonds? Are the particularly bad or good, or do you think these are pricing errors?
+</div>
+
+```{r}
+IQR.outliers <- function(x) {
+  if(any(is.na(x)))
+    stop("x is missing values")
+  if(!is.numeric(x))
+    stop("x is not numeric")
+  Q3<-quantile(x,0.75)
+  Q1<-quantile(x,0.25)
+  IQR<-(Q3-Q1)
+  left<- (Q1-(1.5*IQR))
+  right<- (Q3+(1.5*IQR))
+  c(x[x <left],x[x>right])
+}
+
+IQR.outliers(diamonds2$lresid2)
+```
+
+
+```{r}
+diamonds2 %>%
+  filter(abs(lresid2) > 1) %>%
+  add_predictions(mod_diamond2) %>%
+  mutate(pred = round(2^pred)) %>%
+  arrange(price)
+```
+
+```{r}
+left <- diamonds2 %>% 
+  filter(lresid2 <= quantile(lresid2,0.25) - 1.5*(quantile(lresid2,0.75) - quantile(lresid2,0.25)))
+
+right <- diamonds2 %>% 
+  filter(lresid2 >= quantile(lresid2,0.75) + 1.5*(quantile(lresid2,0.75) - quantile(lresid2,0.25)))
+
+outliers_lresid2 <- rbind(left, right)
+```
+
