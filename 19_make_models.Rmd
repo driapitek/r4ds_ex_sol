@@ -204,31 +204,7 @@ $$\frac{y_2}{y_1} = (\frac{x_2}{x_1})^{a_1}$$
 Extract the diamonds that have very high and very low residuals. Is there anything unusual about these diamonds? Are the particularly bad or good, or do you think these are pricing errors?
 </div>
 
-```{r}
-IQR.outliers <- function(x) {
-  if(any(is.na(x)))
-    stop("x is missing values")
-  if(!is.numeric(x))
-    stop("x is not numeric")
-  Q3<-quantile(x,0.75)
-  Q1<-quantile(x,0.25)
-  IQR<-(Q3-Q1)
-  left<- (Q1-(1.5*IQR))
-  right<- (Q3+(1.5*IQR))
-  c(x[x <left],x[x>right])
-}
-
-IQR.outliers(diamonds2$lresid2)
-```
-
-
-```{r}
-diamonds2 %>%
-  filter(abs(lresid2) > 1) %>%
-  add_predictions(mod_diamond2) %>%
-  mutate(pred = round(2^pred)) %>%
-  arrange(price)
-```
+Я буду искать подозрительные остатки, по предложенному Тьюки способу —-- буду считать выбросом, значение отклоняющиеся от квартилей на полтора размаха. 
 
 ```{r}
 left <- diamonds2 %>% 
@@ -240,3 +216,38 @@ right <- diamonds2 %>%
 outliers_lresid2 <- rbind(left, right)
 ```
 
+Теперь давайте визуализируем ч
+
+
+```{r}
+diamonds2 %>%
+  ggplot(aes(cut, lresid2)) +
+  geom_boxplot()
+```
+
+Вроде бы ничего подозрительного нет. Выбросы равномерно распределены.
+
+Но давайте взглянем на остатки поближе.
+
+
+```{r}
+outliers_lresid2 %>%
+  ggplot(aes(lresid2, color = cut)) +
+  geom_freqpoly(binwidth = 0.1) + 
+  facet_grid(cut~.)
+
+outliers_lresid2 %>%
+  ggplot(aes(lresid2, color = color)) +
+  geom_freqpoly(binwidth = 0.1) + 
+  facet_grid(color~.)
+
+outliers_lresid2 %>%
+  ggplot(aes(lresid2, color = clarity)) +
+  geom_freqpoly(binwidth = 0.1) + 
+  facet_grid(clarity~.)
+```
+
+Основная масса выбросов приходится на значения плюс-минус 0.5.
+Практически в одинаковой мере попадаются плохие и хорошие. 
+Заметно чаще эти ошибки встречаются в более дорогих алмазах.
+Можно предположить, что цена искусственно завышена-занижена.
