@@ -680,3 +680,90 @@ daily %>%
   geom_line(alpha = 0.75)
 ```
 
+#### Упражнение 24.3.5.7
+<div class="question">
+We hypothesized that people leaving on Sundays are more likely to be business travelers who need to be somewhere on Monday. Explore that hypothesis by seeing how it breaks down based on distance and time: if it’s true, you’d expect to see more Sunday evening flights to places that are far away.
+</div>
+
+Сравнивая средние расстояния рейсов по дням недели, воскресные рейсы занимают второе место по длине. Субботние рейсы самые длинные в среднем. В субботу могут быть самые длинные рейсы в среднем, потому что на выходные меньше регулярных регулярных рейсов бизнес / пригородных рейсов, но это предположение.
+
+```{r}
+flights %>%
+  mutate(
+    date = make_date(year, month, day),
+    wday = wday(date, label = TRUE)
+  ) %>%
+  ggplot(aes(y = distance, x = wday)) +
+  geom_boxplot()
+```
+
+Построим средние дистанции и величины стандартного.
+Используем функцию из упражнения ниже, чтобы поставить понедельник не первое место.
+
+```{r}
+flights %>%
+  mutate(
+    date = make_date(year, month, day),
+    wday = wday(date, label = TRUE)
+  ) %>%
+  ggplot(aes(y = distance, x = relevel(wday))) +
+  stat_summary()
+```
+
+В субботу в среднем летают на большие дистанции. 
+
+
+Необходимо продолжить исследование.
+
+
+#### Упражнение 24.3.5.8
+<div class="question">
+It’s a little frustrating that Sunday and Saturday are on separate ends of the plot. Write a small function to set the levels of the factor so that the week starts on Monday.
+</div>
+
+Используем релевел
+
+```{r}
+relevel <- function(x) {
+  fct_relevel(x, levels(x)[-1])
+}
+```
+
+Вуаля, понедельник первый
+
+```{r}
+daily <- daily %>%
+  mutate(wday = wday(date, label = TRUE))
+
+
+ggplot(daily, aes(relevel(wday), n)) +
+  geom_boxplot() +
+  labs(x = "День недели", y = "Число полётов")
+```
+
+### Больше о моделях
+
+Тут ссылки на ещё информацию о моделях
+
+
+* *Statistical Modeling: A Fresh Approach* by Danny Kaplan,
+  <http://www.mosaic-web.org/go/StatisticalModeling/>. This book provides 
+  a gentle introduction to modelling, where you build your intuition,
+  mathematical tools, and R skills in parallel. The book replaces a traditional
+  "introduction to statistics" course, providing a curriculum that is up-to-date 
+  and relevant to data science.
+
+* *An Introduction to Statistical Learning* by Gareth James, Daniela Witten, 
+  Trevor Hastie, and Robert Tibshirani, <http://www-bcf.usc.edu/~gareth/ISL/> 
+  (available online for free). This book presents a family of modern modelling
+  techniques collectively known as statistical learning.  For an even deeper
+  understanding of the math behind the models, read the classic 
+  *Elements of Statistical Learning* by Trevor Hastie, Robert Tibshirani, and
+  Jerome Friedman, <https://web.stanford.edu/~hastie/Papers/ESLII.pdf> (also
+  available online for free).
+
+* *Applied Predictive Modeling* by Max Kuhn and Kjell Johnson, 
+  <http://appliedpredictivemodeling.com>. This book is a companion to the 
+  __caret__ package and provides practical tools for dealing with real-life
+  predictive modelling challenges.
+
