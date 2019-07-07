@@ -558,3 +558,125 @@ daily %>%
 ```
 
 Получаем, что модифицифрованная модель (Сб-весна) имеет более высокие остатки летом и более низкие остатки весной. При этом осенью остатки более менее одинаковы.
+
+#### Упражнение 24.3.5.4
+<div class="question">
+Create a new `wday` variable that combines the day of week, term (for Saturdays), and public holidays. What do the residuals of that model look like?
+</div>
+
+Итак, погуглив, находим общенациональные американские праздники.
+Создадим переменную, в которую положим все эти праздники
+
+```{r}
+holidays_2013 <-
+  tribble(
+    ~holiday, ~date,
+    "New Year's Day", 20130101,
+    "Martin Luther King Jr. Day", 20130121,
+    "Washington's Birthday", 20130218,
+    "Memorial Day", 20130527,
+    "Independence Day", 20130704,
+    "Labor Day", 20130902,
+    "Columbus Day", 20131028,
+    "Veteran's Day", 20131111,
+    "Thanksgiving", 20131128,
+    "Christmas", 20131225
+  ) %>%
+  mutate(date = lubridate::ymd(date))
+```
+
+Добавим, для интереса, ещё и дни до и после праздников.
+Потому что по собственному опыту скажу, что чаще всего, я вылетаю на праздники в день до наступления праздника. Точнее вечером после работы, чтобы побольше побыть с родными или друзьями.
+
+```{r}
+daily <- daily %>%
+  mutate(
+    wday3 =
+      case_when(
+        date %in% (holidays_2013$date - 1L) ~ "день до праздника",
+        date %in% (holidays_2013$date + 1L) ~ "день после праздника",
+        date %in% holidays_2013$date ~ "праздник",
+        .$wday == "сб" & .$term == "лето" ~ "сб-лето",
+        .$wday == "сб" & .$term == "осень" ~ "сб-осень",
+        .$wday == "сб" & .$term == "spring" ~ "сб-весн",
+        TRUE ~ as.character(.$wday)
+      )
+  )
+```
+
+Теперь построим модель, которая будет учитывать не только сезонность суббот, но и включенные праздники.
+
+```{r}
+mod5 <- lm(n ~ wday3, data = daily)
+
+daily %>%
+  spread_residuals(resid_sat_terms = mod4, resid_holidays = mod5) %>%
+  mutate(resid_diff = resid_holidays - resid_sat_terms) %>%
+  ggplot(aes(date, resid_diff)) +
+  geom_line(alpha = 0.75)
+```
+
+Как видно на графике, модель довольно точно определяет даты, очень похожие на введёные нами праздники и дни до и после праздников.
+
+```{r}
+daily %>%
+  spread_residuals(resid_sat_terms = mod4, resid_holidays = mod5) %>%
+  mutate(resid_diff = resid_holidays - resid_sat_terms) %>% 
+  filter(resid_diff > 50)
+```
+
+
+#### Упражнение 24.3.5.5
+<div class="question">
+What happens if you fit a day of week effect that varies by month (i.e., n ~ wday * month)? Why is this not very helpful?
+</div>
+
+Добавим новую переменную, которая определяет месяц
+
+```{r}
+daily <- daily %>% 
+  mutate(month = factor(month(date)))
+```
+
+
+```{r}
+mod6 <- lm(n ~ wday*month, data = daily)
+
+daily <- daily %>% 
+  add_residuals(mod6)
+
+daily %>% 
+  ggplot(aes(date, resid)) +
+  geom_ref_line(h = 0) +
+  geom_line()
+```
+
+Как видим, эта модель не эффективна, поскольку не ловит большие отклонения.
+Если м ы посмотрим, на то из чего состоит модель, то увидим что в модели будет 12 * 7 = 84 параметра. Поскольку у каждого месяца есть только четыре-пять недель, каждый из этих дней недели × месяц - это в среднем только четыре или пять наблюдений. Эти оценки имеют большие стандартные ошибки и, вероятно, не обобщаются далеко за пределы выборочных данных, поскольку они оцениваются только из нескольких наблюдений.
+
+```{r}
+summary(mod6)
+```
+
+#### Упражнение 24.3.5.6
+<div class="question">
+What would you expect the model `n ~ wday + ns(date, 5)` to look like?
+Knowing what you know about the data, why would you expect it to be not particularly effective?
+</div>
+
+Предыдущие модели вписываются в главу, и упражнения показывают, что влияние дней недели меняется в зависимости от времени года. Модель в этом упражнении не взаимодействует с эффектом дня недели и со временем года.
+
+```{r}
+mod7 <- lm(n ~ wday + ns(date, 5), data = daily)
+mod8 <- lm(n ~ wday * ns(date, 5), data = daily)
+```
+
+Остатки модели, которая не взаимодействует со днём недели со временем года (mod7), больше, чем остатки модели, которая взаимодействует (mod8). Модель mod7 недооценивает выходные летом и переоценивает выходные осенью.
+
+```{r}
+daily %>%
+  gather_residuals(mod7, mod8) %>%
+  ggplot(aes(x = date, y = resid, color = model)) +
+  geom_line(alpha = 0.75)
+```
+
