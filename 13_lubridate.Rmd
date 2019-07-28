@@ -380,7 +380,7 @@ How does the average delay time change over the course of a day? Should you use 
 ```{r}
 flights_dt %>%
   mutate(sched_dep_hour = hour(sched_dep_time)) %>%
-  group_by(sched_dep_hour) %>%View()
+  group_by(sched_dep_hour) %>%
   summarise(dep_delay = mean(dep_delay)) %>% 
   ggplot(aes(y = dep_delay, x = sched_dep_hour)) +
   geom_point() +
