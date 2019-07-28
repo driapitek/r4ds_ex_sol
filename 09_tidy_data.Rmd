@@ -109,8 +109,8 @@ a) Не очень хорошо получилось. Потому что это
 ```{r}
 t2_cases <- filter(table2, type == "cases")           # Извлекаем число случаев заболевания
 t2_population <- filter(table2, type == "population") # Извлекаем число популяции
-t2_rate <- cases$count / population$count * 10000     # Находим отношение
-rate <- as.tibble(t2_rate)                            # Сохраняем куда-то
+t2_rate <- t2_cases$count / t2_population$count * 10000     # Находим отношение
+rate <- as_tibble(t2_rate)                            # Сохраняем куда-то
 ```
 
 Поэтому немного переделаем, чтобы было по красоте
@@ -286,8 +286,8 @@ stocks %>%
 <div class="question">
 Why does this code fail?
 ```{r}
-table4a %>% 
-  gather(1999, 2000, key = "year", value = "cases")
+# table4a %>% 
+#  gather(1999, 2000, key = "year", value = "cases")
 ```
 </div>
 
@@ -304,24 +304,24 @@ table4a %>%
 Why does spreading this tibble fail? How could you add a new column to fix the problem?
 
 ```{r}
-people <- tribble(
-  ~name,             ~key,    ~value,
-  #-----------------|--------|------
-  "Phillip Woods",   "age",       45,
-  "Phillip Woods",   "height",   186,
-  "Phillip Woods",   "age",       50,
-  "Jessica Cordero", "age",       37,
-  "Jessica Cordero", "height",   156
-)
+# people <- tribble(
+#  ~name,             ~key,    ~value,
+#  #-----------------|--------|------
+#  "Phillip Woods",   "age",       45,
+#  "Phillip Woods",   "height",   186,
+#  "Phillip Woods",   "age",       50,
+#  "Jessica Cordero", "age",       37,
+#  "Jessica Cordero", "height",   156
+# )
 ```
 </div>
 
 Не получается выполнить разбиение по переменным, потому что не проставлен номер измерения.
 
 ```{r}
-people %>%
-  mutate(observation = c(1, 1, 2, 1, 1)) %>% # Проставил номер измерения
-  spread(key, value)
+# people %>%
+#  mutate(observation = c(1, 1, 2, 1, 1)) %>% # Проставил номер измерения
+#  spread(key, value)
 ```
 
 #### Упражнение 12.3.3.4

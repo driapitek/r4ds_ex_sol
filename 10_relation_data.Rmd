@@ -23,6 +23,7 @@ library(tidyverse)
 library(nycflights13)
 library("datamodelr") # Пакет для моделирования схем баз данных
 library(viridis)
+
 ```
 
 ### Пакет `nycflights13`
@@ -155,8 +156,8 @@ Lahman::Batting %>%
 library(babynames)
 
 babynames::babynames %>%
-  count(year, sex, name) %>%
-  filter(nn > 1) # Обрати мнимание, что в исходном наборе данных уже есть параметр n, поэтому для подсчёта количества вхождений используеться переменная nn
+  # count(year, sex, name) %>%
+   filter(n > 1) # Обрати мнимание, что в исходном наборе данных уже есть параметр n, поэтому для подсчёта количества вхождений используеться переменная nn
 ```
 
 Первичным ключом будет комбинация из трёх параметров --- имя, пол (потому что есть бисексуальные имена) и год в котором было использовано это имя.
@@ -209,8 +210,8 @@ How would you characterise the relationship between the `Batting`, `Pitching`, a
 Для этого необходимо установить два пакета:
 
 ```{r}
-install.packages("datamodelr")
-install.packages("DiagrammeR")
+#install.packages("datamodelr")
+#install.packages("DiagrammeR")
 ```
 
 Второй пакет необходим для отображения работы первого.

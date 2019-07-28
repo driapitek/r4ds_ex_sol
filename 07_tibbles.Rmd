@@ -111,8 +111,8 @@ nycflights13::flights %>%
 МОжно воспользоваться встроенным средством просмотра
 
 ```{r}
-nycflights13::flights %>% 
-  View()
+#nycflights13::flights %>% 
+#  View()
 ```
 
 #### Извлечение поднаборов

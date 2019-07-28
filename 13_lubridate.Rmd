@@ -719,7 +719,7 @@ Write a function that given your birthday (as a date), returns how old you are i
 my_age <- function(birth) {
   (ymd(birth) %--% today()) %/% years(1)
 }
-age("1992-10-20")
+my_age("1992-10-20")
 ```
 
 

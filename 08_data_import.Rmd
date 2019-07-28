@@ -479,9 +479,9 @@ What are the most important arguments to `locale()`?
 1. Должна произойти ошибка, потому что интерпретатор попадёт в вилку, что считать десятичным разделитем а что группировкой (так и есть)
 
 ```{r}
-parse_number(
-  "$123.456.789",
-  locale = locale(grouping_mark = ".", decimal_mark = "."))
+#parse_number(
+#  "$123.456.789",
+#  locale = locale(grouping_mark = ".", decimal_mark = "."))
 ```
 
 2. Не знаю, вероятно `grouping_mark` изменит своё значение на точку (так и есть)
