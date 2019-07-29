@@ -532,13 +532,13 @@ length(NULL)
 2. Некоторые элементы содержат имена. Тогда генерируется ошибка
 
 ```{r}
-x <- c(a = 1, 2, c = 3)
-names(x)
-
-for (nm in names(x)) {
-  print(nm)
-  print(x[[nm]])
-}
+# x <- c(a = 1, 2, c = 3)
+#names(x)
+#
+#for (nm in names(x)) {
+#  print(nm)
+#  print(x[[nm]])
+#}
 ```
 
 
@@ -774,7 +774,7 @@ map_dbl(df, mean)
 
 map_dbl(df, median)
 
-map_dbl(df, sd)
+# map_dbl(df, sd)
 ```
 
 Это семейство помогает сфокусироваться на выполнении операции, а не на вспомогатеольных действиях по обслуживанию цикла и сохранению результата. Это ещё более понятно при использовании каналов-конвееров `%>%`
@@ -784,7 +784,7 @@ df %>% map_dbl(mean)
 
 df %>% map_dbl(median)
 
-df %>% map_dbl(sd)
+# df %>% map_dbl(sd)
 ```
 
 Что нужно о них знать
@@ -808,26 +808,26 @@ map_int(z, length)
 Ниже представлен пример, разбивающий набор данных на три части, и применяющий одну и ту же модель к каждой из них
 
 ```{r}
-models <- mtcars %>% 
-  split(.$cyl) %>% 
-  map(function(df) lm(mpg ~ wt, data = df))
+#models <- mtcars %>% 
+#  split(.$cyl) %>% 
+#  map(function(df) lm(mpg ~ wt, data = df))
 
 # еще короче
-models <- mtcars %>% 
-  split(.$cyl) %>% 
-  map(~lm(mpg ~ wt, data = .))
+#models <- mtcars %>% 
+#  split(.$cyl) %>% 
+#  map(~lm(mpg ~ wt, data = .))
 ```
 
 Но самый топчик, это извлечение именнованных компонентов 
 ```{r}
-models %>% 
-  map(summary) %>% 
-  map_dbl(~.$r.squared)
+#models %>% 
+#  map(summary) %>% 
+#  map_dbl(~.$r.squared)
 
 # еще короче
-models %>% 
-  map(summary) %>% 
-  map_dbl("r.squared")
+#models %>% 
+#  map(summary) %>% 
+#  map_dbl("r.squared")
 ```
 
 #### Базовые возможности
@@ -1025,7 +1025,7 @@ str(y)
 is_ok <- y$error %>% map_lgl(is_null)
 x[!is_ok]
 
-y$result[is_ok] %>% flatten_dbl()
+# y$result[is_ok] %>% flatten_dbl()
 ```
 
 Есть ещё два полезных наречия
@@ -1362,7 +1362,7 @@ col_sum3(df, mean)
 # Has problems: don't always return numeric vector
 col_sum3(df[1:2], mean)
 col_sum3(df[1], mean)
-col_sum3(df[0], mean)
+# col_sum3(df[0], mean)
 ```
 
 What causes these bugs?
