@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Глава 6 Коммуникация | Решение упражнений из книги R Science</title>
+  <meta name="description" content="Здесь будут публиковаться решения заданий из книги">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+
+  <meta property="og:title" content="Глава 6 Коммуникация | Решение упражнений из книги R Science" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Здесь будут публиковаться решения заданий из книги" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Глава 6 Коммуникация | Решение упражнений из книги R Science" />
+  
+  <meta name="twitter:description" content="Здесь будут публиковаться решения заданий из книги" />
+  
+
+<meta name="author" content="Stas Masuta">
+
+
+<meta name="date" content="2019-07-28">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="section-5.html">
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="http://r4ds.had.co.nz/index.html">Оригинал книги</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Введение</a></li>
+<li class="chapter" data-level="2" data-path="-.html"><a href="-.html"><i class="fa fa-check"></i><b>2</b> Предварительный анализ</a><ul>
+<li class="chapter" data-level="2.1" data-path="-.html"><a href="-.html#----ggplot2"><i class="fa fa-check"></i><b>2.1</b> Визуализация данных с помощью <code>ggplot2</code></a><ul>
+<li class="chapter" data-level="2.1.1" data-path="-.html"><a href="-.html#-1"><i class="fa fa-check"></i><b>2.1.1</b> Введение</a></li>
+<li class="chapter" data-level="2.1.2" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>2.1.2</b> Первые шаги</a></li>
+<li class="chapter" data-level="2.1.3" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>2.1.3</b> Эстетика визуализации</a></li>
+<li class="chapter" data-level="2.1.4" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>2.1.4</b> Распространённые ошибки</a></li>
+<li class="chapter" data-level="2.1.5" data-path="-.html"><a href="-.html#section-2.1.5"><i class="fa fa-check"></i><b>2.1.5</b> Панели</a></li>
+<li class="chapter" data-level="2.1.6" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>2.1.6</b> Геометрические объекты</a></li>
+<li class="chapter" data-level="2.1.7" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>2.1.7</b> Статистические преобразования</a></li>
+<li class="chapter" data-level="2.1.8" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>2.1.8</b> Позиционные настройки</a></li>
+<li class="chapter" data-level="2.1.9" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>2.1.9</b> Системы координат</a></li>
+<li class="chapter" data-level="2.1.10" data-path="-.html"><a href="-.html#--"><i class="fa fa-check"></i><b>2.1.10</b> Многослойная грамматика графики</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="-.html"><a href="-.html#--"><i class="fa fa-check"></i><b>2.2</b> Рабочий процесс: основы</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="-.html"><a href="-.html#--"><i class="fa fa-check"></i><b>2.2.1</b> Основы написания кода</a></li>
+<li class="chapter" data-level="2.2.2" data-path="-.html"><a href="-.html#---"><i class="fa fa-check"></i><b>2.2.2</b> Что представляют собой имена</a></li>
+<li class="chapter" data-level="2.2.3" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>2.2.3</b> Вызов функций</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="-.html"><a href="-.html#-----dplyr"><i class="fa fa-check"></i><b>2.3</b> Преобразование данных с помощью пакета <code>dplyr</code></a><ul>
+<li class="chapter" data-level="2.3.1" data-path="-.html"><a href="-.html#-2"><i class="fa fa-check"></i><b>2.3.1</b> Введение</a></li>
+<li class="chapter" data-level="2.3.2" data-path="-.html"><a href="-.html#-----filter"><i class="fa fa-check"></i><b>2.3.2</b> Фильтрация строк с помощью функции <code>filter()</code></a></li>
+<li class="chapter" data-level="2.3.3" data-path="-.html"><a href="-.html#-----arange"><i class="fa fa-check"></i><b>2.3.3</b> Перестановка строк с помощью функции <code>arange()</code></a></li>
+<li class="chapter" data-level="2.3.4" data-path="-.html"><a href="-.html#-----select"><i class="fa fa-check"></i><b>2.3.4</b> Выбор столбцов с помощью функции <code>select()</code></a></li>
+<li class="chapter" data-level="2.3.5" data-path="-.html"><a href="-.html#-----mutate"><i class="fa fa-check"></i><b>2.3.5</b> Добавление столбцов с помощью функции <code>mutate()</code></a></li>
+<li class="chapter" data-level="2.3.6" data-path="-.html"><a href="-.html#------summarize"><i class="fa fa-check"></i><b>2.3.6</b> Получение групповых итогов с помощью функции <code>summarize()</code></a></li>
+<li class="chapter" data-level="2.3.7" data-path="-.html"><a href="-.html#---"><i class="fa fa-check"></i><b>2.3.7</b> Групповое видоизменение (и фильтрация)</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="-.html"><a href="-.html#---"><i class="fa fa-check"></i><b>2.4</b> Организация рабочего процесса: скрипты</a><ul>
+<li class="chapter" data-level="2.4.1" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>2.4.1</b> Выполнение кода</a></li>
+<li class="chapter" data-level="2.4.2" data-path="-.html"><a href="-.html#--rstudio"><i class="fa fa-check"></i><b>2.4.2</b> Диагностические средства RStudio</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="-.html"><a href="-.html#--"><i class="fa fa-check"></i><b>2.5</b> Предварительный анализ данных</a><ul>
+<li class="chapter" data-level="2.5.1" data-path="-.html"><a href="-.html#-3"><i class="fa fa-check"></i><b>2.5.1</b> Введение</a></li>
+<li class="chapter" data-level="2.5.2" data-path="-.html"><a href="-.html#section-2.5.2"><i class="fa fa-check"></i><b>2.5.2</b> Вопросы</a></li>
+<li class="chapter" data-level="2.5.3" data-path="-.html"><a href="-.html#section-2.5.3"><i class="fa fa-check"></i><b>2.5.3</b> Вариация</a></li>
+<li class="chapter" data-level="2.5.4" data-path="-.html"><a href="-.html#--2"><i class="fa fa-check"></i><b>2.5.4</b> Отсутствующие значения</a></li>
+<li class="chapter" data-level="2.5.5" data-path="-.html"><a href="-.html#section-2.5.5"><i class="fa fa-check"></i><b>2.5.5</b> Ковариация</a></li>
+<li class="chapter" data-level="2.5.6" data-path="-.html"><a href="-.html#----"><i class="fa fa-check"></i><b>2.5.6</b> Шаблоны поведения переменных и модели</a></li>
+<li class="chapter" data-level="2.5.7" data-path="-.html"><a href="-.html#--ggplot"><i class="fa fa-check"></i><b>2.5.7</b> Вызов функций <code>ggplot</code></a></li>
+<li class="chapter" data-level="2.5.8" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>2.5.8</b> Дополнительная информация</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="-.html"><a href="-.html#---"><i class="fa fa-check"></i><b>2.6</b> Организация рабочего процесса: проекты</a><ul>
+<li class="chapter" data-level="2.6.1" data-path="-.html"><a href="-.html#---"><i class="fa fa-check"></i><b>2.6.1</b> Что является вашим достоянием</a></li>
+<li class="chapter" data-level="2.6.2" data-path="-.html"><a href="-.html#---"><i class="fa fa-check"></i><b>2.6.2</b> Где находится ваш анализ</a></li>
+<li class="chapter" data-level="2.6.3" data-path="-.html"><a href="-.html#--"><i class="fa fa-check"></i><b>2.6.3</b> Пути и каталоги</a></li>
+<li class="chapter" data-level="2.6.4" data-path="-.html"><a href="-.html#-rstudio"><i class="fa fa-check"></i><b>2.6.4</b> Проекты RStudio</a></li>
+<li class="chapter" data-level="2.6.5" data-path="-.html"><a href="-.html#section-2.6.5"><i class="fa fa-check"></i><b>2.6.5</b> Резюме</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>3</b> Подготовка данных</a><ul>
+<li class="chapter" data-level="3.1" data-path="-.html"><a href="-.html#-tibble-----tibble"><i class="fa fa-check"></i><b>3.1</b> Создание tibble-фреймов с помощью пакета <code>tibble</code></a><ul>
+<li class="chapter" data-level="3.1.1" data-path="-.html"><a href="-.html#-4"><i class="fa fa-check"></i><b>3.1.1</b> Введение</a></li>
+<li class="chapter" data-level="3.1.2" data-path="-.html"><a href="-.html#-tibble-"><i class="fa fa-check"></i><b>3.1.2</b> Создание tibble-фреймов</a></li>
+<li class="chapter" data-level="3.1.3" data-path="-.html"><a href="-.html#-tibble----data.frame"><i class="fa fa-check"></i><b>3.1.3</b> Сравнение tibble-фреймов с фреймами <code>data.frame</code></a></li>
+<li class="chapter" data-level="3.1.4" data-path="-.html"><a href="-.html#----"><i class="fa fa-check"></i><b>3.1.4</b> Взаимодействие с разработанным ранее кодом</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="-.html"><a href="-.html#-----reader"><i class="fa fa-check"></i><b>3.2</b> Импорт данных с помощью пакета <code>reader</code></a><ul>
+<li class="chapter" data-level="3.2.1" data-path="-.html"><a href="-.html#-5"><i class="fa fa-check"></i><b>3.2.1</b> Введение</a></li>
+<li class="chapter" data-level="3.2.2" data-path="-.html"><a href="-.html#--"><i class="fa fa-check"></i><b>3.2.2</b> Приступаем к работе</a></li>
+<li class="chapter" data-level="3.2.3" data-path="-.html"><a href="-.html#--"><i class="fa fa-check"></i><b>3.2.3</b> Синтаксический анализ векторов</a></li>
+<li class="chapter" data-level="3.2.4" data-path="-.html"><a href="-.html#--"><i class="fa fa-check"></i><b>3.2.4</b> Синтаксический анализ файлов</a></li>
+<li class="chapter" data-level="3.2.5" data-path="-.html"><a href="-.html#--"><i class="fa fa-check"></i><b>3.2.5</b> Запись в файл</a></li>
+<li class="chapter" data-level="3.2.6" data-path="-.html"><a href="-.html#--"><i class="fa fa-check"></i><b>3.2.6</b> Другие типы данных</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="-.html"><a href="-.html#-----tidyr"><i class="fa fa-check"></i><b>3.3</b> Аккуратизация данных с помощью пакета <code>tidyr</code></a><ul>
+<li class="chapter" data-level="3.3.1" data-path="-.html"><a href="-.html#-6"><i class="fa fa-check"></i><b>3.3.1</b> Введение</a></li>
+<li class="chapter" data-level="3.3.2" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>3.3.2</b> Аккуратные данные</a></li>
+<li class="chapter" data-level="3.3.3" data-path="-.html"><a href="-.html#---"><i class="fa fa-check"></i><b>3.3.3</b> Рассредоточение и сведение столбцов</a></li>
+<li class="chapter" data-level="3.3.4" data-path="-.html"><a href="-.html#---"><i class="fa fa-check"></i><b>3.3.4</b> Разделение и объединение столбцов</a></li>
+<li class="chapter" data-level="3.3.5" data-path="-.html"><a href="-.html#--3"><i class="fa fa-check"></i><b>3.3.5</b> Отсутствующие значения</a></li>
+<li class="chapter" data-level="3.3.6" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>3.3.6</b> Учебный пример</a></li>
+<li class="chapter" data-level="3.3.7" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>3.3.7</b> Неаккуратные данные</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="-.html"><a href="-.html#-----tidyr-1"><i class="fa fa-check"></i><b>3.4</b> Аккуратизация данных с помощью пакета <code>tidyr</code></a><ul>
+<li class="chapter" data-level="3.4.1" data-path="-.html"><a href="-.html#-7"><i class="fa fa-check"></i><b>3.4.1</b> Введение</a></li>
+<li class="chapter" data-level="3.4.2" data-path="-.html"><a href="-.html#-nycflights13-1"><i class="fa fa-check"></i><b>3.4.2</b> Пакет <code>nycflights13</code></a></li>
+<li class="chapter" data-level="3.4.3" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>3.4.3</b> Мутирующие соединения</a></li>
+<li class="chapter" data-level="3.4.4" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>3.4.4</b> Фильтрующие соединения</a></li>
+<li class="chapter" data-level="3.4.5" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>3.4.5</b> Проблемы соединений</a></li>
+<li class="chapter" data-level="3.4.6" data-path="-.html"><a href="-.html#--"><i class="fa fa-check"></i><b>3.4.6</b> Операции над множествами</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="-.html"><a href="-.html#-----tidyr-2"><i class="fa fa-check"></i><b>3.5</b> Аккуратизация данных с помощью пакета <code>tidyr</code></a><ul>
+<li class="chapter" data-level="3.5.1" data-path="-.html"><a href="-.html#-8"><i class="fa fa-check"></i><b>3.5.1</b> Введение</a></li>
+<li class="chapter" data-level="3.5.2" data-path="-.html"><a href="-.html#---"><i class="fa fa-check"></i><b>3.5.2</b> Основы работы со строками</a></li>
+<li class="chapter" data-level="3.5.3" data-path="-.html"><a href="-.html#------"><i class="fa fa-check"></i><b>3.5.3</b> Поиск соответствия шаблонам с помощью регулярных выражений</a></li>
+<li class="chapter" data-level="3.5.4" data-path="-.html"><a href="-.html#section-3.5.4"><i class="fa fa-check"></i><b>3.5.4</b> Инструментарий</a></li>
+<li class="chapter" data-level="3.5.5" data-path="-.html"><a href="-.html#--"><i class="fa fa-check"></i><b>3.5.5</b> Другие типы шаблонов</a></li>
+<li class="chapter" data-level="3.5.6" data-path="-.html"><a href="-.html#---"><i class="fa fa-check"></i><b>3.5.6</b> Другие применения регулярных выражений</a></li>
+<li class="chapter" data-level="3.5.7" data-path="-.html"><a href="-.html#-stringi"><i class="fa fa-check"></i><b>3.5.7</b> Пакет <code>stringi</code></a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="-.html"><a href="-.html#------forcats"><i class="fa fa-check"></i><b>3.6</b> Работа с факторами с помощью пакета <code>forcats</code></a><ul>
+<li class="chapter" data-level="3.6.1" data-path="-.html"><a href="-.html#-9"><i class="fa fa-check"></i><b>3.6.1</b> Введение</a></li>
+<li class="chapter" data-level="3.6.2" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>3.6.2</b> Создание факторов</a></li>
+<li class="chapter" data-level="3.6.3" data-path="-.html"><a href="-.html#-gss"><i class="fa fa-check"></i><b>3.6.3</b> Опрос GSS</a></li>
+<li class="chapter" data-level="3.6.4" data-path="-.html"><a href="-.html#--"><i class="fa fa-check"></i><b>3.6.4</b> Изменение уровней факторов</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="-.html"><a href="-.html#--------lubridate"><i class="fa fa-check"></i><b>3.7</b> Работа с датами и временем с помощью пакета <code>lubridate</code></a><ul>
+<li class="chapter" data-level="3.7.1" data-path="-.html"><a href="-.html#-10"><i class="fa fa-check"></i><b>3.7.1</b> Введение</a></li>
+<li class="chapter" data-level="3.7.2" data-path="-.html"><a href="-.html#-----"><i class="fa fa-check"></i><b>3.7.2</b> Создание перменных описывающих дату и время</a></li>
+<li class="chapter" data-level="3.7.3" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>3.7.3</b> Компоненты даты/времени</a></li>
+<li class="chapter" data-level="3.7.4" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>3.7.4</b> Временные промежутки</a></li>
+<li class="chapter" data-level="3.7.5" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>3.7.5</b> Часовые пояса</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="section-4.html"><a href="section-4.html"><i class="fa fa-check"></i><b>4</b> Программирование</a><ul>
+<li class="chapter" data-level="4.1" data-path="section-4.html"><a href="section-4.html#-11"><i class="fa fa-check"></i><b>4.1</b> Введение</a></li>
+<li class="chapter" data-level="4.2" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>4.2</b> Узнайте больше</a></li>
+<li class="chapter" data-level="4.3" data-path="section-4.html"><a href="section-4.html#------magrittr"><i class="fa fa-check"></i><b>4.3</b> Работа с каналами с помощью пакета <code>magrittr</code></a><ul>
+<li class="chapter" data-level="4.3.1" data-path="section-4.html"><a href="section-4.html#-12"><i class="fa fa-check"></i><b>4.3.1</b> Введение</a></li>
+<li class="chapter" data-level="4.3.2" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>4.3.2</b> Альтернативы каналам</a></li>
+<li class="chapter" data-level="4.3.3" data-path="-.html"><a href="-.html#----"><i class="fa fa-check"></i><b>4.3.3</b> Когда канал не следует использовать</a></li>
+<li class="chapter" data-level="4.3.4" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>4.3.4</b> Другие инструменты</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="section-4.html"><a href="section-4.html#section-4.4"><i class="fa fa-check"></i><b>4.4</b> Функции</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="section-4.html"><a href="section-4.html#-13"><i class="fa fa-check"></i><b>4.4.1</b> Введение</a></li>
+<li class="chapter" data-level="4.4.2" data-path="-.html"><a href="-.html#---"><i class="fa fa-check"></i><b>4.4.2</b> Когда следует писать функции</a></li>
+<li class="chapter" data-level="4.4.3" data-path="-.html"><a href="-.html#-----"><i class="fa fa-check"></i><b>4.4.3</b> Функции создаются для компьютеров и людей</a></li>
+<li class="chapter" data-level="4.4.4" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>4.4.4</b> Условное выполнение</a></li>
+<li class="chapter" data-level="4.4.5" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>4.4.5</b> Аргументы функций</a></li>
+<li class="chapter" data-level="4.4.6" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>4.4.6</b> Возвращаемые значения</a></li>
+<li class="chapter" data-level="4.4.7" data-path="section-4.html"><a href="section-4.html#section-4.4.7"><i class="fa fa-check"></i><b>4.4.7</b> Окружение</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="section-4.html"><a href="section-4.html#section-4.5"><i class="fa fa-check"></i><b>4.5</b> Векторы</a><ul>
+<li class="chapter" data-level="4.5.1" data-path="section-4.html"><a href="section-4.html#-14"><i class="fa fa-check"></i><b>4.5.1</b> Введение</a></li>
+<li class="chapter" data-level="4.5.2" data-path="-.html"><a href="-.html#---"><i class="fa fa-check"></i><b>4.5.2</b> Основные сведения о векторах</a></li>
+<li class="chapter" data-level="4.5.3" data-path="-.html"><a href="-.html#---"><i class="fa fa-check"></i><b>4.5.3</b> Важные типы атомарных векторов</a></li>
+<li class="chapter" data-level="4.5.4" data-path="-.html"><a href="-.html#--"><i class="fa fa-check"></i><b>4.5.4</b> Использование атомарных векторов</a></li>
+<li class="chapter" data-level="4.5.5" data-path="-.html"><a href="-.html#--"><i class="fa fa-check"></i><b>4.5.5</b> Рекурсивные векторы (списки)</a></li>
+<li class="chapter" data-level="4.5.6" data-path="section-4.html"><a href="section-4.html#section-4.5.6"><i class="fa fa-check"></i><b>4.5.6</b> Атрибуты</a></li>
+<li class="chapter" data-level="4.5.7" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>4.5.7</b> Расширенные векторы</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="section-4.html"><a href="section-4.html#----purrr"><i class="fa fa-check"></i><b>4.6</b> Итерирование с помощью пакета <code>purrr</code></a><ul>
+<li class="chapter" data-level="4.6.1" data-path="section-4.html"><a href="section-4.html#-15"><i class="fa fa-check"></i><b>4.6.1</b> Введение</a></li>
+<li class="chapter" data-level="4.6.2" data-path="section-4.html"><a href="section-4.html#-for"><i class="fa fa-check"></i><b>4.6.2</b> Циклы <code>for</code></a></li>
+<li class="chapter" data-level="4.6.3" data-path="section-4.html"><a href="section-4.html#--for"><i class="fa fa-check"></i><b>4.6.3</b> Варианты цикла <code>for</code></a></li>
+<li class="chapter" data-level="4.6.4" data-path="section-4.html"><a href="section-4.html#-for--"><i class="fa fa-check"></i><b>4.6.4</b> Циклы <code>for</code> и функционалы</a></li>
+<li class="chapter" data-level="4.6.5" data-path="section-4.html"><a href="section-4.html#--map"><i class="fa fa-check"></i><b>4.6.5</b> Функции семейства <code>map</code></a></li>
+<li class="chapter" data-level="4.6.6" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>4.6.6</b> Обработка ошибок</a></li>
+<li class="chapter" data-level="4.6.7" data-path="section-4.html"><a href="section-4.html#--map----"><i class="fa fa-check"></i><b>4.6.7</b> Функции семейства <code>map</code> с несоколькими входными переменными</a></li>
+<li class="chapter" data-level="4.6.8" data-path="section-4.html"><a href="section-4.html#--walk"><i class="fa fa-check"></i><b>4.6.8</b> Функции семейства <code>walk</code></a></li>
+<li class="chapter" data-level="4.6.9" data-path="section-4.html"><a href="section-4.html#---for"><i class="fa fa-check"></i><b>4.6.9</b> Другие шаблоны циклов <code>for</code></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="section-5.html"><a href="section-5.html"><i class="fa fa-check"></i><b>5</b> Моделирование</a><ul>
+<li class="chapter" data-level="5.0.1" data-path="-.html"><a href="-.html#----"><i class="fa fa-check"></i><b>5.0.1</b> Выдвижение гипотез и их подтверждение</a></li>
+<li class="chapter" data-level="5.1" data-path="section-5.html"><a href="section-5.html#-----modelr"><i class="fa fa-check"></i><b>5.1</b> Базовое моделирование при помощи пакета <code>modelr</code></a><ul>
+<li class="chapter" data-level="5.1.1" data-path="section-5.html"><a href="section-5.html#-16"><i class="fa fa-check"></i><b>5.1.1</b> Введение</a></li>
+<li class="chapter" data-level="5.1.2" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>5.1.2</b> Простая модель</a></li>
+<li class="chapter" data-level="5.1.3" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>5.1.3</b> Визуализация моделей</a></li>
+<li class="chapter" data-level="5.1.4" data-path="-.html"><a href="-.html#---"><i class="fa fa-check"></i><b>5.1.4</b> Формулы и семейства моделей</a></li>
+<li class="chapter" data-level="5.1.5" data-path="-.html"><a href="-.html#--5"><i class="fa fa-check"></i><b>5.1.5</b> Отсутствующие значения</a></li>
+<li class="chapter" data-level="5.1.6" data-path="-.html"><a href="-.html#--"><i class="fa fa-check"></i><b>5.1.6</b> Другие семейства моделей</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="-.html"><a href="-.html#-"><i class="fa fa-check"></i><b>5.2</b> Создание модели</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="section-5.html"><a href="section-5.html#-17"><i class="fa fa-check"></i><b>5.2.1</b> Введение</a></li>
+<li class="chapter" data-level="5.2.2" data-path="-.html"><a href="-.html#------"><i class="fa fa-check"></i><b>5.2.2</b> Почему бриллианты низкого качества оказались более дорогими</a></li>
+<li class="chapter" data-level="5.2.3" data-path="-.html"><a href="-.html#--"><i class="fa fa-check"></i><b>5.2.3</b> Более сложная модель</a></li>
+<li class="chapter" data-level="5.2.4" data-path="-.html"><a href="-.html#-----"><i class="fa fa-check"></i><b>5.2.4</b> Что влияет на количество ежедневных авиарейсов</a></li>
+<li class="chapter" data-level="5.2.5" data-path="-.html"><a href="-.html#--"><i class="fa fa-check"></i><b>5.2.5</b> Больше о моделях</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="section-5.html"><a href="section-5.html#------purrr--broom"><i class="fa fa-check"></i><b>5.3</b> Обработка множества моделей с помощью пакетов <code>purrr</code> и <code>broom</code></a><ul>
+<li class="chapter" data-level="5.3.1" data-path="section-5.html"><a href="section-5.html#-18"><i class="fa fa-check"></i><b>5.3.1</b> Введение</a></li>
+<li class="chapter" data-level="5.3.2" data-path="section-5.html"><a href="section-5.html#--gapminder"><i class="fa fa-check"></i><b>5.3.2</b> Набор данных <code>gapminder</code></a></li>
+<li class="chapter" data-level="5.3.3" data-path="-.html"><a href="-.html#--1"><i class="fa fa-check"></i><b>5.3.3</b> Столбцы-списки</a></li>
+<li class="chapter" data-level="5.3.4" data-path="-.html"><a href="-.html#--"><i class="fa fa-check"></i><b>5.3.4</b> Создание столбцов-списков</a></li>
+<li class="chapter" data-level="5.3.5" data-path="-.html"><a href="-.html#--"><i class="fa fa-check"></i><b>5.3.5</b> Упрощение столбцов-списков</a></li>
+<li class="chapter" data-level="5.3.6" data-path="section-5.html"><a href="section-5.html#--------broom"><i class="fa fa-check"></i><b>5.3.6</b> Приведение данных к аккуратной форме при помоще пакета <code>broom</code></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="section-6.html"><a href="section-6.html"><i class="fa fa-check"></i><b>6</b> Коммуникация</a><ul>
+<li class="chapter" data-level="6.1" data-path="section-6.html"><a href="section-6.html#--r-markdown"><i class="fa fa-check"></i><b>6.1</b> Язык разметки R Markdown</a><ul>
+<li class="chapter" data-level="6.1.1" data-path="section-6.html"><a href="section-6.html#-19"><i class="fa fa-check"></i><b>6.1.1</b> Введение</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Сделано с помощью bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Решение упражнений из книги R Science</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="section-6" class="section level1">
+<h1><span class="header-section-number">Глава 6</span> Коммуникация</h1>
+<div id="--r-markdown" class="section level2">
+<h2><span class="header-section-number">6.1</span> Язык разметки R Markdown</h2>
+<div id="-19" class="section level3">
+<h3><span class="header-section-number">6.1.1</span> Введение</h3>
+<p>Не буду копипастить эту главу книги, в оригинале всё довольно подробно и понятно описано.</p>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="section-5.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["r4ds-ex-sol.pdf", "r4ds-ex-sol.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
