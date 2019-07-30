@@ -701,6 +701,13 @@ flights %>%
 Используем функцию из упражнения ниже, чтобы поставить понедельник не первое место.
 
 ```{r}
+relevel <- function(x) {
+  fct_relevel(x, levels(x)[-1])
+}
+```
+
+
+```{r}
 flights %>%
   mutate(
     date = make_date(year, month, day),
